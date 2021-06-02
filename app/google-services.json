@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "939370243810",
+    "project_id": "freshproducts-cb620",
+    "storage_bucket": "freshproducts-cb620.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:939370243810:android:d1f9e23db32a1c63dfa0bb",
+        "android_client_info": {
+          "package_name": "com.homemadeproducts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "939370243810-ijlt40nmorq8realkoi3g1rodm0vkppk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHrP3QANnD6XcjyKAPdQemRU7UdNbBvbY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "939370243810-ijlt40nmorq8realkoi3g1rodm0vkppk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:939370243810:android:b9d0d854e485b8b6dfa0bb",
+        "android_client_info": {
+          "package_name": "com.homemadeproductsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "939370243810-ijlt40nmorq8realkoi3g1rodm0vkppk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHrP3QANnD6XcjyKAPdQemRU7UdNbBvbY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "939370243810-ijlt40nmorq8realkoi3g1rodm0vkppk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

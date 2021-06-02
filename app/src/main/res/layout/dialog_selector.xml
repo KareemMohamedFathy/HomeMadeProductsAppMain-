@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="@string/select_picker"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.1"
+        android:background="@android:color/black" />
+
+    <TextView
+        android:id="@+id/textViewCamera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@android:drawable/ic_menu_camera"
+        android:drawablePadding="16dp"
+        android:padding="8dp"
+        android:text="@string/camera"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.1"
+        android:background="@android:color/black" />
+
+    <TextView
+        android:id="@+id/textViewGallery"
+        android:layout_width="match_parent"
+        android:drawableStart="@android:drawable/ic_menu_gallery"
+        android:layout_height="wrap_content"
+        android:drawablePadding="16dp"
+        android:padding="8dp"
+        android:text="@string/gallery"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+</LinearLayout>
