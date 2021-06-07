@@ -10,31 +10,33 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.EditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
+import android.widget.*
+import androidx.appcompat.app.ActionBar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.homemadeproductsapp.BuildConfig
 import com.homemadeproductsapp.DB.Category
+import com.homemadeproductsapp.DB.Local.StoreSession
 import com.homemadeproductsapp.DB.Store
 import com.homemadeproductsapp.FileSelectorFragment
 import com.homemadeproductsapp.R
+import com.mindorks.notesapp.data.local.pref.PrefConstant
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener {
+class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterView.OnItemSelectedListener {
     private lateinit var editTextName:EditText
-    private lateinit var editTextCategory:EditText
     private lateinit var editTextDescription:EditText
+    private lateinit var editTextShippingTime:EditText
+
     private lateinit var buttonSubmit:Button
 
     private  val auth: FirebaseAuth=FirebaseAuth.getInstance()
@@ -45,6 +47,11 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener {
     private lateinit var imageViewAdd:ImageView
     private var picturePath = ""
     private lateinit var imageLocation: File
+    private lateinit var category: String
+    val mainCategories= arrayOf("Clothing","Food","Accessories","Books","Toys","Jewellery")
+
+
+
 
     companion object {
         private const val MY_PERMISSION_CODE = 124
@@ -57,9 +64,50 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_store)
-        bindViews();
+        bindViews()
+        setupSharedPreference()
+        spinnerStart()
+        setupToolbarText()
         setupClickListeners()
 
+    }
+    private fun setupSharedPreference() {
+        StoreSession.init(this)
+    }
+
+    private fun spinnerStart() {
+        val spin = findViewById<Spinner>(R.id.spinnerCategory)
+
+        spin.onItemSelectedListener = this
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_spinner_item,
+                mainCategories)
+        adapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item)
+
+        spin.adapter = adapter
+    }
+
+    private fun setupToolbarText() {
+        if (supportActionBar != null) {
+            getSupportActionBar()!!.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            getSupportActionBar()!!.setCustomView(R.layout.actionbar);
+            val view = supportActionBar!!.customView
+            var textViewTitle: TextView =view.findViewById(R.id.action_bar_title)
+            textViewTitle.setText("Create Your Store")
+            var back:ImageView=view.findViewById(R.id.action_bar_Image)
+            back.setOnClickListener(object :View.OnClickListener{
+                override fun onClick(v: View?) {
+                val intent:Intent=Intent(this@CreateStoreActivity,MyStoreActivity::class.java)
+                    startActivity(intent)
+                }
+
+            }
+
+            )
+
+        }
     }
 
     private fun setupClickListeners() {
@@ -67,10 +115,12 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener {
             object : View.OnClickListener {
                 override fun onClick(v: View?) {
                     val name = editTextName.text.toString()
-                    val category = editTextCategory.text.toString()
                     val description = editTextDescription.text.toString()
+                    val shippingTime = editTextShippingTime.text.toString()
+
                     val imagepath=picturePath
-                    addToDb(name, category, description,imagepath)
+                    addToDb(name, description,imagepath,shippingTime)
+                    saveCategory(category)
                     val intent = Intent(this@CreateStoreActivity,MyStoreActivity::class.java)
                     startActivity(intent)
 
@@ -85,6 +135,9 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener {
                 }
             }
         })
+    }
+    private fun saveCategory(category: String) {
+        StoreSession.write(PrefConstant.MAINCATEGORY, category)
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -134,24 +187,23 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener {
 
 
 
-    private fun addToDb(name: String, category: String, description: String, imagepath: String) {
-            Log.d("MyStoreActivity","fraud1")
+    private fun addToDb(
+        name: String,
+        description: String,
+        imagepath: String,
+        shippingTime: String
+    ) {
 
-            firebaseDatabase= FirebaseDatabase.getInstance()
-            dbReference = firebaseDatabase.getReference("Category")
-           val categoryId = dbReference.push().key.toString()
-            val categoryNew=Category(category,"",categoryId)
-            dbReference.child(categoryId).setValue(categoryNew)
 
             firebaseDatabase= FirebaseDatabase.getInstance()
             dbReference = firebaseDatabase.getReference("Store")
             val storeId = dbReference.push().key.toString()
             //Creating an empty arraylist
-            val store= Store(storeId,name,imagepath,description,categoryId,curUser)
+            val store= Store(storeId,name,imagepath,description,category,shippingTime,curUser)
             dbReference.child(storeId).setValue(store)
 
             firebaseDatabase= FirebaseDatabase.getInstance()
-            dbReference = firebaseDatabase.getReference("Producer")
+            dbReference = firebaseDatabase.getReference("User")
             dbReference.child(curUser).child("store_id").setValue(storeId)
 
 
@@ -162,9 +214,10 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener {
 
     private fun bindViews() {
     editTextName=findViewById(R.id.editTextName)
-       editTextCategory=findViewById(R.id.editTextCategory)
        editTextDescription=findViewById(R.id.editTextDescription)
-       buttonSubmit=findViewById(R.id.submit_button)
+        editTextShippingTime=findViewById(R.id.editTextshippingTime)
+
+        buttonSubmit=findViewById(R.id.submit_button)
         imageViewAdd=findViewById(R.id.imageViewAdd)
     }
 
@@ -208,6 +261,15 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener {
                 }
             }
         }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        category=mainCategories[position]
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        category=mainCategories[0]
+
     }
 
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/choose_newsfeed_or_products"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.1"
+        android:background="@android:color/black" />
+
+    <TextView
+        android:id="@+id/textViewProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_additem"
+        android:drawablePadding="16dp"
+        android:padding="16dp"
+        android:text="@string/create_product"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.1"
+        android:background="@android:color/black" />
+
+    <TextView
+        android:id="@+id/textViewNewsFeed"
+        android:layout_width="match_parent"
+        android:drawableStart="@drawable/ic_newsfeed"
+        android:layout_height="wrap_content"
+        android:drawablePadding="16dp"
+        android:padding="16dp"
+        android:text="Add to newsfeed"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+</LinearLayout>

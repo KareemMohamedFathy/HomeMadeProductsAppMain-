@@ -12,6 +12,8 @@ data class Store(
         var store_name:String="",
         var store_logo:String="",
         var store_description:String="",
-        var category_id: String? = "",
+        var mainCategoryName: String? = "",
+        var shippingTime: String? = "",
+
         var owner_id: String? = ""
 )

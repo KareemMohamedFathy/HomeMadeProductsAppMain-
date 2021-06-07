@@ -15,10 +15,11 @@ import android.widget.Button
 import android.widget.EditText
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.homemadeproductsapp.DB.Local.StoreSession
 
-import com.homemadeproductsapp.DB.Buyer
-import com.homemadeproductsapp.DB.Producer
+import com.homemadeproductsapp.DB.User
 import com.homemadeproductsapp.MyStore.MyStoreActivity
+import com.mindorks.notesapp.data.local.pref.PrefConstant
 
 class RegisterActivity : AppCompatActivity() {
     lateinit var editTextName: EditText
@@ -30,8 +31,6 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var firebaseDatabase: FirebaseDatabase
 
     lateinit var buttonSignUp:Button
-    lateinit var checkBoxProducer: CheckBox
-    lateinit var checkBoxBuyer: CheckBox
     private lateinit var auth: FirebaseAuth
 
 
@@ -40,13 +39,19 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         auth = FirebaseAuth.getInstance()
-
+        setupSharedPreference()
         bindViews()
 
         setupClickListeners()
 
     }
+    private fun setupSharedPreference() {
+        StoreSession.init(this)
+    }
 
+    private fun saveSession() {
+        StoreSession.write(PrefConstant.LOGGED, true)
+    }
 
     private fun setupClickListeners() {
         val clickAction = object : View.OnClickListener {
@@ -55,8 +60,6 @@ class RegisterActivity : AppCompatActivity() {
                 val password = editTextPassword.text.toString()
                 val passwordConfirm = editTextPasswordConfirm.text.toString()
                 val email = editTextEmail.text.toString()
-                val buyer = checkBoxBuyer.isChecked
-                val producer = checkBoxProducer.isChecked
                val mobileNo=editTextMobile.text.toString()
                 if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)||TextUtils.isEmpty(passwordConfirm)||TextUtils.isEmpty(name)||TextUtils.isEmpty(mobileNo)) {
                     Toast.makeText(this@RegisterActivity, "Please fill all the fields", Toast.LENGTH_LONG).show()
@@ -64,12 +67,6 @@ class RegisterActivity : AppCompatActivity() {
                 else if(password!=passwordConfirm){
                     Toast.makeText(this@RegisterActivity, "Passwords don't match", Toast.LENGTH_LONG).show()
 
-                }
-                else if(buyer&&producer){
-                    Toast.makeText(this@RegisterActivity, "You can't be both please choose one role to start with", Toast.LENGTH_LONG).show()
-                }
-                else if(!buyer&&!producer){
-                    Toast.makeText(this@RegisterActivity, "please choose one role to start with", Toast.LENGTH_LONG).show()
                 }
                 else {
                     auth.createUserWithEmailAndPassword(email, password)
@@ -81,14 +78,15 @@ class RegisterActivity : AppCompatActivity() {
                                     Toast.LENGTH_LONG
                                 )
                                     .show()
+                                saveSession()
                                 val intent = Intent(this@RegisterActivity, MyStoreActivity::class.java)
-                                handleData(name,email,mobileNo,buyer,producer)
+                                handleData(name,email,mobileNo)
                                 startActivity(intent)
                                 finish()
                             } else {
                                 Toast.makeText(
                                     this@RegisterActivity,
-                                    "Registration Failed",
+                                    task.result.toString(),
                                     Toast.LENGTH_LONG
                                 ).show()
                             }
@@ -102,27 +100,20 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
-    private fun handleData(name: String, email: String, mobileNo: String, buyer: Boolean, producer: Boolean) {
+    private fun handleData(name: String, email: String, mobileNo: String) {
         firebaseDatabase= FirebaseDatabase.getInstance()
 
-        if(buyer){
-            dbReference=firebaseDatabase.getReference("Buyer")
-            val id=auth.currentUser!!.uid
 
-            val buyer=Buyer(id,name,mobileNo,"",email)
-            dbReference.child(id).setValue(buyer)
-        }
-        else{
-            dbReference=firebaseDatabase.getReference("Producer")
+            dbReference=firebaseDatabase.getReference("User")
             val id=auth.currentUser!!.uid
             Log.d("RegisterActivity", id)
            // FirebaseNodeName.child("user").child(customId).set(key, value);
 
-            val producer=Producer(id,name,mobileNo,"",email)
-            dbReference.child(id).setValue(producer)
+            val user=User(id,name,mobileNo,"",email)
+            dbReference.child(id).setValue(user)
 
 
-        }
+
 
     }
 
@@ -133,7 +124,5 @@ class RegisterActivity : AppCompatActivity() {
         editTextPasswordConfirm=findViewById(R.id.editTextPasswordConfirm)
         buttonSignUp=findViewById(R.id.buttonSignUp)
         editTextMobile=findViewById(R.id.editTextMobileNumber)
-        checkBoxBuyer=findViewById(R.id.checkBoxBuyer)
-        checkBoxProducer=findViewById(R.id.checkBoxProducer)
     }
 }

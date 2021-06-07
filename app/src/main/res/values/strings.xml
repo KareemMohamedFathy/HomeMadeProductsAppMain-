@@ -15,4 +15,8 @@
     <string name="select_picker">Select Camera or Gallery</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
+    <string name="choose_newsfeed_or_products">choose NewsFeed or Products</string>
+    <string name="create_product">Create product</string>
+    <string name="add_shiping_time_in_days">Add shiping time in days</string>
+    <string name="write_caption">Write caption</string>
 </resources>

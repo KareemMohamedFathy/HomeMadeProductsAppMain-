@@ -8,12 +8,13 @@ import java.util.*
 
 
 @IgnoreExtraProperties
-data class Buyer(
+data class User(
     var id: String? = "",
     var name: String? = "",
     var mobileno: String? = "",
     var personalPhotoPath: String? = "",
-    var email: String? = ""
-    //var password: String? = ""
+    var email: String? = "",
+    var store_id :String?="",
+    var password: String? = ""
 
 )

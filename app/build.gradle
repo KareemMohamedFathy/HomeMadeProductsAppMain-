@@ -63,6 +63,8 @@ dependencies {
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation platform('com.google.firebase:firebase-bom:28.0.1')
+    implementation 'com.android.support:appcompat-v7:30.0.0'
+    implementation 'com.android.support:design:30.0.0'
 
     implementation 'com.google.firebase:firebase-auth-ktx'
 }

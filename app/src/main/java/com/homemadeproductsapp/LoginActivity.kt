@@ -11,7 +11,9 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
+import com.homemadeproductsapp.DB.Local.StoreSession
 import com.homemadeproductsapp.MyStore.MyStoreActivity
+import com.mindorks.notesapp.data.local.pref.PrefConstant
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var textViewSignUp: TextView
@@ -26,10 +28,28 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         bindViews()
         auth = FirebaseAuth.getInstance()
+setupSharedPreference()
+        checkisLogged()
 
 
         setupClickListeners()
 
+    }
+    private fun setupSharedPreference() {
+        StoreSession.init(this)
+    }
+    private fun checkisLogged() {
+       val status= StoreSession.read(PrefConstant.LOGGED)
+        if(status==true){
+            Toast.makeText(this@LoginActivity, "Successfully Logged In", Toast.LENGTH_LONG).show()
+            val intent= Intent(this@LoginActivity, MyStoreActivity::class.java)
+            startActivity(intent)
+            finish()
+
+        }
+    }
+    private fun saveSession() {
+        StoreSession.write(PrefConstant.LOGGED, true)
     }
 
     private fun bindViews() {
@@ -46,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
                 val password=editTextPassword.text.toString()
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this@LoginActivity, OnCompleteListener { task ->
                     if(task.isSuccessful) {
-
+saveSession()
                         Toast.makeText(this@LoginActivity, "Successfully Logged In", Toast.LENGTH_LONG).show()
                         val intent= Intent(this@LoginActivity, MyStoreActivity::class.java)
                         startActivity(intent)
