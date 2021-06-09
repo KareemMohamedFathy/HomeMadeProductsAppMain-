@@ -2,7 +2,6 @@ package com.homemadeproductsapp.MyStore
 
 
 import MyStoreNewsFeedAdapter
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -17,16 +16,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.homemadeproductsapp.AppConst
+import com.homemadeproductsapp.*
+import com.homemadeproductsapp.AllStores.AllStoresActivity
 import com.homemadeproductsapp.DB.Category
 import com.homemadeproductsapp.DB.Feed
 import com.homemadeproductsapp.DB.Local.StoreSession
 import com.homemadeproductsapp.DB.Product
 import com.homemadeproductsapp.Details.DetailsActivity
+import com.homemadeproductsapp.Home.HomeActivity
 import com.homemadeproductsapp.MyStore.Adapter.MyStoreItemsAdapter
 import com.homemadeproductsapp.MyStore.ItemsAndFeed.CreateItemActivity
 import com.homemadeproductsapp.MyStore.ItemsAndFeed.CreateNewsFeedActivity
@@ -71,8 +73,9 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_store)
         bindViews()
+        handleBottomNavigationView()
         setupSharedPreference()
-        setupToolbarText()
+       // setupToolbarText()
 
         storeIdExists=""
         auth = FirebaseAuth.getInstance()
@@ -211,11 +214,11 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
 
                     }
 
+                    timeLinePhotos.reverse()
                     val myStoreProductsAdapter = MyStoreNewsFeedAdapter(timeLinePhotos,newsFeedClickListener)
                     val linearLayoutManager = LinearLayoutManager(this@MyStoreActivity)
                     linearLayoutManager.orientation = RecyclerView.VERTICAL
                     recyclerViewItems.layoutManager = linearLayoutManager
-                    recyclerViewItems.adapter = myStoreProductsAdapter
                     recyclerViewItems.adapter = myStoreProductsAdapter
 
 
@@ -263,7 +266,9 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
                         val description = dsp.child("description").value.toString()
 
                         val imagePathProduct = dsp.child("imagePathProduct").value.toString()
-                        val p: Product = Product(name, id, copies.toInt(), available, price.toDouble(), description, imagePathProduct, storeIdExists)
+                        val subCategory = dsp.child("subcategory").value.toString()
+
+                        val p: Product = Product(name, id, copies.toInt(), available, price.toDouble(), description, imagePathProduct, storeIdExists,subCategory)
                         listItems.add(p)
 
                     }
@@ -323,7 +328,7 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
         buttonCreateStore.setOnClickListener(
                 object : View.OnClickListener {
                     override fun onClick(v: View?) {
-                        startActivityForResult(Intent(this@MyStoreActivity, CreateStoreActivity::class.java), ADD_STORE_CODE)
+                        startActivity(Intent(this@MyStoreActivity, CreateStoreActivity::class.java))
                         insertCategories()
 
 
@@ -444,7 +449,39 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
         val dialog= TypeSelectorFragment.newInstance()
         dialog.show(supportFragmentManager, TypeSelectorFragment.TAG)
     }
+    private fun handleBottomNavigationView() {
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        bottomNavigationView.setSelectedItemId(R.id.page_2);
 
+
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.page_3 -> {
+                    val intent = Intent(this@MyStoreActivity, OrdersActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.page_4 -> {
+                    val intent = Intent(this@MyStoreActivity, AllStoresActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.page_1 -> {
+                    val intent = Intent(this@MyStoreActivity, HomeActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.page_5 -> {
+                    val intent = Intent(this@MyStoreActivity, ProfileActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+
+                else -> false
+            }
+
+        }
+    }
 
 }
 interface OnProductClickListener {

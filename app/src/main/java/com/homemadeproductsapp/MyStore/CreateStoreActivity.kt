@@ -243,7 +243,7 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterV
     }
 
     override fun onGalleryClick() {
-        val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, REQUEST_CODE_GALLERY)
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

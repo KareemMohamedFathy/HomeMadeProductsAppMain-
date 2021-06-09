@@ -4,15 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyStore.MyStoreActivity">
+    tools:context=".MyStore.MyStoreActivity"
+   style="@style/AppTheme"
+    >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTab"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="8dp"
         app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tabLayout" />
@@ -22,10 +25,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
         android:src="@drawable/ic_add"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
         />
 
     <TextView
@@ -45,15 +50,15 @@
 
     <TextView
         android:id="@+id/storeDescription"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/storeName"
         android:gravity="left"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         android:textStyle="bold"
         app:layout_constrainedWidth="true"
         android:textColor="@android:color/darker_gray"
         app:layout_constraintStart_toEndOf="@id/cardViewStoreLogo"
+        app:layout_constraintEnd_toStartOf="@id/buttonAddItems"
 
         app:layout_constraintTop_toBottomOf="@id/storeName"
         />
@@ -64,10 +69,11 @@
         android:layout_width="55dp"
         android:layout_height="55dp"
         app:cardCornerRadius="50dp"
-        app:cardBackgroundColor="@android:color/white"
+        app:cardBackgroundColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/cardViewStoreLogo"
+        android:layout_margin="8dp"
 
 
         >
@@ -83,7 +89,9 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:id="@+id/logoPic"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+
+                />
 
         </androidx.cardview.widget.CardView>
 
@@ -149,6 +157,19 @@
         android:layout_height="wrap_content"
         app:constraint_referenced_ids="buttonCreateStore,textViewCreateStore"
         android:visibility="invisible"
+        />
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="wrap_content"
+        style="@style/Widget.App.BottomNavigationView"
+        android:id="@+id/bottom_navigation"
+        app:labelVisibilityMode="labeled"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:menu="@menu/bottom_navigation_menu"
         />
 
 

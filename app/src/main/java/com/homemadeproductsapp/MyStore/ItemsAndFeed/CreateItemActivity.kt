@@ -160,7 +160,8 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
             firebaseDatabase= FirebaseDatabase.getInstance()
             dbReference = firebaseDatabase.getReference("Product")
             val productId = dbReference.push().key.toString()
-            val  p: Product=Product(name,productId,copies.toInt(),"Yes",price.toDouble() ,description,picturePath,store_id)
+
+            val  p: Product=Product(name,productId,copies.toInt(),"Yes",price.toDouble() ,description,picturePath,store_id,subcategory)
             dbReference.child(productId).setValue(p)
 
             intent= Intent(this@CreateItemActivity,MyStoreActivity::class.java)
@@ -249,7 +250,7 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
     }
 
     override fun onGalleryClick() {
-   val intent=Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+   val intent=Intent(Intent.ACTION_OPEN_DOCUMENT,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, REQUEST_CODE_GALLERY)
 
     }
