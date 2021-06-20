@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -84,7 +85,7 @@ class StoreTimeLineFragment : Fragment() {
         filterList.reverse()
         val newsFeedAdapter = MyStoreNewsFeedAdapter(filterList, newsFeedClickListener)
         val recyclerViewNotes = view1!!.findViewById<RecyclerView>(R.id.recyclerViewTimeLine)
-        val linearLayoutManager = LinearLayoutManager(context)
+        val linearLayoutManager = GridLayoutManager(context,2)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
         recyclerViewNotes.layoutManager = linearLayoutManager
         recyclerViewNotes.adapter = newsFeedAdapter

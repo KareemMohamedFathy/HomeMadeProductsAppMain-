@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/NoToolbar"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".profile.ProfileFragment"
+    android:background="@android:color/white"
+    >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintBottom_toTopOf="@id/buttonUpdateProfile"
+    app:layout_constrainedHeight="true"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+
+    />
+    <androidx.cardview.widget.CardView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:cardCornerRadius="150dp"
+        app:cardBackgroundColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/cardViewProfileLogo"
+        android:layout_margin="8dp"
+
+
+        >
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            app:cardCornerRadius="125dp"
+            android:layout_gravity="center">
+
+            <ImageView
+
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:id="@+id/logoPic"
+                android:src="@drawable/ic_user"
+                android:scaleType="centerCrop"
+                />
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.cardview.widget.CardView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:id="@+id/nameRelativeLayout"
+        app:layout_constraintTop_toBottomOf="@id/cardViewProfileLogo"
+        >
+        <ImageView
+            android:id="@+id/nameImageView"
+            android:src="@drawable/ic_name"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textColor="@android:color/black"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/nameImageView"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:id="@+id/textViewName"
+
+            android:layout_marginStart="24dp"
+
+            android:layout_toEndOf="@id/nameImageView"
+
+            />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:id="@+id/emailRelativeLayout"
+        app:layout_constraintTop_toBottomOf="@id/nameRelativeLayout"
+        >
+        <ImageView
+            android:id="@+id/emailImageView"
+            android:src="@drawable/ic_email"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textColor="@android:color/black"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/emailImageView"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="24dp"
+            android:id="@+id/textViewEmail"
+
+            android:layout_toEndOf="@id/emailImageView"
+
+            />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:id="@+id/storeNameRelativeLayout"
+        app:layout_constraintTop_toBottomOf="@id/emailRelativeLayout"
+        >
+        <ImageView
+            android:id="@+id/storeNameImageView"
+            android:src="@drawable/ic_store"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Store Name"
+            android:textColor="@android:color/black"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/storeNameImageView"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="24dp"
+            android:id="@+id/textViewStoreName"
+
+            android:layout_toEndOf="@id/storeNameImageView"
+
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:id="@+id/storeCategoryRelativeLayout"
+        app:layout_constraintTop_toBottomOf="@id/storeNameRelativeLayout"
+        >
+        <ImageView
+            android:id="@+id/storeCategoryImageView"
+            android:src="@drawable/ic_list"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:textColor="@android:color/black"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/storeCategoryImageView"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="24dp"
+            android:id="@+id/textViewStoreCategory"
+
+            android:layout_toEndOf="@id/storeCategoryImageView"
+
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:id="@+id/phoneNoRelativeLayout"
+        app:layout_constraintTop_toBottomOf="@id/storeCategoryRelativeLayout"
+        >
+        <ImageView
+            android:id="@+id/phoneNoImageView"
+            android:src="@drawable/ic_phone_call"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Phone number"
+            android:textColor="@android:color/black"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/phoneNoImageView"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="24dp"
+            android:id="@+id/textViewPhonoNo"
+
+            android:layout_toEndOf="@id/phoneNoImageView"
+
+            />
+
+    </RelativeLayout>
+
+
+
+
+
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="start|center"
+
+        app:layout_constraintTop_toBottomOf="@id/phoneNoRelativeLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="#F5F5F5"
+        android:id="@+id/buttonUpdateProfile"
+        android:text="Update My Profile Info"
+       android:layout_margin="16dp"
+        android:textAllCaps="false"
+
+        android:textColor="@android:color/black"
+        android:drawableEnd="@drawable/ic_go"
+        />
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="start|center"
+        app:layout_constraintTop_toBottomOf="@id/buttonUpdateProfile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="#F5F5F5"
+        android:id="@+id/buttonUpdateStore"
+        android:text="Update My Store Info"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:drawableEnd="@drawable/ic_go"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|center"
+
+        app:layout_constraintTop_toBottomOf="@id/buttonUpdateStore"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="#F5F5F5"
+        android:id="@+id/LogOut"
+        android:text="LogOut"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:drawableEnd="@drawable/ic_logout"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

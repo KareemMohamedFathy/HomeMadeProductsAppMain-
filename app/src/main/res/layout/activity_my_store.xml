@@ -5,20 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyStore.MyStoreActivity"
-   style="@style/AppTheme"
     >
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewTab"
-
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="8dp"
+        android:layout_height="0dp"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/buttonAddItems"
@@ -66,9 +63,9 @@
 
 
     <androidx.cardview.widget.CardView
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        app:cardCornerRadius="50dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:cardCornerRadius="105dp"
         app:cardBackgroundColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -79,15 +76,15 @@
         >
 
         <androidx.cardview.widget.CardView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:cardCornerRadius="50dp"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            app:cardCornerRadius="75dp"
             android:layout_gravity="center">
 
             <ImageView
 
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:id="@+id/logoPic"
                 android:scaleType="centerCrop"
 
@@ -97,30 +94,30 @@
 
     </androidx.cardview.widget.CardView>
 
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintBottom_toTopOf="@+id/viewPager2"
         app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardViewStoreLogo">
+        app:layout_constraintTop_toBottomOf="@+id/cardViewStoreLogo"
+        >
 
-        <com.google.android.material.tabs.TabItem
 
-            android:layout_width="wrap_content"
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Products" />
+            app:tabBackground="@color/colorPrimary"
+            app:tabGravity="fill"
+            app:tabMode="scrollable"
+            app:tabTextColor="@android:color/white" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Store Feed" />
-
-    </com.google.android.material.tabs.TabLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonCreateStore"
@@ -149,7 +146,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        app:constraint_referenced_ids="buttonAddItems,recyclerViewTab,storeName,storeDescription,cardViewStoreLogo,tabLayout" />
+        app:constraint_referenced_ids="buttonAddItems,viewPager2,storeName,storeDescription,cardViewStoreLogo,appBarLayout" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/subgroup"

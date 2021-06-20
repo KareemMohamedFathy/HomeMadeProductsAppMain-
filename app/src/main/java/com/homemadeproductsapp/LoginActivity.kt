@@ -40,7 +40,8 @@ setupSharedPreference()
     }
     private fun checkisLogged() {
        val status= StoreSession.read(PrefConstant.LOGGED)
-        if(status!=true){
+        Log.d("adas",auth.currentUser.toString())
+        if(auth.currentUser!=null){
             Toast.makeText(this@LoginActivity, "Successfully Logged In", Toast.LENGTH_LONG).show()
             val intent= Intent(this@LoginActivity, MyStoreActivity::class.java)
             startActivity(intent)

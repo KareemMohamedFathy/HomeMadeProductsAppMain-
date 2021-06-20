@@ -23,13 +23,16 @@
 
     <ImageView
         android:id="@+id/imageViewAdd"
-        android:layout_width="0dp"
+        android:layout_width="100dp"
+        android:adjustViewBounds="true"
         android:layout_height="100dp"
         android:layout_marginTop="50dp"
         android:src="@drawable/ic_photo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addNotesTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/addNotesTextView"
+        android:scaleType="fitXY"
+        />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/title_container"
@@ -72,31 +75,6 @@
         app:layout_constraintEnd_toEndOf="parent"
 
         />
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/shippingTime_container"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:hint="@string/add_shiping_time_in_days"
-        android:textColorHint="@android:color/darker_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCategory">
-
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextshippingTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberSigned"
-            android:textColor="@android:color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextCategory" />
-    </com.google.android.material.textfield.TextInputLayout>
 
 
 
@@ -115,7 +93,9 @@
         app:layout_constraintBottom_toTopOf="@+id/submit_button"
         app:layout_constraintEnd_toEndOf="@+id/title_container"
         app:layout_constraintStart_toStartOf="@+id/title_container"
-        app:layout_constraintTop_toBottomOf="@+id/shippingTime_container">
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCategory"
+        app:placeholderText="select store category"
+        >
 
 
         <com.google.android.material.textfield.TextInputEditText

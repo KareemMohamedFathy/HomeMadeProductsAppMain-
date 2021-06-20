@@ -7,6 +7,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.homemadeproductsapp.AllStores.AllStoresActivity
 import com.homemadeproductsapp.Home.HomeActivity
 import com.homemadeproductsapp.MyStore.MyStoreActivity
+import com.homemadeproductsapp.profile.ProfileActivity
 
 class OrdersActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

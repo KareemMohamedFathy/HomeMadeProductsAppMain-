@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
+
     tools:context=".MyStore.ItemsAndFeed.CreateItemActivity">
     <TextView
         android:id="@+id/addProductTextView"
@@ -13,33 +15,78 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:text="Add Image for  product"
+
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/imageViewAddItem"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         app:layout_constrainedHeight="true"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_photo"
-      app:layout_constraintEnd_toEndOf="parent"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline3"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        />
+
+    <ImageSwitcher
+        android:id="@+id/imageViewImageSwitcher"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
+        android:layout_marginTop="8dp"
+
+
+        app:layout_constraintEnd_toStartOf="@id/ImageViewNext"
+        app:layout_constraintStart_toEndOf="@id/ImageViewBack"
+        app:layout_constraintTop_toBottomOf="@id/guideline3"
         app:layout_constraintBottom_toTopOf="@+id/guideline2" />
+
+    <ImageView
+        android:id="@+id/ImageViewBack"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_next_button"
+
+        app:layout_constrainedHeight="true"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imageViewImageSwitcher"
+        app:layout_constraintTop_toBottomOf="@id/guideline3" />
+    <ImageView
+        android:id="@+id/ImageViewNext"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constrainedHeight="true"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_previous"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imageViewImageSwitcher"
+        app:layout_constraintTop_toBottomOf="@id/guideline3"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2" />
+
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_container"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:hint="@string/enter_item_name"
+        app:hintTextColor="@android:color/darker_gray"
+
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
 
@@ -55,6 +102,8 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:textColor="@android:color/black"
+            android:background="#F5F5F5"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -66,6 +115,8 @@
         android:id="@+id/spinnerSubCategory"
         app:layout_constraintTop_toBottomOf="@id/name_container"
         app:layout_constraintStart_toStartOf="parent"
+        app:placeholderText="select store category"
+
         android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
 
@@ -91,6 +142,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:background="#F5F5F5"
+
             android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -118,6 +171,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:background="#F5F5F5"
+
             android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -146,6 +201,7 @@
             android:id="@+id/editTextDescription"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#F5F5F5"
 
             android:ems="10"
             android:gravity="start"

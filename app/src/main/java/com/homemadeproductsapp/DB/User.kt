@@ -15,6 +15,6 @@ data class User(
     var personalPhotoPath: String? = "",
     var email: String? = "",
     var store_id :String?="",
-    var password: String? = ""
+    var cart:Cart?=null
 
 )

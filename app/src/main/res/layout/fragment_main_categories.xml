@@ -1,0 +1,353 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AllStores.CategoriesFilter.MainCategoriesFragment">
+
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".AllStores.CategoriesFilter.MainCategoriesFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@android:color/black"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_height="20dp"
+                android:layout_width="20dp"
+                android:id="@+id/back"
+                android:src="@drawable/ic_arrow"
+                android:layout_centerVertical="true"
+
+                />
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textAppearance="@android:style/TextAppearance.Material.Large"
+                android:gravity="top|center"
+                android:text="Choose Main Category"
+                android:textColor="@android:color/white"
+                android:layout_centerInParent="true"
+                />
+        </RelativeLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+
+
+    <Button
+        android:id="@+id/buttonAccessories"
+        android:layout_width="190dp"
+        android:alpha="0"
+        android:layout_height="190dp"
+        app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        />
+    <RelativeLayout
+
+        android:layout_width="190dp"
+        android:layout_height="190dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+
+        >
+        <ImageView
+            android:layout_width="190dp"
+            android:layout_height="190dp"
+            android:src="@drawable/ic_accessories"
+            android:layout_centerVertical="true"
+
+            />
+        <TextView
+        android:id="@+id/button_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       android:layout_centerInParent="true"
+        android:text="Accessories"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        />
+
+
+    </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/buttonFood"
+        android:layout_width="190dp"
+        android:alpha="0"
+        android:layout_height="190dp"
+        app:layout_constraintStart_toEndOf="@id/buttonAccessories"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+
+        />
+    <RelativeLayout
+
+        android:layout_width="190dp"
+        android:layout_height="190dp"
+        app:layout_constraintStart_toEndOf="@id/buttonAccessories"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+
+    <ImageView
+            android:layout_width="190dp"
+            android:layout_height="190dp"
+            android:src="@drawable/ic_food"
+            android:layout_centerVertical="true"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Food"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            />
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+    <Button
+        android:id="@+id/buttonJewellery"
+        android:layout_width="190dp"
+        android:alpha="0"
+        android:layout_height="190dp"
+        app:layout_constraintStart_toEndOf="@id/buttonAccessories"
+        app:layout_constraintTop_toBottomOf="@id/buttonFood"
+        />
+    <RelativeLayout
+
+        android:layout_width="190dp"
+        android:layout_height="190dp"
+        app:layout_constraintStart_toEndOf="@id/buttonAccessories"
+        app:layout_constraintTop_toBottomOf="@id/buttonFood"
+
+
+
+        >
+        <ImageView
+            android:layout_width="190dp"
+            android:layout_height="190dp"
+            android:src="@drawable/ic_diamond"
+            android:layout_centerVertical="true"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Jewellery"
+
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            />
+
+
+    </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/buttonToys"
+        android:layout_width="190dp"
+        android:alpha="0"
+        android:layout_height="190dp"
+       app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonFood"
+        />
+    <RelativeLayout
+
+        android:layout_width="190dp"
+        android:layout_height="190dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonFood"
+
+        >
+        <ImageView
+            android:layout_width="190dp"
+            android:layout_height="190dp"
+            android:src="@drawable/ic_toys"
+            android:layout_centerVertical="true"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Toys"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            />
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+    <Button
+        android:id="@+id/buttonBooks"
+        android:layout_width="190dp"
+        android:alpha="0"
+        android:layout_height="190dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonToys"
+        />
+    <RelativeLayout
+
+        android:layout_width="190dp"
+        android:layout_height="190dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonToys"
+
+        >
+        <ImageView
+            android:layout_width="190dp"
+            android:layout_height="190dp"
+            android:src="@drawable/ic_book"
+            android:layout_centerVertical="true"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Books"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            />
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <Button
+        android:id="@+id/buttonHomeCrafts"
+        android:layout_width="190dp"
+        android:alpha="0"
+        android:layout_height="190dp"
+       app:layout_constraintStart_toEndOf="@+id/buttonBooks"
+        app:layout_constraintTop_toBottomOf="@id/buttonToys"
+        />
+    <RelativeLayout
+
+        android:layout_width="190dp"
+        android:layout_height="190dp"
+        app:layout_constraintStart_toEndOf="@id/buttonBooks"
+        app:layout_constraintTop_toBottomOf="@id/buttonToys"
+
+        >
+        <ImageView
+            android:layout_width="190dp"
+            android:layout_height="190dp"
+            android:src="@drawable/ic_porcelain"
+            android:layout_centerVertical="true"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Home Crafts"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            />
+
+
+    </RelativeLayout>
+
+
+
+
+
+    <Button
+        android:id="@+id/buttonClothes"
+        android:layout_width="190dp"
+        android:alpha="0"
+        android:layout_height="190dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonBooks"
+
+        />
+    <RelativeLayout
+
+        android:layout_width="190dp"
+        android:layout_height="190dp"
+       app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonBooks"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        >
+        <ImageView
+            android:layout_width="190dp"
+            android:layout_height="190dp"
+            android:src="@drawable/ic_clothes"
+            android:layout_centerVertical="true"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Clothes"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            />
+
+
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

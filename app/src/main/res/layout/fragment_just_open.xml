@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AllStores.JustOpenFragment">
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_cancel"
+        android:id="@+id/cancelImageView"
+        android:layout_margin="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:scaleType="fitXY"
+        />
+
+
+
+    <FrameLayout
+        android:id="@+id/imageViewProduct1"
+        android:layout_width="308dp"
+        android:layout_height="308dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cancelImageView"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewProduct"
+            android:layout_width="308dp"
+            android:layout_height="308dp"
+            android:layout_margin="4dp"
+            android:adjustViewBounds="true"
+
+            android:background="@android:color/white"
+
+            android:padding="8dp"
+            android:scaleType="fitXY" />
+
+        <ImageSwitcher
+            android:id="@+id/imageViewImageSwitcher"
+            android:layout_width="308dp"
+            android:layout_height="308dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:adjustViewBounds="true"
+            android:background="@android:color/white"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/ImageViewBack"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="start|center"
+            android:layout_margin="4dp"
+            android:src="@drawable/ic_previous" />
+
+        <ImageView
+            android:id="@+id/ImageViewNext"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center|end"
+            android:layout_margin="4dp"
+
+            android:src="@drawable/ic_next_button"
+
+
+            />
+
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/textViewProductName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textAppearance="@android:style/TextAppearance.Material.Headline"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageViewProduct1" />
+
+    <TextView
+        android:id="@+id/textViewProductDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textAppearance="@android:style/TextAppearance.Material.Small"
+        android:textColor="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewProductName" />
+
+    <TextView
+        android:id="@+id/textViewProductPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+
+        android:textAppearance="@android:style/TextAppearance.Material.Headline"
+        android:textColor="@android:color/darker_gray"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imageViewDecreaseCount"
+        app:layout_constraintTop_toBottomOf="@id/textViewProductDescription" />
+
+    <ImageView
+        android:id="@+id/imageViewIncreaseCount"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="8dp"
+        android:src="@drawable/ic_plus"
+        app:layout_constraintEnd_toStartOf="@+id/textViewProductCount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewProductDescription" />
+
+    <TextView
+        android:id="@+id/textViewProductCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/_1"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewDecreaseCount"
+        app:layout_constraintStart_toEndOf="@+id/imageViewIncreaseCount"
+        app:layout_constraintTop_toBottomOf="@id/textViewProductDescription" />
+
+    <ImageView
+        android:id="@+id/imageViewDecreaseCount"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="8dp"
+        android:alpha="0.4"
+        android:src="@drawable/ic_remove"
+        app:layout_constraintStart_toEndOf="@+id/textViewProductCount"
+        app:layout_constraintTop_toBottomOf="@id/textViewProductDescription"
+
+        />
+
+    <FrameLayout
+        android:id="@+id/relativeLayoutAddToCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/black"
+        android:padding="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewProductPrice"
+        android:layout_marginTop="64dp"
+
+
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/textViewButtonPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/_0_00egp"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_to_cart"
+            android:textColor="@android:color/white"
+
+            android:textSize="16sp"
+            android:textStyle="bold"
+
+            />
+
+    </FrameLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

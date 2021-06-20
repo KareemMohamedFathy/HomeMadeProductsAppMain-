@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".profile.UpdateStoreFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/helperText"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp"
+        android:text="Update  Store Photo"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        />
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@android:color/black"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_height="20dp"
+                android:layout_width="20dp"
+                android:id="@+id/back"
+                android:src="@drawable/ic_arrow"
+
+                />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textAppearance="@android:style/TextAppearance.Material.Large"
+                android:gravity="top|center"
+                android:text="Update Profile"
+                android:textColor="@android:color/white"
+                />
+        </RelativeLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:cardCornerRadius="150dp"
+        app:cardBackgroundColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/helperText"
+        android:id="@+id/cardViewProfileLogo"
+        android:layout_margin="8dp"
+
+
+        >
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            app:cardCornerRadius="125dp"
+            android:layout_gravity="center">
+
+            <ImageView
+
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:id="@+id/storePic"
+                android:src="@drawable/ic_user"
+                android:scaleType="centerCrop"
+                />
+        </androidx.cardview.widget.CardView>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewProfileLogo"
+        android:id="@+id/nameContainer"
+        android:textColorHint="@android:color/darker_gray"
+        android:hint="Enter Your Name">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:id="@+id/editTextName"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_marginTop="8dp"
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/nameContainer"
+        app:layout_constraintStart_toStartOf="@+id/nameContainer"
+        app:layout_constraintTop_toBottomOf="@+id/nameContainer"
+        android:id="@+id/descriptionContainer"
+        android:textColorHint="@android:color/darker_gray"
+        android:hint="Enter Your Store Description">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:id="@+id/editTextDescription"
+            android:inputType="text"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonUpdateProfile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Update Store Info"
+        android:layout_marginTop="16dp"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@+id/descriptionContainer"
+        app:layout_constraintStart_toStartOf="@+id/descriptionContainer"
+        app:layout_constraintTop_toBottomOf="@id/descriptionContainer"
+        />
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,6 @@
 import android.os.Bundle
+import android.util.Log
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -11,7 +13,18 @@ class AllStoresFragmentAdapter(fm: FragmentActivity) : FragmentStateAdapter(fm),
     private val mFragmentList = ArrayList<Fragment>()
     private val mFragmentTitleList = ArrayList<String>()
 
+    fun addFragment(fragment: DialogFragment, title: String): Fragment {
+        Log.d("bagga","bagga")
 
+
+        mFragmentList.add(fragment)
+        mFragmentTitleList.add("" + title + "")
+        val args = Bundle()
+        args.putString("Category", title)
+        fragment.setArguments(args);
+
+        return fragment
+    }
     fun addFragment(fragment: Fragment, title: String): Fragment {
 
 
@@ -52,7 +65,6 @@ class AllStoresFragmentAdapter(fm: FragmentActivity) : FragmentStateAdapter(fm),
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             else->mFragmentList.get(position)
-
         }
     }
 }

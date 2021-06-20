@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="com.google.android.apps.photos.permission.GOOGLE_PHOTOS" />
 
     <application
         android:allowBackup="true"
@@ -16,7 +17,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AllStores.PhotoDetails"></activity>
+        <activity android:name=".AllStores.Order.OrderConfirmActivity"></activity>
+        <activity
+            android:name=".AllStores.CategoriesFilter.SearchResultsActivity"
+            android:theme="@style/NoToolbar"></activity>
+        <activity
+            android:name=".AllStores.CategoriesFilter.CategoryFiltersActivity"
+            android:theme="@style/NoToolbar" />
+        <activity android:name=".AllStores.PhotoDetails" />
         <activity android:name=".AllStores.OnStoreOpenActivity"></activity>
         <activity
             android:name=".AllStores.AllStoresActivity"
@@ -24,10 +32,12 @@
         <activity
             android:name=".OrdersActivity"
             android:theme="@style/NoToolbar" />
-        <activity android:name=".ProfileActivity" />
+        <activity
+            android:name=".profile.ProfileActivity"
+            android:theme="@style/NoToolbar" />
         <activity
             android:name=".Home.HomeActivity"
-            android:theme="@style/NoToolbar"></activity>
+            android:theme="@style/NoToolbar" />
         <activity android:name=".Details.DetailsActivity" />
         <activity android:name=".MyStore.ItemsAndFeed.CreateNewsFeedActivity" />
         <activity android:name=".MyStore.ItemsAndFeed.CreateItemActivity" />
@@ -58,6 +68,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/NoToolbar" />
     </application>
 
 </manifest>

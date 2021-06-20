@@ -1,19 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+    <!--Picked images will be shown here-->
+    <ImageSwitcher
+        android:id="@+id/imageSwitcher"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"/>
+    <!--Show previous image in ImageSwitcher clicking this button-->
+    <Button
+        android:id="@+id/previousBtn"
+        android:text="Previous"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_below="@id/imageSwitcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <!--Show next image in ImageSwitcher clicking this button-->
+    <Button
+        android:id="@+id/nextBtn"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/imageSwitcher"
+        android:text="Next"/>
+    <!--Pick images clicking this button-->
+    <Button
+        android:id="@+id/pickImagesBtn"
+        android:text="Pick Images"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_alignParentBottom="true"/>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

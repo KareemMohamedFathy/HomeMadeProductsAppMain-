@@ -10,7 +10,7 @@ import java.util.*
 @IgnoreExtraProperties
 data class Order(
     var order_id: String? = "",
-    var storeName: String? = "",
-    var buyerName: String? = "",
-    var items: ArrayList<String>
-)
+    var store_id: String? = "",
+    var cart: Cart,
+    var user_id:String?=""
+    )

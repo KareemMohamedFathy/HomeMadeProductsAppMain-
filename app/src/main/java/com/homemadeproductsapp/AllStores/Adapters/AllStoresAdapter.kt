@@ -31,7 +31,6 @@ class AllStoresAdapter(private val list: ArrayList<Store>, private val  allStore
         holder.textViewStoreName.setText(list[position].store_name)
         holder.textViewCategory.setText(list[position].mainCategoryName)
         holder.textViewStoreDescription.setText(list[position].store_description)
-        holder.textViewStoreShippingTime.setText("    "+list[position].shippingTime+" Days")
         Glide.with(holder.itemView).load(list[position].store_logo).into(holder.imageViewStoreLogo)
         holder.itemView.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
@@ -51,7 +50,6 @@ class AllStoresAdapter(private val list: ArrayList<Store>, private val  allStore
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         var textViewStoreName : TextView =itemView.findViewById(R.id.textViewStoreName)
         var textViewStoreDescription : TextView =itemView.findViewById(R.id.textViewStoreDescription)
-        var textViewStoreShippingTime: TextView =itemView.findViewById(R.id.textViewShippingTime)
         var textViewCategory: TextView =itemView.findViewById(R.id.textViewCategoryName)
         var imageViewStoreLogo: ImageView =itemView.findViewById(R.id.imageViewStoreLogo)
 

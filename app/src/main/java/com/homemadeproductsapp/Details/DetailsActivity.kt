@@ -94,6 +94,7 @@ class DetailsActivity : AppCompatActivity() {
             back.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View?) {
                     val intent = Intent(this@DetailsActivity, MyStoreActivity::class.java)
+                    Log.d("hah","aha")
                     startActivity(intent)
 
                 }

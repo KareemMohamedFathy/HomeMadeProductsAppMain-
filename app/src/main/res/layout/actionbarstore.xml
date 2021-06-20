@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="horizontal"
+
+    >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center"
+        android:src="@drawable/ic_arrow"
+
+        android:id="@+id/action_bar_Image"
+        android:text="My Store"
+        />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="end"
+        android:src="@drawable/ic_shopping_cart"
+        android:alpha="1.0"
+        android:id="@+id/action_bar_Image_Cart"
+        android:text="My Store"
+        />
+    <TextView
+        android:id="@+id/itemNum"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end|top"
+        android:background="@drawable/circle"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="4dp"
+        android:alpha="0.75"
+
+        android:gravity="center"
+        android:shadowColor="@android:color/white"
+        android:shadowRadius="10.0"
+
+
+        android:text="@string/itemsCount"
+        android:textColor="@android:color/white"
+        android:textSize="22sp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/action_bar_title"
+        android:text="My Store"
+
+
+        android:layout_marginLeft="16dp"
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
+
+
+
+</FrameLayout>

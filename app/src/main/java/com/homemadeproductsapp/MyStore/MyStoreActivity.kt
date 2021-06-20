@@ -1,7 +1,6 @@
 package com.homemadeproductsapp.MyStore
 
 
-import MyStoreNewsFeedAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,13 +11,13 @@ import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Group
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.homemadeproductsapp.*
@@ -27,15 +26,15 @@ import com.homemadeproductsapp.DB.Category
 import com.homemadeproductsapp.DB.Feed
 import com.homemadeproductsapp.DB.Local.StoreSession
 import com.homemadeproductsapp.DB.Product
-import com.homemadeproductsapp.Details.DetailsActivity
 import com.homemadeproductsapp.Home.HomeActivity
-import com.homemadeproductsapp.MyStore.Adapter.MyStoreItemsAdapter
+import com.homemadeproductsapp.MyStore.Adapter.MyStoreFragmentAdapter
 import com.homemadeproductsapp.MyStore.ItemsAndFeed.CreateItemActivity
 import com.homemadeproductsapp.MyStore.ItemsAndFeed.CreateNewsFeedActivity
 import com.homemadeproductsapp.MyStore.ItemsAndFeed.TypeSelectorFragment
-import com.homemadeproductsapp.MyStore.Listeners.NewsFeedClickListener
 import com.homemadeproductsapp.R
+import com.homemadeproductsapp.profile.ProfileActivity
 import com.mindorks.notesapp.data.local.pref.PrefConstant
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_my_store.*
 import kotlinx.android.synthetic.main.item_adapter_layout.*
 
@@ -44,6 +43,34 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
     companion object {
        private const val ADD_STORE_CODE = 100
     }
+    val allCategories = arrayOf(arrayOf("Clothing", "shirt", "shorts", "dresses", "jackets", "shoes", "trousers", "socks"
+    ),
+            arrayOf("Food", "Bakery", "ReadyToCook", "FastFood", "pickles", "powders", "Diet Food", "Frozen Food", "cans,","other"),//food
+            arrayOf("Home crafts", "Home accessories", "Home Decor", "woodwork"
+                    ,"other" ),//home crafts
+            arrayOf(
+                    "Accessories",
+                    "Pet Accessories",
+                    "Hair Accessories",
+                    "BELTS",
+                    "SCARVES",
+                    "HEADBANDS",
+                    "bags",
+                    "hats",
+                    "phone cases"
+                    ,"other"),//accessories
+            arrayOf("Books",
+                    "book accessories",
+                    "literature",
+                    "childeren books",
+                    "magazines",
+                    "guides"
+                    ,"other"), //books
+            arrayOf("Toys", "Puzzles", "videogames", "dolls&&stuffed toys", "card games"
+                    ,"other"),//toys
+            arrayOf("Jewellery",
+                    "necklaces",
+                    "rings", "bracelets","other"))
     private  var listItems=ArrayList<Product>()
     private  var timeLinePhotos=ArrayList<Feed>()
 
@@ -54,6 +81,9 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
     private  lateinit var storeIdExists:String
     private  lateinit var storeNameExists:String
     private  lateinit var imagePathExists:String
+    private  lateinit var storeCategoryExists:String
+    private  var idx=0
+    private lateinit var viewPager:ViewPager2
 
 
     private lateinit var mainGroup:Group
@@ -73,13 +103,14 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_store)
         bindViews()
+
         handleBottomNavigationView()
         setupSharedPreference()
        // setupToolbarText()
 
         storeIdExists=""
         auth = FirebaseAuth.getInstance()
-        mainGroup.visibility = View.INVISIBLE
+       mainGroup.visibility = View.INVISIBLE
         val lol =   FirebaseDatabase.getInstance().getReference("User").child(auth.currentUser!!.uid).get().addOnSuccessListener {
             Log.i("firebase", "Got value ${it.value}")
             storeIdExists = it.child("store_id").value.toString()
@@ -94,6 +125,7 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
         }.addOnFailureListener{
             Log.e("firebase", "Error getting data", it)
         }
+
 
 
 
@@ -136,12 +168,14 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
             storeNameExists=it.child("store_name").value.toString()
             imagePathExists=it.child("store_logo").value.toString()
             val category:String=it.child("mainCategoryName").value.toString()
+            storeCategoryExists=category
             saveCategory(category)
 
 
             val imagepath=it.child("store_logo").value.toString()
-            Log.d("hahaha",imagepath)
-            Log.d("hahaha1",imagePathExists)
+
+            Log.d("hahaha", imagepath)
+            Log.d("hahaha1", imagePathExists)
 
 
             textViewstoreName.setText(name)
@@ -149,12 +183,13 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
 
             Glide.with(this)
                     .load(imagepath)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
                     .into(imageViewLogo);
-            getDataFromDbForProducts()
-            getDataFromDbForTimeLine()
+            getCategoryCount()
 
+
+            //           getDataFromDbForTimeLine()
+            setupClickListeners()
+            handleTabs()
 
         }.addOnFailureListener{
             Log.e("firebase", "Error getting data", it)
@@ -163,166 +198,66 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
 
     }
 
+    private fun handleTabs() {
+        var first=true
+        val   pageAdapter = MyStoreFragmentAdapter(this)
+        Log.d("idx",idx.toString())
+
+        pageAdapter.addTimeLineFragment(TimeLineFragment(), "Timeline", storeNameExists, imagePathExists, storeIdExists)
 
 
-    private fun setupTabs(){
-        Log.d("MyStore", "weo" + storeIdExists)
-        if(!storeIdExists.isEmpty())
-        mainGroup.visibility = View.VISIBLE
+        for(cat in allCategories[idx]){
+            Log.d("sdfs", cat)
+
+            if(!first)
+                pageAdapter.addFragment(ItemsFragment(), cat, storeIdExists)
+            else
+                pageAdapter.addFragment(ItemsFragment(), "All Items", storeIdExists)
 
 
-        firebaseDatabase= FirebaseDatabase.getInstance()
+            first=false
+
+        }
 
 
+        viewPager=findViewById(R.id.viewPager2)
 
-
-        recyclerViewItems=findViewById(R.id.recyclerViewTab)
-        val myStoreProductsAdapter = MyStoreItemsAdapter(listItems)
-        val linearLayoutManager = LinearLayoutManager(this@MyStoreActivity)
-        linearLayoutManager.orientation = RecyclerView.VERTICAL
-        recyclerViewItems.layoutManager = linearLayoutManager
-        recyclerViewItems.adapter = myStoreProductsAdapter
-        Log.d("checkcheck", listItems.size.toString())
-
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-
-
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                if (tab?.position == 0) {
-
-                    val myStoreProductsAdapter = MyStoreItemsAdapter(listItems)
-                    val linearLayoutManager = LinearLayoutManager(this@MyStoreActivity)
-                    linearLayoutManager.orientation = RecyclerView.VERTICAL
-                    recyclerViewItems.layoutManager = linearLayoutManager
-                    recyclerViewItems.adapter = myStoreProductsAdapter
-                }
-                if (tab?.position == 1) {
-
-                    val newsFeedClickListener=object :NewsFeedClickListener{
-                        override fun onClick(feed: Feed) {
-                            if(feed.caption!!.isNotEmpty()&&feed.addDate!!.isNotEmpty()&&feed.imagePathProduct!!.isNotEmpty()) {
-                                val intent = Intent(this@MyStoreActivity, DetailsActivity::class.java)
-                                intent.putExtra(AppConst.CAPTION, feed.caption)
-                                intent.putExtra(AppConst.DATE, feed.addDate)
-                                intent.putExtra(AppConst.IMAGEPATH, feed.imagePathProduct)
-                                intent.putExtra(AppConst.STORENAME, storeNameExists)
-                                intent.putExtra(AppConst.STOREIMAGEPATH, imagePathExists)
-
-                                startActivity(intent)
-                            }
-                        }
-
-                    }
-
-                    timeLinePhotos.reverse()
-                    val myStoreProductsAdapter = MyStoreNewsFeedAdapter(timeLinePhotos,newsFeedClickListener)
-                    val linearLayoutManager = LinearLayoutManager(this@MyStoreActivity)
-                    linearLayoutManager.orientation = RecyclerView.VERTICAL
-                    recyclerViewItems.layoutManager = linearLayoutManager
-                    recyclerViewItems.adapter = myStoreProductsAdapter
-
-
-                }
-            }
-
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                // Handle tab unselect
-            }
-        })
-        setupClickListeners()
+        viewPager.adapter = pageAdapter
 
 
 
 
+        val tabs1 = findViewById<TabLayout>(R.id.tabs)
+
+        TabLayoutMediator(tabs1, viewPager) { tab, position ->
+            tab.text = pageAdapter.getPageTitle(position)
+
+
+        }.attach()
+        if (!storeIdExists.isEmpty()) {
+            mainGroup.visibility = View.VISIBLE
+            subGroup.visibility = View.INVISIBLE
+        }
 
 
     }
 
-    private fun getDataFromDbForProducts() {
-
-        val reference = FirebaseDatabase.getInstance().reference
-
-        val query = reference.child("Product").orderByChild("store_id").equalTo(storeIdExists)
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-
-                if (dataSnapshot.exists()) {
-
-                    for (dsp in dataSnapshot.children) {
-
-                        val name = dsp.child("name").value.toString()
-                        val id = dsp.child("id").value.toString()
-                        val copies = dsp.child("copies").value.toString()
-                        val available = when (copies) {
-                            "0" -> "Out Of Stock"
-                            else -> "Available"
-                        }
-                        val price = dsp.child("price").value.toString()
-                        val description = dsp.child("description").value.toString()
-
-                        val imagePathProduct = dsp.child("imagePathProduct").value.toString()
-                        val subCategory = dsp.child("subcategory").value.toString()
-
-                        val p: Product = Product(name, id, copies.toInt(), available, price.toDouble(), description, imagePathProduct, storeIdExists,subCategory)
-                        listItems.add(p)
-
-                    }
-
-
-                }
-
+    private fun getCategoryCount():Int {
+        Log.d("suda", storeCategoryExists)
+        var x=0
+        for(cat in allCategories){
+            if(cat[0]==storeCategoryExists){
+                idx=x
+                Log.d("suda", cat.toString())
+                return cat.size
             }
+            x++
+        }
 
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
 
+
+        return 0;
     }
-    private fun getDataFromDbForTimeLine() {
-
-        val reference = FirebaseDatabase.getInstance().reference
-
-        val query = reference.child("Feed").orderByChild("store_id").equalTo(storeIdExists)
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-
-                if (dataSnapshot.exists()) {
-
-                    for (dsp in dataSnapshot.children) {
-
-                        val caption = dsp.child("caption").value.toString()
-
-                        val imagePathProduct = dsp.child("imagePathProduct").value.toString()
-                        val date = dsp.child("addDate").value.toString()
-                        val id = dsp.child("id").value.toString()
-
-                        val feed = Feed(caption, id, imagePathProduct, storeIdExists, date)
-
-                        timeLinePhotos.add(feed)
-
-
-                    }
-
-
-                } else {
-
-                }
-                setupTabs()
-
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-
-        })
-    }
-
 
     private fun setupClickListeners() {
         buttonCreateStore.setOnClickListener(
@@ -348,45 +283,16 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
     private fun insertCategories() {
         // dbReference = firebaseDatabase.getReference("Category")
 
+        firebaseDatabase= FirebaseDatabase.getInstance()
 
         dbReference = firebaseDatabase.getReference("Category");
 
-        dbReference.addValueEventListener(object : ValueEventListener {
+        dbReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 Log.e("Count ", "" + dataSnapshot.getChildrenCount());
-                val count:Int=dataSnapshot.childrenCount.toInt()
+                val count: Int = dataSnapshot.childrenCount.toInt()
 
-                if (count==0) {
-                    val allCategories = arrayOf(arrayOf("Clothing", "shirt", "shorts", "dresses", "jackets", "shoes", "trousers", "socks"
-                    ), arrayOf("Food", "Bakery", "ReadyToCook", "FastFood", "pickles", "powders", "Diet Food", "Frozen Food", "cans"), arrayOf("Home crafts", "Home accessories", "Home Decor", "woodwork"
-                    ), arrayOf(
-                            "Accessories",
-                            "Pet Accessories",
-                            "Hair Accessories",
-                            "BELTS",
-                            "SCARVES",
-                            "HEADBANDS",
-                            "bags",
-                            "hats",
-                            "phone cases"),
-
-                            arrayOf("Books",
-                                    "book accessories",
-                                    "literature",
-                                    "childeren books",
-                                    "magazines",
-                                    "guides"),
-                            arrayOf(
-                                    "Toys",
-                                    "Puzzles",
-                                    "videogames",
-                                    "dolls&&stuffed toys",
-                                    "card games"
-
-                            ), arrayOf("Jewellery",
-                            "necklaces",
-                            "rings",
-                            "braclets"))
+                if (count == 0) {
 
                     for (i in 0..6) {
 
@@ -408,6 +314,7 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
                     //notifyDataSetChanged();
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }

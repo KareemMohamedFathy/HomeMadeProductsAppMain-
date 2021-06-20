@@ -1,3 +1,4 @@
+
 package com.homemadeproductsapp.MyStore
 
 import android.Manifest
@@ -35,7 +36,6 @@ import java.util.*
 class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterView.OnItemSelectedListener {
     private lateinit var editTextName:EditText
     private lateinit var editTextDescription:EditText
-    private lateinit var editTextShippingTime:EditText
 
     private lateinit var buttonSubmit:Button
 
@@ -116,10 +116,9 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterV
                 override fun onClick(v: View?) {
                     val name = editTextName.text.toString()
                     val description = editTextDescription.text.toString()
-                    val shippingTime = editTextShippingTime.text.toString()
 
                     val imagepath=picturePath
-                    addToDb(name, description,imagepath,shippingTime)
+                    addToDb(name, description,imagepath)
                     saveCategory(category)
                     val intent = Intent(this@CreateStoreActivity,MyStoreActivity::class.java)
                     startActivity(intent)
@@ -190,8 +189,7 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterV
     private fun addToDb(
         name: String,
         description: String,
-        imagepath: String,
-        shippingTime: String
+        imagepath: String
     ) {
 
 
@@ -199,7 +197,7 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterV
             dbReference = firebaseDatabase.getReference("Store")
             val storeId = dbReference.push().key.toString()
             //Creating an empty arraylist
-            val store= Store(storeId,name,imagepath,description,category,shippingTime,curUser)
+            val store= Store(storeId,name,imagepath,description,category,curUser)
             dbReference.child(storeId).setValue(store)
 
             firebaseDatabase= FirebaseDatabase.getInstance()
@@ -215,7 +213,6 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterV
     private fun bindViews() {
     editTextName=findViewById(R.id.editTextName)
        editTextDescription=findViewById(R.id.editTextDescription)
-        editTextShippingTime=findViewById(R.id.editTextshippingTime)
 
         buttonSubmit=findViewById(R.id.submit_button)
         imageViewAdd=findViewById(R.id.imageViewAdd)
@@ -268,7 +265,6 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterV
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
-        category=mainCategories[0]
 
     }
 

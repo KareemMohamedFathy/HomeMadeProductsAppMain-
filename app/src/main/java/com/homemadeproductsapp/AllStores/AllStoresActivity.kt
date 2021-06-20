@@ -1,26 +1,27 @@
 package com.homemadeproductsapp.AllStores
 
 import android.content.Intent
+import android.media.Image
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseError
 import com.google.firebase.database.*
-import com.google.firebase.ktx.Firebase
+import android.view.View
 import com.homemadeproductsapp.AllStores.Adapters.AllStoresAdapter
+import com.homemadeproductsapp.AllStores.CategoriesFilter.CategoryFiltersActivity
 import com.homemadeproductsapp.AllStores.Listeners.AllStoresClickListener
 import com.homemadeproductsapp.AppConst
-import com.homemadeproductsapp.DB.Feed
 import com.homemadeproductsapp.DB.Local.StoreSession
-import com.homemadeproductsapp.DB.Product
 import com.homemadeproductsapp.DB.Store
 import com.homemadeproductsapp.Home.HomeActivity
 import com.homemadeproductsapp.MyStore.MyStoreActivity
 import com.homemadeproductsapp.OrdersActivity
-import com.homemadeproductsapp.ProfileActivity
+import com.homemadeproductsapp.profile.ProfileActivity
 import com.homemadeproductsapp.R
 import com.mindorks.notesapp.data.local.pref.PrefConstant
 import java.io.Serializable
@@ -29,6 +30,7 @@ import java.io.Serializable
 class AllStoresActivity : AppCompatActivity(),Serializable {
     private lateinit var recyclerViewStores: RecyclerView
     private lateinit var dbReference: DatabaseReference
+    private lateinit var imageViewFilter:ImageView
     private lateinit var firebaseDatabase: FirebaseDatabase
     private  var storesList =ArrayList<Store>();
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,9 +38,20 @@ class AllStoresActivity : AppCompatActivity(),Serializable {
 
         setContentView(R.layout.activity_all_stores)
     handleBottomNavigationView()
-        bindViews();
 
+        bindViews();
+handleClickListeners()
         getDataFromDb()
+    }
+
+    private fun handleClickListeners() {
+        imageViewFilter.setOnClickListener(object: View.OnClickListener{
+            override fun onClick(v: View?) {
+                intent=Intent(this@AllStoresActivity,CategoryFiltersActivity::class.java)
+                startActivity(intent)
+            }
+
+        })
     }
 
     private fun getDataFromDb() {
@@ -55,13 +68,12 @@ class AllStoresActivity : AppCompatActivity(),Serializable {
                         val name = dsp.child("store_name").value.toString()
                         val storeid = dsp.child("store_id").value.toString()
 
-                        val shippingtime = dsp.child("shippingTime").value.toString()
                         val description = dsp.child("store_description").value.toString()
 
                         val imagePathProduct = dsp.child("store_logo").value.toString()
                         val category = dsp.child("mainCategoryName").value.toString()
 
-                        val p: Store = Store(storeid,name,imagePathProduct,description,category,shippingtime,"")
+                        val p: Store = Store(storeid,name,imagePathProduct,description,category,"")
 
                         storesList.add(p)
 
@@ -82,7 +94,6 @@ class AllStoresActivity : AppCompatActivity(),Serializable {
                         saveCategory(store.store_name, store.mainCategoryName.toString(),store.store_id,store.store_logo)
                         val intent=Intent(this@AllStoresActivity,OnStoreOpenActivity::class.java)
                         intent.putExtra(AppConst.STORENAME,store.store_name)
-                        intent.putExtra(AppConst.SHIPPINGTIME,store.shippingTime)
                         intent.putExtra(AppConst.STORECATEGORY,store.mainCategoryName)
                        intent.putExtra(AppConst.STOREDESCRIPTION,store.store_description)
                         intent.putExtra(AppConst.STORELOGO,store.store_logo)
@@ -128,6 +139,8 @@ class AllStoresActivity : AppCompatActivity(),Serializable {
 
     private fun bindViews() {
         recyclerViewStores=findViewById(R.id.recyclerViewStores)
+        imageViewFilter=findViewById(R.id.ImageViewFilter)
+
     }
 
     private fun handleBottomNavigationView() {

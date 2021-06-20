@@ -13,7 +13,5 @@ data class Store(
         var store_logo:String="",
         var store_description:String="",
         var mainCategoryName: String? = "",
-        var shippingTime: String? = "",
-
         var owner_id: String? = ""
 )

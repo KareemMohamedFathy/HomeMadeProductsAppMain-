@@ -5,18 +5,22 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.*
+
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -29,10 +33,12 @@ import com.homemadeproductsapp.MyStore.OnOptionClickListener
 import com.homemadeproductsapp.R
 import com.mindorks.notesapp.data.local.pref.PrefConstant
 import kotlinx.android.synthetic.main.activity_create_item.*
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterView.OnItemSelectedListener {
     companion object {
@@ -51,7 +57,9 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
     private lateinit var store_id:String
     private lateinit var dbReference: DatabaseReference
     private lateinit var firebaseDatabase: FirebaseDatabase
-    private lateinit var imageViewAddItem:ImageView
+    private lateinit var imageViewAddItem: ImageSwitcher
+    private lateinit var imageViewAddImageView: ImageView
+
     private lateinit var mainCategory:String
     private  var subCategories= arrayListOf<String>()
     private lateinit var subcategory:String
@@ -60,11 +68,38 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
 
     private  var curUser=auth.currentUser!!.uid
 
+    private var images: ArrayList<Uri?>? = null
+    private lateinit var nextBtn:ImageView
+    private lateinit var  spin:Spinner
 
+    private lateinit var previousBtn:ImageView
+    private  var stringUri=ArrayList<String>()
+
+    //current position/index of selected images
+    private var position = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_item)
-    bindViews()
+
+        bindViews()
+        images = ArrayList()
+
+        //    imageViewImageSwitcher.setFactory { imageViewAddItem}
+         imageViewImageSwitcher.setFactory(ViewSwitcher.ViewFactory { // TODO Auto-generated method stub
+
+  // Create a new ImageView and set it's properties
+             imageViewAddImageView  = ImageView(applicationContext)
+             imageViewAddImageView.scaleType = ImageView.ScaleType.FIT_XY
+             imageViewAddImageView
+          })
+      /*  imageViewImageSwitcher.setFactory(ViewSwitcher.ViewFactory { // TODO Auto-generated method stub
+
+// Create a new ImageView and set it's properties
+            val imageView = ImageView(applicationContext)
+            imageView.scaleType = ImageView.ScaleType.FIT_XY
+            imageView.layoutParams = FrameLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT)
+            imageView
+        })*/
     setupSharedPreference()
         setupToolbarText()
         getIntentData()
@@ -82,9 +117,9 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
             var textViewTitle: TextView =view.findViewById(R.id.action_bar_title)
             textViewTitle.setText("Add Your Prodcut")
             var back: ImageView =view.findViewById(R.id.action_bar_Image)
-            back.setOnClickListener(object :View.OnClickListener{
+            back.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View?) {
-                    val intent:Intent=Intent(this@CreateItemActivity,MyStoreActivity::class.java)
+                    val intent: Intent = Intent(this@CreateItemActivity, MyStoreActivity::class.java)
                     startActivity(intent)
                 }
             }
@@ -95,13 +130,12 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
 
     private fun getIntentData() {
         val intent = intent
+
         if (intent.hasExtra("store_id")) {
             store_id= intent.getStringExtra("store_id").toString()
-            Log.d("CreateItems",store_id)
         }
         if(!store_id.isEmpty()) {
             mainCategory = StoreSession.readString(PrefConstant.MAINCATEGORY)!!
-            Log.d("Hahahahahahahaha",mainCategory+"i won")
             getSubCategories(mainCategory)
 
         }
@@ -109,12 +143,13 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
 
     private fun getSubCategories(mainCategory: String) {
         val reference = FirebaseDatabase.getInstance().reference
+        Log.d("subcat12",subCategories.toString()+"12")
 
         val query = reference.child("Category").orderByChild("mainCategory").equalTo(mainCategory)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-
+                subCategories.add("select subcategory")
                 if (dataSnapshot.exists()) {
                     for (dsp in dataSnapshot.children) {
 
@@ -123,6 +158,7 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
 
                     }
                 }
+                Log.d("subcat1",subCategories.toString()+"12")
                 setupSpinners()
             }
 
@@ -136,7 +172,9 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
     }
 
     private fun setupSpinners() {
-        val spin = findViewById<Spinner>(R.id.spinnerSubCategory)
+        spin = findViewById<Spinner>(R.id.spinnerSubCategory)
+        spin.setPrompt("Pick One");
+
 
         spin.onItemSelectedListener = this
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
@@ -152,25 +190,42 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
     private fun setupClickListeners() {
     val clickAction=object : View.OnClickListener{
         override fun onClick(v: View?) {
-            val name=editTextName.text.toString()
-            val price=editTextPrice.text.toString()
-            val copies=editTextCopies.text.toString()
-            val description=editTextDescription.text.toString()
+            val name = editTextName.text.toString()
+            val price = editTextPrice.text.toString()
+            val copies = editTextCopies.text.toString()
+            val description = editTextDescription.text.toString()
 
-            firebaseDatabase= FirebaseDatabase.getInstance()
+            firebaseDatabase = FirebaseDatabase.getInstance()
             dbReference = firebaseDatabase.getReference("Product")
             val productId = dbReference.push().key.toString()
+            for (uri in images!!) {
+                stringUri.add(uri.toString())
+            }
+            Log.d("pic",picturePath+"Sd")
+            if (images!!.size==0) {
+                Toast.makeText(this@CreateItemActivity, "Plz add at least 1 photo", Toast.LENGTH_SHORT).show()
+            }
+        else    if (subcategory == "select subcategory") {
+                Toast.makeText(this@CreateItemActivity, "Plz choose category", Toast.LENGTH_SHORT).show()
+            }
+            else    if (TextUtils.isEmpty(name)||TextUtils.isEmpty(price)||TextUtils.isEmpty(description)) {
+                Toast.makeText(this@CreateItemActivity, "Plz fill all data", Toast.LENGTH_SHORT).show()
+            }
 
-            val  p: Product=Product(name,productId,copies.toInt(),"Yes",price.toDouble() ,description,picturePath,store_id,subcategory)
-            dbReference.child(productId).setValue(p)
 
-            intent= Intent(this@CreateItemActivity,MyStoreActivity::class.java)
-            startActivity(intent)
+            else{
+                val p: Product = Product(name, productId, copies.toInt(), "Yes", price.toDouble(), description, picturePath, store_id, subcategory, stringUri)
+                Log.d("bagga", p.toString())
+                dbReference.child(productId).setValue(p)
+
+                intent = Intent(this@CreateItemActivity, MyStoreActivity::class.java)
+                startActivity(intent)
 
             }
+        }
     }
         buttonAddItem.setOnClickListener(clickAction)
-        imageViewAddItem.setOnClickListener(object :View.OnClickListener{
+        imageViewAddItem.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 if (checkAndRequestPermissions()) {
                     openPicker()
@@ -179,11 +234,39 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
 
 
         })
+        nextBtn.setOnClickListener {
+            Log.d("katta","katat")
+            if (position < images!!.size-1){
+                position++
+                imageViewAddItem.setImageURI(images!![position])
+            }
+            else{
+                position=0;
+                //no more images
+                imageViewAddItem.setImageURI(images!![position])
+
+            }
+        }
+
+        //switch to previous image clicking this button
+        previousBtn.setOnClickListener {
+            if (position > 0){
+                position--
+                imageViewAddItem.setImageURI(images!![position])
+            }
+            else{
+                position=images!!.size-1
+                imageViewAddItem.setImageURI(images!![position])
+
+            }
+
+        }
+
     }
 
     private fun openPicker() {
    val dialog=FileSelectorFragment.newInstance()
-     dialog.show(supportFragmentManager,FileSelectorFragment.TAG)
+     dialog.show(supportFragmentManager, FileSelectorFragment.TAG)
     }
 
     private fun bindViews() {
@@ -192,7 +275,10 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
         editTextDescription=findViewById(R.id.editTextDescription)
         editTextName=findViewById(R.id.editTextName)
         buttonAddItem=findViewById(R.id.submit_button)
-        imageViewAddItem=findViewById(R.id.imageViewAddItem)
+        imageViewAddItem=findViewById(R.id.imageViewImageSwitcher)
+        imageViewAddImageView=findViewById(R.id.imageViewAddItem)
+        nextBtn=findViewById(R.id.ImageViewNext)
+        previousBtn=findViewById(R.id.ImageViewBack)
     }
     private fun createImageFile(): File {
         // Create an image file name
@@ -202,6 +288,7 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
         return File.createTempFile(mFileName, ".jpg", storageDir)
     }
     override fun onCameraClick() {
+
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(packageManager) != null) {
 
@@ -250,22 +337,53 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
     }
 
     override fun onGalleryClick() {
-   val intent=Intent(Intent.ACTION_OPEN_DOCUMENT,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, REQUEST_CODE_GALLERY)
+
+            var intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            intent.type = "image/*"
+            startActivityForResult(intent, REQUEST_CODE_GALLERY);
+
 
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        images=ArrayList<Uri?>()
+
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 REQUEST_CODE_CAMERA -> {
-                    picturePath = imageLocation.path.toString()
-                    Glide.with(this).load(imageLocation.absoluteFile).into(imageViewAddItem)
+                               picturePath = imageLocation.path.toString()
+                    images!!.add(picturePath.toUri())
+                    imageViewAddItem.setImageURI(images!![0])
+
                 }
                 REQUEST_CODE_GALLERY -> {
-                    val selectedImage = data?.data
-                    picturePath = selectedImage.toString()
-                    Glide.with(this).load(picturePath).into(imageViewAddItem)
+                    if (data?.getClipData() != null) {
+                        var count = data.clipData!!.itemCount
+                        for (i in 0 until count) {
+                            var imageUri: Uri = data.clipData!!.getItemAt(i).uri
+                            images!!.add(imageUri)
+
+                       //    imageViewAddItem.setImageURI(imageUri)
+                        }
+                        Log.d("why",images.toString())
+                        imageViewAddItem.setImageURI(images!![0])
+                        position = 0;
+
+
+                    } else if (data?.getData() != null) {
+                        // if single image is selected
+
+                        var imageUri: Uri = data.data!!
+                        images!!.add(imageUri)
+
+                        imageViewAddItem.setImageURI(images!![0])
+
+                        position = 0;
+
+                    }
+
                 }
             }
         }
@@ -276,8 +394,7 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
-        subcategory=subCategories[0]
 
-    }
+   }
 
 }
