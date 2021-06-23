@@ -47,7 +47,6 @@ class StoreFragment : Fragment() ,Serializable {
         StoreSession.init(requireContext())
 
         list= StoreSession?.readList("PRODUCTS_LIST")!!
-        Log.d("istrue", list.size.toString())
 
 
 

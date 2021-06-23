@@ -121,6 +121,7 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
                 override fun onClick(v: View?) {
                     val intent: Intent = Intent(this@CreateItemActivity, MyStoreActivity::class.java)
                     startActivity(intent)
+                    finish()
                 }
             }
             )
@@ -143,7 +144,6 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
 
     private fun getSubCategories(mainCategory: String) {
         val reference = FirebaseDatabase.getInstance().reference
-        Log.d("subcat12",subCategories.toString()+"12")
 
         val query = reference.child("Category").orderByChild("mainCategory").equalTo(mainCategory)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -158,8 +158,7 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
 
                     }
                 }
-                Log.d("subcat1",subCategories.toString()+"12")
-                setupSpinners()
+               setupSpinners()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -201,7 +200,6 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
             for (uri in images!!) {
                 stringUri.add(uri.toString())
             }
-            Log.d("pic",picturePath+"Sd")
             if (images!!.size==0) {
                 Toast.makeText(this@CreateItemActivity, "Plz add at least 1 photo", Toast.LENGTH_SHORT).show()
             }
@@ -215,11 +213,11 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
 
             else{
                 val p: Product = Product(name, productId, copies.toInt(), "Yes", price.toDouble(), description, picturePath, store_id, subcategory, stringUri)
-                Log.d("bagga", p.toString())
                 dbReference.child(productId).setValue(p)
 
                 intent = Intent(this@CreateItemActivity, MyStoreActivity::class.java)
                 startActivity(intent)
+                finish()
 
             }
         }
@@ -235,7 +233,6 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
 
         })
         nextBtn.setOnClickListener {
-            Log.d("katta","katat")
             if (position < images!!.size-1){
                 position++
                 imageViewAddItem.setImageURI(images!![position])
@@ -367,7 +364,6 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
 
                        //    imageViewAddItem.setImageURI(imageUri)
                         }
-                        Log.d("why",images.toString())
                         imageViewAddItem.setImageURI(images!![0])
                         position = 0;
 

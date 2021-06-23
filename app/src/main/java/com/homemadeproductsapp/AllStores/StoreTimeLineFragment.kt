@@ -1,23 +1,23 @@
 package com.homemadeproductsapp.AllStores
 
-import MyStoreNewsFeedAdapter
+import StoreNewsFeedAdapter
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.homemadeproductsapp.AppConst
+import com.homemadeproductsapp.AllStores.Listeners.NewsFeedClickListener
 import com.homemadeproductsapp.DB.Feed
-import com.homemadeproductsapp.MyStore.Listeners.NewsFeedClickListener
+import com.homemadeproductsapp.Details.DetailsFragment
+
 import com.homemadeproductsapp.R
 import com.mindorks.notesapp.data.local.pref.PrefConstant
 import java.lang.reflect.Type
@@ -25,6 +25,13 @@ import java.lang.reflect.Type
 
 class StoreTimeLineFragment : Fragment() {
     var view1: View? = null
+    private lateinit var dataCommunication: DataCommunication
+    private lateinit var newsFeedClickListener: NewsFeedClickListener
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+    dataCommunication=context as DataCommunication
+        newsFeedClickListener=context as NewsFeedClickListener
+    }
 
 
     override fun onCreateView(
@@ -64,26 +71,26 @@ class StoreTimeLineFragment : Fragment() {
                 filterList.add(cat)
 
         }
-        Log.d("woho", filterList.toString() + "ss")
 
         val newsFeedClickListener=object : NewsFeedClickListener {
             override fun onClick(feed: Feed) {
                 if(feed.caption!!.isNotEmpty()&&feed.addDate!!.isNotEmpty()&&feed.imagePathProduct!!.isNotEmpty()) {
-                    val intent = Intent(activity,PhotoDetails::class.java)
-                    intent.putExtra(AppConst.CAPTION, feed.caption)
-                    intent.putExtra(AppConst.DATE, feed.addDate)
-                    intent.putExtra(AppConst.IMAGEPATH, feed.imagePathProduct)
-                    intent.putExtra(AppConst.STORENAME, name)
-                    intent.putExtra(AppConst.STOREIMAGEPATH, storeLogo)
+                    dataCommunication.feed=feed
+                    dataCommunication.store_logo= storeLogo.toString()
+                    dataCommunication.store_name= name.toString()
 
-                    startActivity(intent)
+                    newsFeedClickListener.onClick(feed)
+
+
+
+
 
                 }
             }
 
         }
         filterList.reverse()
-        val newsFeedAdapter = MyStoreNewsFeedAdapter(filterList, newsFeedClickListener)
+        val newsFeedAdapter = StoreNewsFeedAdapter(filterList, newsFeedClickListener)
         val recyclerViewNotes = view1!!.findViewById<RecyclerView>(R.id.recyclerViewTimeLine)
         val linearLayoutManager = GridLayoutManager(context,2)
         linearLayoutManager.orientation = RecyclerView.VERTICAL

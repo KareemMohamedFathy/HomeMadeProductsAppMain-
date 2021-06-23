@@ -48,7 +48,6 @@ class CategoryFiltersActivity : AppCompatActivity(),onMoveGo, SubCategoriesListe
 
     override fun displayResults(subcategory: String) {
         setupSharedPreference()
-        Log.d("fraud","fraud")
         val intent=Intent(this@CategoryFiltersActivity,SearchResultsActivity::class.java)
         intent.putExtra("subcategory",subcategory)
         intent.putExtra(PrefConstant.CHOOSENCATEGORY,mainCategory)

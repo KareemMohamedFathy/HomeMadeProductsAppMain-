@@ -21,8 +21,10 @@
 
     <ImageView
         android:id="@+id/imageViewAddNewsFeed"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="90dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_height="90dp"
         app:layout_constrainedHeight="true"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_photo"

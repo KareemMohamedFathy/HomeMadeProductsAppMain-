@@ -13,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
+import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -54,6 +56,8 @@ class UpdateStoreFragment : Fragment() {
         private lateinit var auth: FirebaseAuth
         private lateinit var dbReference: DatabaseReference
         private lateinit var firebaseDatabase: FirebaseDatabase
+        private lateinit var  progressBar:ProgressBar
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
     onMoveClick=context as onMoveClick1
@@ -74,6 +78,18 @@ class UpdateStoreFragment : Fragment() {
     bindViews(view1)
         getStoreData()
         setupClickListeners()
+        requireActivity()
+                .onBackPressedDispatcher
+                .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        // Do custom work here
+
+                        onMoveClick.onBack()
+
+                    }
+                }
+                )
+
 
     }
     private fun setupClickListeners() {
@@ -81,6 +97,11 @@ class UpdateStoreFragment : Fragment() {
             override fun onClick(v: View?) {
                 if (checkAndRequestPermissions()) {
                     openPicker()
+                    val name = editTextName.text.toString()
+                    val description = editTextDescription.text.toString()
+                    StoreSession.write(PrefConstant.STORENAME,name)
+                    StoreSession.write(PrefConstant.STOREDESCRIPTION,description)
+
                 }
             }
 
@@ -99,7 +120,6 @@ class UpdateStoreFragment : Fragment() {
 
 
                 val store= Store(storeid.toString(),name, path.toString(),description,category,id)
-                Log.d("store",store.toString())
                 val lol = FirebaseDatabase.getInstance().getReference("Store")
                         .child(storeid!!).setValue(store)
                 onMoveClick.onBack()

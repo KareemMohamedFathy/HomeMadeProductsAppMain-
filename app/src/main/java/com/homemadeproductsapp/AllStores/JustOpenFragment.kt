@@ -88,7 +88,6 @@ class JustOpenFragment : DialogFragment() {
 
     private fun setupClickListeners() {
         imageViewNext.setOnClickListener {
-            Log.d("katta", "katat")
             if (position < product.uriPaths!!.size-1){
                 position++
                 imageViewImageSwitcher.setImageURI(product.uriPaths!!.get(position).toUri())
@@ -259,7 +258,6 @@ class JustOpenFragment : DialogFragment() {
         copies= product.copies!!.toInt()
         price=product.price!!.toDouble()
         curprice=price
-        Log.d("but how", product.uriPaths!!.get(position))
         imageViewImageSwitcher.setImageURI(product.uriPaths!!.get(position).toUri())
 
     }

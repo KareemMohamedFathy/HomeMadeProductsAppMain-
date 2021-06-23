@@ -27,28 +27,27 @@ class MyStoreItemsAdapter(private val list: List<Product>,private val applicatio
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.imageViewImageSwitcher.setFactory(ViewSwitcher.ViewFactory { // TODO Auto-generated method stub
-            val params: ViewGroup.LayoutParams = FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-           holder.imageViewProduct.layoutParams = params
 
-            // Create a new ImageView and set it's properties
-            holder.imageViewProduct  = ImageView(applicationContext)
-            holder.imageViewProduct.scaleType = ImageView.ScaleType.FIT_XY
-            holder.imageViewProduct
+            val imageView = ImageView(applicationContext)
+            imageView.scaleType = ImageView.ScaleType.FIT_XY
+
+            val params: ViewGroup.LayoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+
+            imageView.layoutParams = params
+            imageView
+
+
         })
 
-        Log.d("MyStoreItems22",list.size.toString())
 
             holder.textViewDescription.setText(list[position].description)
             holder.textViewName.setText(list[position].name)
             holder.textViewPrice.setText(""+list[position].price+"EGP")
-        Log.d("hello",list[position].uriPaths!!.get(0).toString())
-        Log.d("hello1",list[position].uriPaths!!.get(0).toUri().toString().equals(list[position].uriPaths!!.get(0).toString()).toString())
 
         holder.imageViewImageSwitcher.setImageURI(list[position].uriPaths!!.get(pos).toUri())
 
         holder.imageViewNext.setOnClickListener {
-            Log.d("katta","katat")
             if (pos < list[position].uriPaths!!.size-1){
                 pos++
                 holder.imageViewImageSwitcher.setImageURI(list[position].uriPaths!!.get(pos).toUri())

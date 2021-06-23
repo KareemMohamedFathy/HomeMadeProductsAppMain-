@@ -70,8 +70,8 @@
 
 
         <FrameLayout
-            android:layout_width="200dp"
-            android:layout_height="150dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
             android:id="@+id/imageViewProduct1"
 
             app:layout_constraintStart_toStartOf="parent"
@@ -80,15 +80,12 @@
             >
 
             <ImageView
-                android:layout_width="200dp"
-                android:layout_height="150dp"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:paddingEnd="25dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:paddingStart="25dp"
+                android:padding="4dp"
                 android:id="@+id/imageViewProduct"
 
                 android:background="@android:color/white"
@@ -97,15 +94,14 @@
                 android:scaleType="fitXY"
                 />
             <ImageSwitcher
-                android:layout_width="200dp"
-                android:layout_height="150dp"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+
                 android:layout_marginEnd="4dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:paddingEnd="25dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:paddingStart="25dp"
+                android:padding="4dp"
+
                 android:id="@+id/imageViewImageSwitcher"
                 android:background="@android:color/white"
                 android:adjustViewBounds="true"

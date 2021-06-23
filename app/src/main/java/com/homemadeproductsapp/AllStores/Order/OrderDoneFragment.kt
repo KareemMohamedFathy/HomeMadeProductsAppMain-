@@ -15,6 +15,7 @@ class OrderDoneFragment : DialogFragment() {
     private lateinit var view1:View
     private lateinit var buttonAllStores:Button
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,6 +28,8 @@ class OrderDoneFragment : DialogFragment() {
             if (event.action == KeyEvent.ACTION_DOWN) {
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
                     startActivity(Intent(requireActivity(),AllStoresActivity::class.java))
+                    requireActivity().finish()
+
                 }
             }
             false
@@ -40,6 +43,7 @@ class OrderDoneFragment : DialogFragment() {
         buttonAllStores.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
                 startActivity(Intent(requireActivity(),AllStoresActivity::class.java))
+                requireActivity().finish()
             }
         })
     }

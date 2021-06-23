@@ -2,6 +2,7 @@ package com.homemadeproductsapp.MyStore
 
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Group
+import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -26,11 +28,14 @@ import com.homemadeproductsapp.DB.Category
 import com.homemadeproductsapp.DB.Feed
 import com.homemadeproductsapp.DB.Local.StoreSession
 import com.homemadeproductsapp.DB.Product
+import com.homemadeproductsapp.Details.DetailsFragment
 import com.homemadeproductsapp.Home.HomeActivity
 import com.homemadeproductsapp.MyStore.Adapter.MyStoreFragmentAdapter
 import com.homemadeproductsapp.MyStore.ItemsAndFeed.CreateItemActivity
 import com.homemadeproductsapp.MyStore.ItemsAndFeed.CreateNewsFeedActivity
 import com.homemadeproductsapp.MyStore.ItemsAndFeed.TypeSelectorFragment
+import com.homemadeproductsapp.MyStore.Listeners.NewsFeedClickListener
+import com.homemadeproductsapp.PastOrders.OrdersActivity
 import com.homemadeproductsapp.R
 import com.homemadeproductsapp.profile.ProfileActivity
 import com.mindorks.notesapp.data.local.pref.PrefConstant
@@ -39,10 +44,11 @@ import kotlinx.android.synthetic.main.activity_my_store.*
 import kotlinx.android.synthetic.main.item_adapter_layout.*
 
 
-class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
+class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunication,NewsFeedClickListener {
     companion object {
        private const val ADD_STORE_CODE = 100
     }
+    private  var edit=false
     val allCategories = arrayOf(arrayOf("Clothing", "shirt", "shorts", "dresses", "jackets", "shoes", "trousers", "socks"
     ),
             arrayOf("Food", "Bakery", "ReadyToCook", "FastFood", "pickles", "powders", "Diet Food", "Frozen Food", "cans,","other"),//food
@@ -93,7 +99,6 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
 
     private lateinit var buttonCreateStore: Button
     private lateinit var imageViewLogo: ImageView
-
     private lateinit var buttonAddItems:FloatingActionButton
 
 
@@ -267,6 +272,7 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
                         insertCategories()
 
 
+
                     }
                 }
         )
@@ -340,7 +346,9 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
 
     override fun onProductClick() {
    val intent:Intent=Intent(this@MyStoreActivity, CreateItemActivity::class.java)
+
         intent.putExtra("store_id", storeIdExists)
+
         Log.d("MyStoreAcs", storeIdExists)
        startActivity(intent)
     }
@@ -366,21 +374,29 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
                 R.id.page_3 -> {
                     val intent = Intent(this@MyStoreActivity, OrdersActivity::class.java)
                     startActivity(intent)
+                    finish()
                     true
                 }
                 R.id.page_4 -> {
                     val intent = Intent(this@MyStoreActivity, AllStoresActivity::class.java)
                     startActivity(intent)
+                    finish()
+
                     true
+
                 }
                 R.id.page_1 -> {
                     val intent = Intent(this@MyStoreActivity, HomeActivity::class.java)
                     startActivity(intent)
+                    finish()
+
                     true
                 }
                 R.id.page_5 -> {
                     val intent = Intent(this@MyStoreActivity, ProfileActivity::class.java)
                     startActivity(intent)
+                    finish()
+
                     true
                 }
 
@@ -390,9 +406,27 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener {
         }
     }
 
+    override lateinit var store_logo: String
+    override lateinit var store_name: String
+    override lateinit var feed: Feed
+    override fun onClick(feed: Feed) {
+        val detailsFragment = DetailsFragment()
+
+        detailsFragment.setStyle(
+            DialogFragment.STYLE_NORMAL,
+            R.style.DialogFragmentTheme
+        );
+        detailsFragment.show(supportFragmentManager, "Jean 3")
+
+    }
 }
 interface OnProductClickListener {
     fun onProductClick()
     fun onFeedClick()
+}
+interface dataCommunication{
+    var store_logo:String
+    var store_name:String
+     var  feed:Feed
 }
 

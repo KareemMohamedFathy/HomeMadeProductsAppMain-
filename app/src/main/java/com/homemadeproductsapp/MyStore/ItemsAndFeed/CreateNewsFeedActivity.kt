@@ -61,11 +61,15 @@ class CreateNewsFeedActivity : AppCompatActivity(),OnOptionClickListener {
         setupOnClickListeners()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+    finish()
+    }
+
     private fun getIntentData() {
         val intent = intent
         if (intent.hasExtra("store_id")) {
             store_id= intent.getStringExtra("store_id").toString()
-            Log.d("CreateItems",store_id)
         }
     }
 
@@ -83,6 +87,7 @@ class CreateNewsFeedActivity : AppCompatActivity(),OnOptionClickListener {
 
                 intent= Intent(this@CreateNewsFeedActivity,MyStoreActivity::class.java)
                 startActivity(intent)
+                finish()
 
             }
 
@@ -108,6 +113,7 @@ class CreateNewsFeedActivity : AppCompatActivity(),OnOptionClickListener {
                 override fun onClick(v: View?) {
                     val intent: Intent = Intent(this@CreateNewsFeedActivity, MyStoreActivity::class.java)
                     startActivity(intent)
+                    finish()
                 }
             }
             )

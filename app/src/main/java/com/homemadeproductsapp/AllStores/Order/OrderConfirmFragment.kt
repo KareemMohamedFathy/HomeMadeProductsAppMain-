@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -25,6 +26,10 @@ import com.homemadeproductsapp.DB.Order
 import com.homemadeproductsapp.DB.Product
 import com.homemadeproductsapp.MainActivity
 import com.homemadeproductsapp.R
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 
 class OrderConfirmFragment : DialogFragment() {
@@ -81,6 +86,7 @@ class OrderConfirmFragment : DialogFragment() {
                     }
 
                 }
+
             }
             false
         })
@@ -108,9 +114,10 @@ class OrderConfirmFragment : DialogFragment() {
                 )
                 val dbref1=FirebaseDatabase.getInstance().reference
                 val id=dbref.push().key.toString()
-
-                val order: Order =Order(id, dataCommunication.cart!!.store_id, dataCommunication.cart!!,auth.currentUser!!.uid)
-                dbref1.child("Order").setValue(order)
+                val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+                val currentDate = sdf.format(Date())
+                val order: Order =Order(id, dataCommunication.cart!!.store_id, dataCommunication.cart!!,auth.currentUser!!.uid,currentDate.toString())
+                dbref1.child("Order").child(id).setValue(order)
                 dataCommunication.cart=null
                 dbref.child("User").child(auth.currentUser!!.uid).child("Cart").removeValue()
                 orderDone.orderDone()
@@ -207,7 +214,6 @@ class OrderConfirmFragment : DialogFragment() {
 
                     val clickListener = object : UpdateTotal {
                         override fun updateTotal(amount: Double?) {
-                            Log.d("amount", "amount")
 
                             total += amount!!
                             textViewTotal.setText(total.toString() + " EGP ")
@@ -223,7 +229,6 @@ class OrderConfirmFragment : DialogFragment() {
 
                     }
 
-                    Log.d("Bagga", products.toString())
                     val adapter =
                         OrderConfirmAdapter(dataCommunication.cart!!, products, clickListener)
                     val linearLayoutManager = LinearLayoutManager(context)

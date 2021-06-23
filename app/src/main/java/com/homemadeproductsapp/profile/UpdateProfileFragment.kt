@@ -15,6 +15,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -79,6 +80,18 @@ class UpdateProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupSharedPreference()
+        requireActivity()
+                .onBackPressedDispatcher
+                .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        // Do custom work here
+
+                        onMoveClick.onBack()
+
+                    }
+                }
+                )
+
         bindViews(view1)
         getUserData()
         setupClickListeners()
@@ -88,8 +101,13 @@ class UpdateProfileFragment : Fragment() {
         imageViewPersonalPhoto.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 if (checkAndRequestPermissions()) {
+                    val name = editTextName.text.toString()
+                    val phonoNo = editTextPhoneNo.text.toString()
+                    StoreSession.write(PrefConstant.USERNAME,name)
+                    StoreSession.write(PrefConstant.USERPHONONO,phonoNo)
+
                     openPicker()
-                }
+               }
             }
 
 
@@ -97,18 +115,22 @@ class UpdateProfileFragment : Fragment() {
         buttonUpdateInfo.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 auth = FirebaseAuth.getInstance()
-                val id = auth.currentUser!!.uid
+                //val id = auth.currentUser!!.uid
                 val name = editTextName.text.toString()
-                val email = StoreSession.readString(PrefConstant.USEREMAIL).toString()
+                //val email = StoreSession.readString(PrefConstant.USEREMAIL).toString()
                 val phonoNo = editTextPhoneNo.text.toString()
-                val storeid = StoreSession.readString(PrefConstant.STOREID)
-                val path = StoreSession.readString(PrefConstant.USERPROFILEPHOTO)
+               // val storeid = StoreSession.readString(PrefConstant.STOREID)
+               val path = StoreSession.readString(PrefConstant.USERPROFILEPHOTO)
 
-
-              /*  val curUser: User = User(id, name, phonoNo, path, email, storeid)
+             //   val curUser: User = User(id, name, phonoNo, path, email, storeid)
                 val lol = FirebaseDatabase.getInstance().getReference("User")
-                    .child(auth.currentUser!!.uid).setValue(curUser)
-                */onMoveClick.onBack()
+                    .child(auth.currentUser!!.uid).child("name").setValue(name)
+                FirebaseDatabase.getInstance().getReference("User")
+
+
+                FirebaseDatabase.getInstance().getReference("User")
+                    .child(auth.currentUser!!.uid).child("personalPhotoPath").setValue(path)
+                onMoveClick.onBack()
             }
 
 
@@ -130,7 +152,6 @@ class UpdateProfileFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         getUserData()
-        Log.d("hey","hey")
     }
 
     private fun getUserData() {

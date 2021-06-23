@@ -101,6 +101,7 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterV
                 override fun onClick(v: View?) {
                 val intent:Intent=Intent(this@CreateStoreActivity,MyStoreActivity::class.java)
                     startActivity(intent)
+                    finish()
                 }
 
             }
@@ -122,6 +123,7 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterV
                     saveCategory(category)
                     val intent = Intent(this@CreateStoreActivity,MyStoreActivity::class.java)
                     startActivity(intent)
+                    finish()
 
 
                 }
@@ -266,6 +268,11 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterV
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+    finish()
     }
 
 }

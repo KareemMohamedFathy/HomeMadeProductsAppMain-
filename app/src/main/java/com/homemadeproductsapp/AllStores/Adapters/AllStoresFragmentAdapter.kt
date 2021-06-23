@@ -14,7 +14,6 @@ class AllStoresFragmentAdapter(fm: FragmentActivity) : FragmentStateAdapter(fm),
     private val mFragmentTitleList = ArrayList<String>()
 
     fun addFragment(fragment: DialogFragment, title: String): Fragment {
-        Log.d("bagga","bagga")
 
 
         mFragmentList.add(fragment)

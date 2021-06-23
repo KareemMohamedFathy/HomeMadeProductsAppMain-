@@ -12,5 +12,7 @@ data class Order(
     var order_id: String? = "",
     var store_id: String? = "",
     var cart: Cart,
-    var user_id:String?=""
+    var user_id:String?="",
+    var date:String?=""
+
     )

@@ -28,9 +28,10 @@
         <activity android:name=".AllStores.OnStoreOpenActivity"></activity>
         <activity
             android:name=".AllStores.AllStoresActivity"
+            android:launchMode="singleTask"
             android:theme="@style/NoToolbar" />
         <activity
-            android:name=".OrdersActivity"
+            android:name=".PastOrders.OrdersActivity"
             android:theme="@style/NoToolbar" />
         <activity
             android:name=".profile.ProfileActivity"
@@ -38,7 +39,6 @@
         <activity
             android:name=".Home.HomeActivity"
             android:theme="@style/NoToolbar" />
-        <activity android:name=".Details.DetailsActivity" />
         <activity android:name=".MyStore.ItemsAndFeed.CreateNewsFeedActivity" />
         <activity android:name=".MyStore.ItemsAndFeed.CreateItemActivity" />
 
@@ -55,6 +55,7 @@
         <activity android:name=".MyStore.CreateStoreActivity" />
         <activity
             android:name=".MyStore.MyStoreActivity"
+            android:launchMode="singleTask"
             android:theme="@style/NoToolbar" />
         <activity
             android:name=".RegisterActivity"

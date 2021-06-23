@@ -30,6 +30,7 @@ class ProfileFragment : Fragment() {
     private lateinit var buttonUpdateStore:Button
     private lateinit var buttonLogOut:Button
     private lateinit var auth: FirebaseAuth
+
     private lateinit var dbReference: DatabaseReference
     private lateinit var firebaseDatabase: FirebaseDatabase
 
@@ -57,7 +58,7 @@ class ProfileFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
          view1= inflater.inflate(R.layout.fragment_profile, container, false)
         return view1
@@ -82,7 +83,7 @@ class ProfileFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
 
 
-        val lol = FirebaseDatabase.getInstance().getReference("User").child(auth.currentUser!!.uid).get().addOnSuccessListener {
+        FirebaseDatabase.getInstance().getReference("User").child(auth.currentUser!!.uid).get().addOnSuccessListener {
             name=it.child("name").value.toString()
             email=it.child("email").value.toString()
             phoneNo=it.child("mobileno").value.toString()

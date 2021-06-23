@@ -1,7 +1,6 @@
 package com.homemadeproductsapp.AllStores
 
 import android.content.Intent
-import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -20,7 +19,7 @@ import com.homemadeproductsapp.DB.Local.StoreSession
 import com.homemadeproductsapp.DB.Store
 import com.homemadeproductsapp.Home.HomeActivity
 import com.homemadeproductsapp.MyStore.MyStoreActivity
-import com.homemadeproductsapp.OrdersActivity
+import com.homemadeproductsapp.PastOrders.OrdersActivity
 import com.homemadeproductsapp.profile.ProfileActivity
 import com.homemadeproductsapp.R
 import com.mindorks.notesapp.data.local.pref.PrefConstant
@@ -49,6 +48,7 @@ handleClickListeners()
             override fun onClick(v: View?) {
                 intent=Intent(this@AllStoresActivity,CategoryFiltersActivity::class.java)
                 startActivity(intent)
+
             }
 
         })
@@ -153,21 +153,29 @@ handleClickListeners()
                 R.id.page_2 -> {
                     val intent = Intent(this@AllStoresActivity, MyStoreActivity::class.java)
                     startActivity(intent)
+                    finish()
+
                     true
                 }
                 R.id.page_3 -> {
                     val intent = Intent(this@AllStoresActivity, OrdersActivity::class.java)
                     startActivity(intent)
+                    finish()
+
                     true
                 }
                 R.id.page_1 -> {
                     val intent = Intent(this@AllStoresActivity, HomeActivity::class.java)
                     startActivity(intent)
+                    finish()
+
                     true
                 }
                 R.id.page_5 -> {
                     val intent = Intent(this@AllStoresActivity, ProfileActivity::class.java)
                     startActivity(intent)
+                    finish()
+
                     true
                 }
 

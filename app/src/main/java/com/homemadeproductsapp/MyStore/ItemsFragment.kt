@@ -44,7 +44,6 @@ private  var listItems=ArrayList<Product>()
        listItems.clear()
 
         val reference = FirebaseDatabase.getInstance().reference
-       Log.d("why1", storeIdExists)
 
         val query = reference.child("Product").orderByChild("store_id").equalTo(storeIdExists)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -68,7 +67,6 @@ private  var listItems=ArrayList<Product>()
                         val imagePathProduct = dsp.child("imagePathProduct").value.toString()
                         val subCategory = dsp.child("subcategory").value.toString()
                         val imagePathsuri = dsp.child("uriPaths").value as ArrayList<String>
-                        Log.d("how",imagePathsuri.toString())
 
 
                         val p: Product = Product(name, id, copies.toInt(), available, price.toDouble(), description, imagePathProduct, storeIdExists, subCategory,imagePathsuri)
@@ -93,7 +91,6 @@ private  var listItems=ArrayList<Product>()
         val args = arguments
 
         val category= args?.getString("Category")
-        Log.d("category1",category.toString()+"12")
 
 
 

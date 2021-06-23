@@ -7,11 +7,8 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.homemadeproductsapp.AllStores.AllStoresActivity
@@ -21,7 +18,7 @@ import com.homemadeproductsapp.Home.HomeActivity
 import com.homemadeproductsapp.LoginActivity
 import com.homemadeproductsapp.MyStore.MyStoreActivity
 import com.homemadeproductsapp.MyStore.OnOptionClickListener
-import com.homemadeproductsapp.OrdersActivity
+import com.homemadeproductsapp.PastOrders.OrdersActivity
 import com.homemadeproductsapp.R
 import com.homemadeproductsapp.profile.adapter.ProfileAdapter
 import com.mindorks.notesapp.data.local.pref.PrefConstant
@@ -70,21 +67,29 @@ class ProfileActivity : AppCompatActivity(),multipleOptionsClick,OnOptionClickLi
                 R.id.page_2 -> {
                     val intent = Intent(this@ProfileActivity, MyStoreActivity::class.java)
                     startActivity(intent)
+                    finish()
+
                     true
                 }
                 R.id.page_4 -> {
                     val intent = Intent(this@ProfileActivity, AllStoresActivity::class.java)
                     startActivity(intent)
+                    finish()
+
                     true
                 }
                 R.id.page_1 -> {
                     val intent = Intent(this@ProfileActivity, HomeActivity::class.java)
                     startActivity(intent)
+                    finish()
+
                     true
                 }
                 R.id.page_3 -> {
                     val intent = Intent(this@ProfileActivity, OrdersActivity::class.java)
                     startActivity(intent)
+                    finish()
+
                     true
                 }
 

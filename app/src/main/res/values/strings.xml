@@ -26,4 +26,15 @@
     <string name="ok">ok</string>
     <string name="itemsCount">0</string>
     <string name="total">Total :</string>
+    <string name="choose_subcategory">Choose SubCategory</string>
+    <string name="add_personal_photo_if_you_desire">Add Personal Photo If you desire</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="enter_your_name">Enter Your Name</string>
+    <string name="enter_your_mobile_number">Enter Your Mobile Number</string>
+    <string name="update_info">Update Info</string>
+    <string name="todo">TODO</string>
+    <string name="hahahahah">hahahahah</string>
+    <string name="enter_your_store_description">Enter Your Store Description</string>
+    <string name="update_store_info">Update Store Info</string>
+    <string name="update_store_photo">Update Store Photo</string>
 </resources>

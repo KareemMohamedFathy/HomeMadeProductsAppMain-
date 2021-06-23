@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.homemadeproductsapp.AllStores.AllStoresActivity
 import com.homemadeproductsapp.MyStore.MyStoreActivity
-import com.homemadeproductsapp.OrdersActivity
+import com.homemadeproductsapp.PastOrders.OrdersActivity
 import com.homemadeproductsapp.profile.ProfileActivity
 import com.homemadeproductsapp.R
 

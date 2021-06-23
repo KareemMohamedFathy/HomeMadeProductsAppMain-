@@ -43,7 +43,6 @@ class PhotoDetails : AppCompatActivity() {
         captionTextView.setText(caption)
         addDateTextView.setText(addDate)
         storeNameTextView.setText(storeName)
-        Log.d("lolhah",imagePathStoreLogo)
 
         Glide.with(this).load(imagePathStoreLogo).into(imagePathStoreLogoImageView)
         Glide.with(this).load(imagePathProduct).into(imagePathProductImageView)

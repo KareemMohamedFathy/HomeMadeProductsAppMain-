@@ -71,7 +71,6 @@ class SearchResultsActivity : AppCompatActivity() {
                         val store_id = dsp.child("store_id").value.toString()
                         list.add(store_id.toString())
                     }
-                    Log.d("hayo", list.toString())
                     getDataFromDb()
                 }
             }
@@ -104,7 +103,6 @@ class SearchResultsActivity : AppCompatActivity() {
 
                         val p: Store = Store(storeid,name,imagePathProduct,description,category,"")
 
-                        Log.d("list",list.toString())
                         if(mainCategory==category)
                             storesList.add(p)
 
@@ -236,7 +234,7 @@ class SearchResultsActivity : AppCompatActivity() {
 
     private fun saveCategory(storename: String,category: String,store_id:String,storelogo:String) {
         StoreSession.write(PrefConstant.ALLSTORENAME, storename)
-        Log.d("what",category)
+
         StoreSession.write(AppConst.STOREMAINCATEGORY, category)
         StoreSession.write(AppConst.STOREID, store_id)
         StoreSession.write(AppConst.STORELOGO, storelogo)

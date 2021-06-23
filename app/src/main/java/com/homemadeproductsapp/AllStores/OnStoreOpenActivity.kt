@@ -19,6 +19,7 @@ import com.google.firebase.database.*
 import com.homemadeproductsapp.AllStores.Adapters.NotifyCart
 import com.homemadeproductsapp.AllStores.Adapters.OrderConfirmFragment
 import com.homemadeproductsapp.AllStores.Adapters.OrderDone
+import com.homemadeproductsapp.AllStores.Listeners.NewsFeedClickListener
 import com.homemadeproductsapp.AllStores.Listeners.OnProductClickListener
 import com.homemadeproductsapp.AllStores.Order.OrderDoneFragment
 import com.homemadeproductsapp.AppConst
@@ -26,11 +27,12 @@ import com.homemadeproductsapp.DB.Cart
 import com.homemadeproductsapp.DB.Feed
 import com.homemadeproductsapp.DB.Local.StoreSession
 import com.homemadeproductsapp.DB.Product
+import com.homemadeproductsapp.Details.DetailsFragment
 import com.homemadeproductsapp.R
 import com.mindorks.notesapp.data.local.pref.PrefConstant
 import kotlinx.android.synthetic.main.activity_on_store_open.*
 
-class OnStoreOpenActivity : AppCompatActivity(),DataCommunication,OnProductClickListener,BackToMe,NotifyCart,OrderDone {
+class OnStoreOpenActivity : AppCompatActivity(),DataCommunication,OnProductClickListener,BackToMe,NotifyCart,OrderDone,NewsFeedClickListener{
     private lateinit var viewPager: ViewPager2
     private lateinit var viewPager1: ViewPager2
     private lateinit var productId:String
@@ -245,6 +247,7 @@ private lateinit var storeid:String
                         this@OnStoreOpenActivity,
                         AllStoresActivity::class.java
                     )
+                    finish()
                     startActivity(intent)
 
                 }
@@ -437,10 +440,29 @@ private lateinit var storeid:String
         orderDoneFragment.show(supportFragmentManager, "Jean Boy2")
     }
 
+    override lateinit var store_logo: String
+    override lateinit var store_name: String
+    override lateinit var feed: Feed
+    override fun onClick(feed: Feed) {
+        val detailsFragment = DetailsFragmentForStore()
+
+        detailsFragment.setStyle(
+            DialogFragment.STYLE_NORMAL,
+            R.style.DialogFragmentTheme
+        );
+        detailsFragment.show(supportFragmentManager, "Jean 3")
+
+    }
+
+
 
 }
 interface DataCommunication {
     var product: Product?
     var lastPager:Int
     var cart:Cart?
+    var store_logo:String
+    var store_name:String
+    var  feed:Feed
+
 }

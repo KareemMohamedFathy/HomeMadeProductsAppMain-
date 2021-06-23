@@ -106,7 +106,6 @@ class RegisterActivity : AppCompatActivity() {
 
             dbReference=firebaseDatabase.getReference("User")
             val id=auth.currentUser!!.uid
-            Log.d("RegisterActivity", id)
 
             val user=User(id,name,mobileNo,"",email)
            dbReference.child(id).setValue(user)

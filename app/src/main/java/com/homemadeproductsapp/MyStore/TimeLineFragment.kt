@@ -2,8 +2,6 @@ package com.homemadeproductsapp.MyStore
 
 import MyStoreNewsFeedAdapter
 import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -16,22 +14,24 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.homemadeproductsapp.AllStores.PhotoDetails
-import com.homemadeproductsapp.AppConst
 import com.homemadeproductsapp.DB.Feed
-import com.homemadeproductsapp.Details.DetailsActivity
 import com.homemadeproductsapp.MyStore.Listeners.NewsFeedClickListener
 import com.homemadeproductsapp.R
-import com.mindorks.notesapp.data.local.pref.PrefConstant
-import java.lang.reflect.Type
 
 class TimeLineFragment : Fragment() {
     var view1: View? = null
     private lateinit var storeIdExists:String
+    private lateinit var dataCommunication: dataCommunication
+    private lateinit var newsFeedClickListener: NewsFeedClickListener
+    private lateinit var recyclerViewNotes:RecyclerView
+
     private var timeLinePhotos=ArrayList<Feed>()
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        dataCommunication=context as dataCommunication
+        newsFeedClickListener=context as NewsFeedClickListener
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -44,7 +44,7 @@ class TimeLineFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val args = arguments
         storeIdExists= args!!.getString("store_id").toString()
-
+handleTabs()
         getDataFromDbForTimeLine()
 
     }
@@ -80,7 +80,8 @@ class TimeLineFragment : Fragment() {
 
                 }
 
-                handleTabs()
+                recyclerViewNotes.adapter!!.notifyDataSetChanged()
+
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -98,19 +99,15 @@ class TimeLineFragment : Fragment() {
         val list=ArrayList<Feed>()
 
 
-        Log.d("run",timeLinePhotos.size.toString()+"oioio")
 
         val newsFeedClickListener=object : NewsFeedClickListener {
             override fun onClick(feed: Feed) {
                 if(feed.caption!!.isNotEmpty()&&feed.addDate!!.isNotEmpty()&&feed.imagePathProduct!!.isNotEmpty()) {
-                    val intent = Intent(activity, DetailsActivity::class.java)
-                    intent.putExtra(AppConst.CAPTION, feed.caption)
-                    intent.putExtra(AppConst.DATE, feed.addDate)
-                    intent.putExtra(AppConst.IMAGEPATH, feed.imagePathProduct)
-                    intent.putExtra(AppConst.STORENAME, name)
-                    intent.putExtra(AppConst.STOREIMAGEPATH, storeLogo)
+                    dataCommunication.feed=feed
+                    dataCommunication.store_logo= storeLogo.toString()
+                    dataCommunication.store_name= name.toString()
 
-                    startActivity(intent)
+                    newsFeedClickListener.onClick(feed)
 
                 }
             }
@@ -118,7 +115,7 @@ class TimeLineFragment : Fragment() {
         }
         timeLinePhotos.reverse()
         val newsFeedAdapter = MyStoreNewsFeedAdapter(timeLinePhotos, newsFeedClickListener)
-        val recyclerViewNotes = view1!!.findViewById<RecyclerView>(R.id.recyclerViewTimeLine)
+         recyclerViewNotes = view1!!.findViewById<RecyclerView>(R.id.recyclerViewTimeLine)
         val linearLayoutManager = GridLayoutManager(context,2)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
         recyclerViewNotes.layoutManager = linearLayoutManager
