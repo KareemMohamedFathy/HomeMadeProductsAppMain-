@@ -1,5 +1,7 @@
 package com.homemadeproductsapp.PastOrders.adapter
 
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -27,10 +29,28 @@ class AllOrdersAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    holder.textViewOrderId.text="Order_ID :     "+list[position].order_id
+    holder.textViewOrderId.text=list[position].order_id
         holder.textViewDate.text=list[position].date
         holder.textViewOrderPrice.text= list[position].cart.totalPrice.toString()+" EGP "
        holder.textViewStoreName.text=listStoreNames[list[position].store_id]
+        holder.textViewOrderStatus.text=list[position].order_status
+        val status=list[position].order_status
+        Glide.with(holder.itemView).load(listStorePics[list[position].store_id]).into(holder.imageViewLogo)
+
+        if(status=="Pending"){
+            holder.textViewOrderStatus.setTextColor(Color.parseColor("#FFEA00"))
+        }
+        else if(status=="Rejected"){
+            holder.textViewOrderStatus.setTextColor(Color.parseColor("#B71C1C"))
+        }
+      else  if(status!="Delivered"){
+
+            holder.textViewOrderStatus.setTextColor(Color.parseColor("#00C853"))
+        }
+        else{
+            holder.textViewOrderStatus.setTextColor(Color.parseColor("#212121"))
+        }
+
         holder.itemView.setOnClickListener(
             object :View.OnClickListener{
                 override fun onClick(v: View?) {
@@ -39,7 +59,6 @@ class AllOrdersAdapter(
 
             }
         )
-        Glide.with(holder.itemView).load(listStorePics[list[position].store_id]).into(holder.imageViewLogo)
     }
 
     override fun getItemCount(): Int {
@@ -52,6 +71,7 @@ class AllOrdersAdapter(
         var textViewOrderPrice:TextView=itemView.findViewById(R.id.textViewOrderPrice)
         var textViewDate:TextView=itemView.findViewById(R.id.textViewOrderDate)
         var imageViewLogo: ImageView =itemView.findViewById(R.id.storeLogo)
+        var textViewOrderStatus:TextView=itemView.findViewById(R.id.textViewOrderStatus)
 
 
 

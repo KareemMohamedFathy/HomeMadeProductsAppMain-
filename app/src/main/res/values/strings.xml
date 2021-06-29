@@ -5,6 +5,7 @@
     <string name="select_image">Select Image From Gallery/ Camera</string>
     <string name="title">Enter Store Name</string>
     <string name="description">description</string>
+    <string name="description_store">Write a Brief description about your store max 100 characters</string>
     <string name="submit">CreateYourStore</string>
     <string name="enter_item_name">Enter Item name</string>
     <string name="enter_item_price_in_egp">Enter Item Price In EGP</string>
@@ -37,4 +38,28 @@
     <string name="enter_your_store_description">Enter Your Store Description</string>
     <string name="update_store_info">Update Store Info</string>
     <string name="update_store_photo">Update Store Photo</string>
+    <string name="don_t_have_a_store">Don\'t have a store</string>
+    <string name="view_requested_orders">View Requested Orders</string>
+    <string name="orders_id">Order ID :</string>
+    <string name="orders_date">Order Date :</string>
+    <string name="order_total_price">Order Total Price :</string>
+    <string name="order_status_string">Order Status :</string>
+    <string name="update_order_status">Update Order Status</string>
+    <string name="food">Food</string>
+    <string name="toys">Toys</string>
+    <string name="books">Books</string>
+    <string name="clothes">Clothes</string>
+    <string name="out_of_stock">Out Of Stock</string>
+    <string name="timeline">TimeLine</string>
+    <string name="HomePageLabel">HomePage</string>
+    <string name="search_for_products_or_stores">Search for products or stores</string>
+
+
+    <string-array name="Order_Status">
+        <item>Pending</item>
+        <item>Accepted</item>
+        <item>Rejected</item>
+        <item>Delivered</item>
+        <item>On Delivery</item>
+    </string-array>
 </resources>

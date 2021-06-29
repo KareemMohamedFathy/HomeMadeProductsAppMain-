@@ -26,6 +26,7 @@ class TimeLineFragment : Fragment() {
     private lateinit var recyclerViewNotes:RecyclerView
 
     private var timeLinePhotos=ArrayList<Feed>()
+    private var timeLinePhotosHash=HashSet<Feed>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -44,12 +45,14 @@ class TimeLineFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val args = arguments
         storeIdExists= args!!.getString("store_id").toString()
-handleTabs()
         getDataFromDbForTimeLine()
+
+        //   getDataFromDbForTimeLine()
 
     }
 
     private fun getDataFromDbForTimeLine() {
+        timeLinePhotos.clear()
 
         val reference = FirebaseDatabase.getInstance().reference
 
@@ -69,18 +72,16 @@ handleTabs()
                         val id = dsp.child("id").value.toString()
 
                         val feed = Feed(caption, id, imagePathProduct, storeIdExists, date)
-
                         timeLinePhotos.add(feed)
 
-
                     }
+                    handleTabs()
 
 
                 } else {
 
                 }
 
-                recyclerViewNotes.adapter!!.notifyDataSetChanged()
 
             }
 
@@ -89,6 +90,8 @@ handleTabs()
             }
 
         })
+     //   recyclerViewNotes.adapter!!.notifyDataSetChanged()
+
     }
 
     private fun handleTabs() {
@@ -113,15 +116,27 @@ handleTabs()
             }
 
         }
+
         timeLinePhotos.reverse()
+        recyclerViewNotes = view1!!.findViewById<RecyclerView>(R.id.recyclerViewTimeLine)
+
         val newsFeedAdapter = MyStoreNewsFeedAdapter(timeLinePhotos, newsFeedClickListener)
-         recyclerViewNotes = view1!!.findViewById<RecyclerView>(R.id.recyclerViewTimeLine)
         val linearLayoutManager = GridLayoutManager(context,2)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
         recyclerViewNotes.layoutManager = linearLayoutManager
         recyclerViewNotes.adapter = newsFeedAdapter
 
     }
+
+    override fun onResume() {
+
+
+//       recyclerViewNotes.adapter?.notifyDataSetChanged()
+
+        super.onResume()
+
+    }
+
 
 
 }

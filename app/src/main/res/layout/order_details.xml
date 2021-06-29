@@ -27,27 +27,27 @@
 
                 />
 
-            <TextView
-                android:id="@+id/itemNum"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/circle"
-                android:alpha="0.75"
-
-                android:gravity="center"
-                android:shadowColor="@android:color/white"
-                android:shadowRadius="10.0"
-                android:layout_margin="4dp"
-                android:text="@string/itemsCount"
-                android:textColor="@android:color/white"
-                android:textSize="22sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                />
-
-
-
         </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/itemNum"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/circle"
+            android:alpha="0.75"
+
+            android:gravity="center"
+            android:shadowColor="@android:color/white"
+            android:shadowRadius="10.0"
+            android:layout_margin="4dp"
+            android:text="@string/itemsCount"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+            />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"

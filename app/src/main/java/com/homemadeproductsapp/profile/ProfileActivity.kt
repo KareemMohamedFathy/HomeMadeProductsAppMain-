@@ -8,6 +8,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -114,12 +115,6 @@ class ProfileActivity : AppCompatActivity(),multipleOptionsClick,OnOptionClickLi
     }
 
 
-    override fun onClickLogOut() {
-        auth.signOut()
-        val intent=Intent(this@ProfileActivity,LoginActivity::class.java)
-        startActivity(intent)
-    }
-
 
 
     override fun onCameraClick() {
@@ -161,6 +156,11 @@ class ProfileActivity : AppCompatActivity(),multipleOptionsClick,OnOptionClickLi
                 REQUEST_CODE_GALLERY -> {
                     val selectedImage = data?.data
                     picturePath = selectedImage.toString()
+                    val contentResolver = applicationContext.contentResolver
+                    val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    picturePath.toUri()?.let { contentResolver.takePersistableUriPermission(it, takeFlags) }
+
                     Log.d("cur",viewPager.currentItem.toString())
                     if(viewPager.currentItem==1) {
                         StoreSession.init(this)
@@ -176,6 +176,12 @@ class ProfileActivity : AppCompatActivity(),multipleOptionsClick,OnOptionClickLi
             }
         }
     }
+    override fun onClickLogOut() {
+        auth.signOut()
+        val intent=Intent(this@ProfileActivity,LoginActivity::class.java)
+        startActivity(intent)
+    }
+
 
     override fun onBack() {
     viewPager.currentItem=0

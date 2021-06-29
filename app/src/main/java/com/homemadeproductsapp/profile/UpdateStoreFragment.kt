@@ -10,10 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.ProgressBar
+import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -117,13 +114,19 @@ class UpdateStoreFragment : Fragment() {
 
                 val storeid = StoreSession.readString(PrefConstant.STOREID)
                 val path = StoreSession.readString(PrefConstant.STORELOGO)
-
-
-                val store= Store(storeid.toString(),name, path.toString(),description,category,id)
-                val lol = FirebaseDatabase.getInstance().getReference("Store")
-                        .child(storeid!!).setValue(store)
-                onMoveClick.onBack()
-            }
+                if(name.length>30){
+                    Toast.makeText(requireContext(),"Max number of character for store name is 30", Toast.LENGTH_SHORT).show()
+                }
+                else if(description.length>100){
+                    Toast.makeText(requireContext(),"Max number of character for store description is 100", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    val store = Store(storeid.toString(), name, path.toString(), description, category, id)
+                    val lol = FirebaseDatabase.getInstance().getReference("Store")
+                            .child(storeid!!).setValue(store)
+                    onMoveClick.onBack()
+                }
+                }
 
 
         })

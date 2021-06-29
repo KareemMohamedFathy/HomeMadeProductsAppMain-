@@ -15,6 +15,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -101,6 +102,7 @@ class UpdateProfileFragment : Fragment() {
         imageViewPersonalPhoto.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 if (checkAndRequestPermissions()) {
+
                     val name = editTextName.text.toString()
                     val phonoNo = editTextPhoneNo.text.toString()
                     StoreSession.write(PrefConstant.USERNAME,name)
@@ -122,16 +124,30 @@ class UpdateProfileFragment : Fragment() {
                // val storeid = StoreSession.readString(PrefConstant.STOREID)
                val path = StoreSession.readString(PrefConstant.USERPROFILEPHOTO)
 
-             //   val curUser: User = User(id, name, phonoNo, path, email, storeid)
-                val lol = FirebaseDatabase.getInstance().getReference("User")
-                    .child(auth.currentUser!!.uid).child("name").setValue(name)
-                FirebaseDatabase.getInstance().getReference("User")
+                if(name.length>30){
+                    Toast.makeText(requireContext(),"Max number of character for store name is 30", Toast.LENGTH_SHORT).show()
+                }
+                else if(phonoNo.length>11){
+                    Toast.makeText(requireContext(),"Max number of character for mobile number is 11", Toast.LENGTH_SHORT).show()
+                }
+
+                else {
+
+                    //   val curUser: User = User(id, name, phonoNo, path, email, storeid)
+                    val lol = FirebaseDatabase.getInstance().getReference("User")
+                            .child(auth.currentUser!!.uid).child("name").setValue(name)
+                    FirebaseDatabase.getInstance().getReference("User")
+
+                     FirebaseDatabase.getInstance().getReference("User")
+                            .child(auth.currentUser!!.uid).child("mobileno").setValue(phonoNo)
+                    FirebaseDatabase.getInstance().getReference("User")
 
 
-                FirebaseDatabase.getInstance().getReference("User")
-                    .child(auth.currentUser!!.uid).child("personalPhotoPath").setValue(path)
-                onMoveClick.onBack()
-            }
+                    FirebaseDatabase.getInstance().getReference("User")
+                            .child(auth.currentUser!!.uid).child("personalPhotoPath").setValue(path)
+                    onMoveClick.onBack()
+                }
+                }
 
 
         })

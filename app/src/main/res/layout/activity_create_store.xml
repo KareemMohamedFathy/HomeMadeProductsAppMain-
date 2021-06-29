@@ -89,7 +89,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:textColorHint="@android:color/darker_gray"
-        android:hint="@string/description"
+        android:hint="@string/description_store"
+
         app:layout_constraintBottom_toTopOf="@+id/submit_button"
         app:layout_constraintEnd_toEndOf="@+id/title_container"
         app:layout_constraintStart_toStartOf="@+id/title_container"
@@ -104,7 +105,7 @@
             android:layout_height="match_parent"
             android:ems="10"
             android:inputType="text"
-            android:gravity="start"
+            android:gravity="top|start"
             android:textColor="@android:color/black" />
     </com.google.android.material.textfield.TextInputLayout>
 

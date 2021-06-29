@@ -79,9 +79,9 @@ class StoreFragment : Fragment() ,Serializable {
 
         }
 
-        val itemsAdapter = StoreAdapter(filterList, requireActivity().applicationContext,OnProductClickListener)
+        val itemsAdapter = StoreAdapter(filterList,OnProductClickListener)
         val recyclerViewNotes = view1!!.findViewById<RecyclerView>(R.id.recyclerViewStores)
-        val linearLayoutManager = GridLayoutManager(context, 1)
+        val linearLayoutManager = GridLayoutManager(context, 2)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
         recyclerViewNotes.layoutManager = linearLayoutManager
         recyclerViewNotes.adapter = itemsAdapter

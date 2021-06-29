@@ -97,6 +97,8 @@ handleClickListeners()
                         intent.putExtra(AppConst.STORECATEGORY,store.mainCategoryName)
                        intent.putExtra(AppConst.STOREDESCRIPTION,store.store_description)
                         intent.putExtra(AppConst.STORELOGO,store.store_logo)
+                        intent.putExtra(AppConst.WHERETOGO,"AllStoresActivity")
+
 
                         intent.putExtra(AppConst.STOREID,store.store_id)
 
@@ -127,7 +129,6 @@ handleClickListeners()
     }
     private fun saveCategory(storename: String,category: String,store_id:String,storelogo:String) {
         StoreSession.write(PrefConstant.ALLSTORENAME, storename)
-        Log.d("what",category)
         StoreSession.write(AppConst.STOREMAINCATEGORY, category)
         StoreSession.write(AppConst.STOREID, store_id)
         StoreSession.write(AppConst.STORELOGO, storelogo)
@@ -184,4 +185,5 @@ handleClickListeners()
 
         }
     }
+
 }

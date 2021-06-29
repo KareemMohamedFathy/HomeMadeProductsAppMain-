@@ -20,6 +20,7 @@ import androidx.appcompat.app.ActionBar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.homemadeproductsapp.BuildConfig
 import com.homemadeproductsapp.DB.Category
@@ -117,14 +118,21 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterV
                 override fun onClick(v: View?) {
                     val name = editTextName.text.toString()
                     val description = editTextDescription.text.toString()
+                    if(name.length>30){
+                        Toast.makeText(this@CreateStoreActivity,"Max number of character for store name is 30",Toast.LENGTH_SHORT).show()
+                    }
+                   else if(description.length>100){
+                        Toast.makeText(this@CreateStoreActivity,"Max number of character for store description is 100",Toast.LENGTH_SHORT).show()
+                    }
+                    else {
 
-                    val imagepath=picturePath
-                    addToDb(name, description,imagepath)
-                    saveCategory(category)
-                    val intent = Intent(this@CreateStoreActivity,MyStoreActivity::class.java)
-                    startActivity(intent)
-                    finish()
-
+                        val imagepath = picturePath
+                        addToDb(name, description, imagepath)
+                        saveCategory(category)
+                        val intent = Intent(this@CreateStoreActivity, MyStoreActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
 
                 }
             }
@@ -256,7 +264,11 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterV
                 REQUEST_CODE_GALLERY -> {
                     val selectedImage = data?.data
                     picturePath = selectedImage.toString()
-                    Glide.with(this).load(picturePath).into(imageViewAdd)
+                    val contentResolver = applicationContext.contentResolver
+                    val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    picturePath.toUri()?.let { contentResolver.takePersistableUriPermission(it, takeFlags) }
+                    Glide.with(this).load(picturePath.toUri()).into(imageViewAdd)
                 }
             }
         }

@@ -17,6 +17,7 @@ import androidx.appcompat.app.ActionBar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -63,7 +64,10 @@ class CreateNewsFeedActivity : AppCompatActivity(),OnOptionClickListener {
 
     override fun onBackPressed() {
         super.onBackPressed()
-    finish()
+            val intent: Intent = Intent(this@CreateNewsFeedActivity, MyStoreActivity::class.java)
+            startActivity(intent)
+            finish()
+
     }
 
     private fun getIntentData() {
@@ -82,6 +86,7 @@ class CreateNewsFeedActivity : AppCompatActivity(),OnOptionClickListener {
                 val captionId = dbReference.push().key.toString()
                 val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
                 val currentDate = sdf.format(Date())
+                Log.d("kusooooooo",currentDate)
                 val timeline:Feed= Feed(caption,captionId,picturePath,store_id,currentDate.toString())
                 dbReference.child(captionId).setValue(timeline)
 
@@ -197,10 +202,17 @@ class CreateNewsFeedActivity : AppCompatActivity(),OnOptionClickListener {
                 REQUEST_CODE_CAMERA -> {
                     picturePath = imageLocation.path.toString()
                     Glide.with(this).load(imageLocation.absoluteFile).into(imageViewAddNewsFeed)
+
                 }
                 REQUEST_CODE_GALLERY -> {
                     val selectedImage = data?.data
                     picturePath = selectedImage.toString()
+                    val contentResolver = applicationContext.contentResolver
+                    val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+
+                    picturePath.toUri()?.let { contentResolver.takePersistableUriPermission(it, takeFlags) }
+
                     Glide.with(this).load(picturePath).into(imageViewAddNewsFeed)
                 }
             }

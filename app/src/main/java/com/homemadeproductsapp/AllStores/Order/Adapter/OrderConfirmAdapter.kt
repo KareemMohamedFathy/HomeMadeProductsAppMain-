@@ -1,4 +1,5 @@
 package com.homemadeproductsapp.AllStores.Order.Adapter
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.net.toUri
 import com.homemadeproductsapp.AllStores.Adapters.UpdateTotal
 import com.homemadeproductsapp.DB.Cart
@@ -16,9 +18,11 @@ import com.homemadeproductsapp.R
 class OrderConfirmAdapter(private val cart: Cart, private val productId: ArrayList<Product>, private val clickListener: UpdateTotal): RecyclerView.Adapter<OrderConfirmAdapter.ViewHolder>() {
 
 
-
+private lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        context=parent.context
+
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.activity_order_confirm_adapter, parent, false)
         return ViewHolder(view)
@@ -30,21 +34,30 @@ class OrderConfirmAdapter(private val cart: Cart, private val productId: ArrayLi
         holder.imageSwitcherProduct.setImageURI(cart.itemsIdPicList[productId[position].id]!!.toUri())
         holder.textViewName.text= productId[position].name
         holder.textViewDescription.text= productId[position].description
+        Log.d("kuso", cart.itemsIdAmountList[productId[position].id]!!.toString())
+
         var amount:Int= cart.itemsIdAmountList[productId[position].id]!!
         var price:Double= cart.itemsIdPriceList[productId[position].id]!!
+        var copies:Int= productId[position].copies!!
+        Log.d("amount",amount.toString())
         Log.d("amount", amount.toString())
 
         holder.imageViewAdd.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
                 amount= cart.itemsIdAmountList[productId[position].id]!!
+                if(amount<copies) {
 
                     amount++
                     price = productId[position].price!! * amount
-                    cart.itemsIdAmountList.put(productId[position].id!!,amount)
-                   cart.itemsIdPriceList.put(productId[position].id!!,price)
-                   holder.itemNum.setText(amount.toString())
-                holder.textViewPrice.text= price.toString()+" EGP "
-                clickListener.updateTotal(productId[position].price)
+                    cart.itemsIdAmountList.put(productId[position].id!!, amount)
+                    cart.itemsIdPriceList.put(productId[position].id!!, price)
+                    holder.itemNum.setText(amount.toString())
+                    holder.textViewPrice.text = price.toString() + " EGP "
+                    clickListener.updateTotal(productId[position].price)
+                }
+                else{
+                    Toast.makeText(context,"No more Copies Available to add", Toast.LENGTH_LONG).show()
+                }
 
 
             }

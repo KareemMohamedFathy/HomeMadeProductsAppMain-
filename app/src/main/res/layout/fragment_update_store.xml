@@ -31,30 +31,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@android:color/black"
-        >
-        <ImageView
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            />
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_height="20dp"
-                android:layout_width="20dp"
-                android:id="@+id/back"
-                android:src="@drawable/ic_arrow"
 
-                />
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:textAppearance="@android:style/TextAppearance.Material.Large"
-                android:gravity="top|center"
-                android:text="@string/update_store_info"
-                android:textColor="@android:color/white"
-                />
-        </RelativeLayout>
+        >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        />
+    <ImageView
+        android:layout_height="20dp"
+        android:layout_width="20dp"
+        android:id="@+id/back"
+        android:src="@drawable/ic_arrow"
+        android:layout_centerVertical="true"
+
+        android:contentDescription="@string/hahahahah" />
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:gravity="top|center"
+            android:layout_centerVertical="true"
+
+            android:text="@string/update_store_info"
+            android:textColor="@android:color/white"
+            />
+    </RelativeLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.cardview.widget.CardView

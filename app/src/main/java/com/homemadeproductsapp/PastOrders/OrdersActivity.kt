@@ -82,6 +82,10 @@ class OrdersActivity : AppCompatActivity(),OrderClickListener,dataCommunication,
      viewPager2.currentItem=0
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
+
 
 }
 

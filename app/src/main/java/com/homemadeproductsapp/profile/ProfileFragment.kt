@@ -68,7 +68,6 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         bindViews(view)
         getUserData()
-        setUpCLickListeners()
 
     }
 
@@ -114,6 +113,7 @@ class ProfileFragment : Fragment() {
 
         buttonUpdateStore.setOnClickListener(object:View.OnClickListener{
             override fun onClick(v: View?) {
+                Log.d("Bagga",buttonUpdateStore.isClickable.toString())
                 optionsClick.onClickStore()
 
             }
@@ -135,45 +135,73 @@ class ProfileFragment : Fragment() {
     private fun getStoreData() {
         firebaseDatabase= FirebaseDatabase.getInstance()
 
-    val query=firebaseDatabase.getReference("Store").orderByChild("store_id").equalTo(storeidExists)
-        query.addValueEventListener(object : ValueEventListener{
 
-            override fun onDataChange(it: DataSnapshot) {
-                if(it.exists()) {
-                    for (dsp in it.children) {
-                        storeName=dsp.child("store_name").value.toString()
-                        category= dsp.child("mainCategoryName").value.toString()
-                        textViewStoreName.text =storeName
-                        storeLogoImagePath= dsp.child("store_logo").value.toString()
-                        description=dsp.child("store_description").value.toString()
-                        textViewCategory.text = dsp.child("mainCategoryName").value.toString()
-                    }
-                }
-                else{
-                    textViewStoreName.text = "N/A"
-                    textViewStoreCategory.text = "N/A"
+
+if(storeidExists.isEmpty()) {
+    Log.d("kuso","kusooooooo")
+    textViewStoreName.text = "N/A"
+    description="N/A"
+    storeLogoImagePath="N/A"
+
+    textViewStoreCategory.text = "N/A"
+buttonUpdateStore.isEnabled=false
+buttonUpdateStore.alpha=0.4f
+}
+        else{
+    buttonUpdateStore.isEnabled=true
+    buttonUpdateStore.alpha=1.0f
+}
+
+
+    val query = firebaseDatabase.getReference("Store").orderByChild("store_id").equalTo(storeidExists)
+    query.addValueEventListener(object : ValueEventListener {
+
+        override fun onDataChange(it: DataSnapshot) {
+            if (it.exists()) {
+                for (dsp in it.children) {
+
+                    storeName = dsp.child("store_name").value.toString()
+                    category = dsp.child("mainCategoryName").value.toString()
+                    textViewStoreName.text = storeName
+                    storeLogoImagePath = dsp.child("store_logo").value.toString()
+                    description = dsp.child("store_description").value.toString()
+                    textViewCategory.text = dsp.child("mainCategoryName").value.toString()
 
                 }
+            } else {
+                textViewStoreName.text = "N/A"
+                textViewStoreCategory.text = "N/A"
+                description="N/A"
+                storeLogoImagePath="N/A"
+                buttonUpdateStore.isEnabled=false
+
+            }
+            Log.d("kuso2", buttonUpdateStore.isEnabled.toString())
+
             saveData()
-            }
+        }
 
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
+        override fun onCancelled(error: DatabaseError) {
+            TODO("Not yet implemented")
+        }
 
-        })
-
+    })
     }
 
     private fun saveData() {
-        StoreSession.write(PrefConstant.STORENAME,storeName)
+
+        StoreSession.write(PrefConstant.STORENAME,textViewStoreName.text.toString())
         StoreSession.write(PrefConstant.STOREID,storeidExists)
-        StoreSession.write(PrefConstant.MAINCATEGORY,category)
+        StoreSession.write(PrefConstant.MAINCATEGORY,textViewStoreCategory.text.toString())
         StoreSession.write(PrefConstant.USEREMAIL,email)
         StoreSession.write(PrefConstant.USERNAME,name)
         StoreSession.write(PrefConstant.USERPHONONO,phoneNo)
         StoreSession.write(PrefConstant.STOREDESCRIPTION,description)
      StoreSession.write(PrefConstant.STORELOGO,storeLogoImagePath)
+        Log.d("kuso1",buttonUpdateStore.isEnabled.toString())
+
+        setUpCLickListeners()
+
 
     }
 

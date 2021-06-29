@@ -68,6 +68,8 @@ class AllOrdersFragment : Fragment() {
                         val picMap: HashMap<String, String> = HashMap()
 
                         val order_id=dsp.child("order_id").value.toString()
+                        val status=dsp.child("order_status").value.toString()
+
                         var store_id=dsp.child("store_id").value.toString()
                         val cart =dsp.child("cart")
                         val user_id=dsp.child("user_id").value.toString()
@@ -78,9 +80,10 @@ class AllOrdersFragment : Fragment() {
                         priceMap.putAll(cart.child("itemsIdPriceList").value as HashMap<String, Double>)
                         picMap.putAll(cart.child("itemsIdPicList").value as HashMap<String, String>)
                         cartPrice=cart.child("totalPrice").value.toString().toDouble()
+
                         var realCart=Cart(store_id,amountMap,priceMap,picMap,cartPrice)
                         hashSet.add(store_id)
-                        val order=Order(order_id, store_id,realCart,user_id, date)
+                        val order=Order(order_id, store_id,realCart,user_id, date,status)
                         listOrder.add(order)
                     }
                 }

@@ -28,6 +28,7 @@ import com.homemadeproductsapp.DB.Feed
 import com.homemadeproductsapp.DB.Local.StoreSession
 import com.homemadeproductsapp.DB.Product
 import com.homemadeproductsapp.Details.DetailsFragment
+import com.homemadeproductsapp.Home.HomeActivity
 import com.homemadeproductsapp.R
 import com.mindorks.notesapp.data.local.pref.PrefConstant
 import kotlinx.android.synthetic.main.activity_on_store_open.*
@@ -37,6 +38,7 @@ class OnStoreOpenActivity : AppCompatActivity(),DataCommunication,OnProductClick
     private lateinit var viewPager1: ViewPager2
     private lateinit var productId:String
     private lateinit var group: Group
+    private lateinit var whereYouWonnaGo:String
 
 
     private var fromOrder:Boolean=false
@@ -181,8 +183,7 @@ private lateinit var storeid:String
                     val cart1: Cart = Cart(store_id, amountMap, priceMap, picMap, cartPrice)
                     cart = cart1
                 }
-                Log.d("fuckingbagga", cart.toString())
-                checkCartStatus()
+                 checkCartStatus()
 
             }
 
@@ -198,7 +199,6 @@ private lateinit var storeid:String
 
 
       fun checkCartStatus() {
-         Log.d("hayo","hayo")
 
         if(cart!=null&&cart!!.store_id==storeid){
             imageViewCart.alpha=1.0F
@@ -238,18 +238,24 @@ private lateinit var storeid:String
             var back: ImageView =view.findViewById(R.id.action_bar_Image)
             back.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View?) {
-                    for (i in 0..size) {
+
+                    if(whereYouWonnaGo=="AllStoresActivity") {
+                        val intent: Intent = Intent(
+                                this@OnStoreOpenActivity,
+                                AllStoresActivity::class.java
+                        )
+                        finish()
+                        startActivity(intent)
+                    }
+                    else{
+                        val intent: Intent = Intent(
+                                this@OnStoreOpenActivity,
+                                HomeActivity::class.java
+                        )
+                        finish()
+                        startActivity(intent)
 
                     }
-
-
-                    val intent: Intent = Intent(
-                        this@OnStoreOpenActivity,
-                        AllStoresActivity::class.java
-                    )
-                    finish()
-                    startActivity(intent)
-
                 }
             }
             )
@@ -261,6 +267,9 @@ private lateinit var storeid:String
         if(intent.hasExtra(AppConst.STORELOGO)){
             storeLogo=intent.getStringExtra(AppConst.STORELOGO).toString()
         }
+        if(intent.hasExtra(AppConst.WHERETOGO)){
+            whereYouWonnaGo=intent.getStringExtra(AppConst.WHERETOGO).toString()
+        }
             val reference = FirebaseDatabase.getInstance().reference
 
             val query = reference.child("Product").orderByChild("store_id").equalTo(storeid)
@@ -269,7 +278,6 @@ private lateinit var storeid:String
                     if (dataSnapshot.exists()) {
 
                         for (dsp in dataSnapshot.children) {
-                            Log.d("ah", dsp.value.toString())
                             val name = dsp.child("name").value.toString()
                             val id = dsp.child("id").value.toString()
                             val copies = dsp.child("copies").value.toString()
@@ -340,7 +348,6 @@ private lateinit var storeid:String
 
                     }
                 }
-                Log.d("istrue", timeLinePhotos.size.toString())
 
                 StoreSession.writeFeed(timeLinePhotos, "TIMELINE")
 
@@ -372,7 +379,6 @@ private lateinit var storeid:String
 
 
             for (cat in allCategories[idx]) {
-                Log.d("hi", cat.toString())
                     pageAdapter.addFragment(StoreFragment(), cat)
 
 
@@ -402,12 +408,10 @@ private lateinit var storeid:String
     }
 
     private fun getIntentData():Int {
-            Log.d("suda", category)
             var x=0
             for(cat in allCategories){
                 if(cat[0]==category){
                     idx=x
-                    Log.d("suda", cat.toString())
                     return cat.size
                 }
                 x++
@@ -427,6 +431,7 @@ private lateinit var storeid:String
 
     }
    private fun orderFragment(){
+
        val justOpenFragment=JustOpenFragment()
        justOpenFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentTheme);
        justOpenFragment.show(supportFragmentManager, "Jean Boy")
@@ -439,6 +444,22 @@ private lateinit var storeid:String
         orderDoneFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentTheme);
         orderDoneFragment.show(supportFragmentManager, "Jean Boy2")
     }
+
+
+    override fun onBackPressed() {
+        if(whereYouWonnaGo=="AllStoresActivity") {
+            val intent: Intent = Intent(this@OnStoreOpenActivity, AllStoresActivity::class.java)
+            finish()
+            startActivity(intent)
+        }
+        else {
+            val intent: Intent = Intent(this@OnStoreOpenActivity, HomeActivity::class.java)
+            finish()
+            startActivity(intent)
+        }
+        super.onBackPressed()
+    }
+
 
     override lateinit var store_logo: String
     override lateinit var store_name: String
@@ -453,6 +474,7 @@ private lateinit var storeid:String
         detailsFragment.show(supportFragmentManager, "Jean 3")
 
     }
+
 
 
 

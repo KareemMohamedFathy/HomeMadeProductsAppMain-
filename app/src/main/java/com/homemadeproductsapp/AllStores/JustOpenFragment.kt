@@ -128,6 +128,9 @@ class JustOpenFragment : DialogFragment() {
 
                     textViewProductPrice.text = ("$curprice EGP")
                 }
+                else{
+                    Toast.makeText(requireContext(),"No more Copies Available to add",Toast.LENGTH_LONG).show()
+                }
             }
 
         })

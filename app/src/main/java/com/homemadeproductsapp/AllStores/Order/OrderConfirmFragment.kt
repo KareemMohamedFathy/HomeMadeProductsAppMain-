@@ -38,6 +38,8 @@ class OrderConfirmFragment : DialogFragment() {
     private lateinit var buttonConfrimOrder: Button
     private lateinit var dataCommunication:DataCommunication
     private  var total=0.00
+   private val products:ArrayList<Product> = ArrayList<Product>()
+
     private lateinit var textViewTotal:TextView
     private lateinit var auth: FirebaseAuth
     private lateinit var notifyCart: NotifyCart
@@ -112,11 +114,18 @@ class OrderConfirmFragment : DialogFragment() {
                 dbref.child("User").child(auth.currentUser!!.uid).child("Cart").setValue(
                     dataCommunication.cart
                 )
+                val dbref2 = FirebaseDatabase.getInstance().reference.child("Product")
+                    for(cat in products){
+                        val num= cat.copies!! - dataCommunication.cart!!.itemsIdAmountList[cat.id]!!
+                        dbref2.child(cat.id!!).child("copies").setValue(num)
+                    }
+
+
                 val dbref1=FirebaseDatabase.getInstance().reference
                 val id=dbref.push().key.toString()
                 val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
                 val currentDate = sdf.format(Date())
-                val order: Order =Order(id, dataCommunication.cart!!.store_id, dataCommunication.cart!!,auth.currentUser!!.uid,currentDate.toString())
+                val order: Order =Order(id, dataCommunication.cart!!.store_id, dataCommunication.cart!!,auth.currentUser!!.uid,currentDate.toString(),"Pending")
                 dbref1.child("Order").child(id).setValue(order)
                 dataCommunication.cart=null
                 dbref.child("User").child(auth.currentUser!!.uid).child("Cart").removeValue()
@@ -165,7 +174,7 @@ class OrderConfirmFragment : DialogFragment() {
     private fun setupRecyclerView() {
         val productId:ArrayList<String> = ArrayList<String>()
         val productHash:HashSet<String> = HashSet<String>()
-        val products:ArrayList<Product> = ArrayList<Product>()
+
 
         val cart=dataCommunication.cart!!.itemsIdAmountList
         for(ids in cart) {

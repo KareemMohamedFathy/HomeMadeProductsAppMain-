@@ -9,17 +9,6 @@
     tools:context=".profile.ProfileFragment"
     android:background="@android:color/white"
     >
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_constraintBottom_toTopOf="@id/buttonUpdateProfile"
-    app:layout_constrainedHeight="true"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-
-    />
     <androidx.cardview.widget.CardView
         android:layout_width="150dp"
         android:layout_height="150dp"

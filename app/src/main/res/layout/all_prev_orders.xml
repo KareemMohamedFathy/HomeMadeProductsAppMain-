@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="6dp"
+    android:layout_margin="4dp"
     android:orientation="vertical"
     android:padding="8dp"
 
@@ -12,77 +12,153 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FAFAFA"
-
         >
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:padding="8dp"
-        android:background="@android:color/black"
+        android:padding="4dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="4dp"
         android:id="@+id/storeLogo"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
         />
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:textSize="25sp"
+        android:textSize="17sp"
         app:layout_constraintStart_toEndOf="@id/storeLogo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="16dp"
+        android:layout_margin="4dp"
 
         android:id="@+id/textViewStoreName"
         android:textColor="@android:color/black"
 
         />
-
         <TextView
-            android:layout_width="0dp"
+
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/storeLogo"
-            app:layout_constraintEnd_toStartOf="@+id/textViewOrderPrice"
-            app:layout_constraintTop_toBottomOf="@+id/textViewOrderID"
-            android:layout_margin="8dp"
-
-            android:textSize="15sp"
-            android:textColor="@android:color/black"
-
-
-            android:id="@+id/textViewOrderDate"
-            />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/textViewOrderDate"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewOrderID"
-            android:layout_margin="16dp"
-
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-
-            android:id="@+id/textViewOrderPrice"
-            />
-
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@+id/storeLogo"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewStoreName"
-            android:layout_margin="16dp"
+           app:layout_constraintStart_toEndOf="@+id/storeLogo"
+            app:layout_constraintEnd_toStartOf="@+id/textViewOrderID"
+
+            android:textSize="14sp"
+            android:id="@+id/textViewOrderID1"
+            android:text="@string/orders_id"
+            android:textColor="@android:color/black"
+            android:layout_margin="4dp"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStoreName"
+            app:layout_constraintStart_toEndOf="@id/textViewOrderID1"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewGo"
 
             android:id="@+id/textViewOrderID"
+            android:layout_margin="4dp"
+            android:textSize="14sp"
             android:textColor="@android:color/darker_gray"
+
             />
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOrderID"
+            app:layout_constraintStart_toEndOf="@+id/storeLogo"
+            android:textSize="14sp"
+
+            app:layout_constraintEnd_toStartOf="@+id/textViewOrderDate"
+            android:id="@+id/textViewOrderDate1"
+            android:text="@string/orders_date"
+            android:layout_margin="4dp"
+            android:textColor="@android:color/black"
+
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOrderID"
+            app:layout_constraintStart_toEndOf="@id/textViewOrderDate1"
+          app:layout_constraintEnd_toStartOf="@+id/imageViewGo"
+            android:id="@+id/textViewOrderDate"
+            android:layout_margin="4dp"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray"
+
+            />
+
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOrderDate"
+            app:layout_constraintStart_toEndOf="@+id/storeLogo"
+
+            app:layout_constraintEnd_toStartOf="@+id/textViewOrderPrice"
+            android:id="@+id/textViewOrderPrice1"
+            android:text="@string/order_total_price"
+            android:textSize="16sp"
+            android:layout_margin="4dp"
+            android:textColor="@android:color/black"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOrderDate"
+            app:layout_constraintStart_toEndOf="@id/textViewOrderPrice1"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewGo"
+            android:id="@+id/textViewOrderPrice"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+
+            android:textStyle="bold"
+            android:layout_margin="4dp"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOrderPrice1"
+            app:layout_constraintStart_toEndOf="@+id/storeLogo"
+           app:layout_constraintEnd_toStartOf="@+id/textViewOrderStatus"
+            android:id="@+id/textViewOrderStatus1"
+            android:text="@string/order_status_string"
+            android:textSize="16sp"
+            android:layout_margin="4dp"
+            android:textColor="@android:color/black"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewOrderStatus"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textViewOrderStatus1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textViewOrderStatus1"
+
+            />
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_go"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/imageViewGo"
+
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

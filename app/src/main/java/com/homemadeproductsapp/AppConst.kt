@@ -9,6 +9,7 @@ object AppConst {
     const val STORELOGO="storelogo"
     const val STORECATEGORY="storecategory"
     const val STOREMAINCATEGORY="storemaincategory"
+    const val WHERETOGO="wheretogo"
 
     const val STOREDESCRIPTION="storedescription"
     const val SHIPPINGTIME="shippingtime"

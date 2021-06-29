@@ -120,7 +120,7 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
             back.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View?) {
                     val intent: Intent = Intent(this@CreateItemActivity, MyStoreActivity::class.java)
-                    startActivity(intent)
+                   startActivity(intent)
                     finish()
                 }
             }
@@ -208,6 +208,12 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
             }
             else    if (TextUtils.isEmpty(name)||TextUtils.isEmpty(price)||TextUtils.isEmpty(description)) {
                 Toast.makeText(this@CreateItemActivity, "Plz fill all data", Toast.LENGTH_SHORT).show()
+            }
+          else  if(name.length>30){
+                Toast.makeText(this@CreateItemActivity,"Max number of character for store name is 30",Toast.LENGTH_SHORT).show()
+            }
+            else if(description.length>150){
+                Toast.makeText(this@CreateItemActivity,"Max number of character for store description is 150",Toast.LENGTH_SHORT).show()
             }
 
 
@@ -359,10 +365,17 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
                     if (data?.getClipData() != null) {
                         var count = data.clipData!!.itemCount
                         for (i in 0 until count) {
+
                             var imageUri: Uri = data.clipData!!.getItemAt(i).uri
                             images!!.add(imageUri)
+                            val contentResolver = applicationContext.contentResolver
+                            val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION
 
-                       //    imageViewAddItem.setImageURI(imageUri)
+                            imageUri?.let { contentResolver.takePersistableUriPermission(it, takeFlags) }
+
+
+                            //    imageViewAddItem.setImageURI(imageUri)
                         }
                         imageViewAddItem.setImageURI(images!![0])
                         position = 0;
@@ -392,5 +405,12 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent: Intent = Intent(this@CreateItemActivity, MyStoreActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 
 }

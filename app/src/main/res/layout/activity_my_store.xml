@@ -29,16 +29,35 @@
         app:layout_constraintTop_toTopOf="parent"
 
         />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/storeDescription"
+        app:layout_constraintStart_toEndOf="@+id/cardViewStoreLogo"
+        android:id="@+id/buttonViewRequestedOrders"
+        android:text="@string/view_requested_orders"
+        android:textAllCaps="false"
+        android:layout_marginStart="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/appBarLayout"
+
+
+
+
+
+    />
+
+
+
 
 
     <TextView
         android:id="@+id/storeName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="4dp"
         app:layout_constrainedHeight="true"
         android:gravity="top"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textStyle="bold"
         app:layout_constrainedWidth="true"
         android:textColor="@android:color/black"
@@ -54,21 +73,18 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:textStyle="bold"
         app:layout_constrainedWidth="true"
         android:textColor="@android:color/darker_gray"
 
         app:layout_constraintStart_toEndOf="@id/cardViewStoreLogo"
         app:layout_constraintEnd_toStartOf="@id/buttonAddItems"
         app:layout_constraintTop_toBottomOf="@id/storeName"
+            android:textSize="14sp"
         />
-
-
-
     <androidx.cardview.widget.CardView
         android:layout_width="80dp"
         android:layout_height="80dp"
-        app:cardCornerRadius="105dp"
+        app:cardCornerRadius="80dp"
         app:cardBackgroundColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -107,7 +123,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardViewStoreLogo"
+        app:layout_constraintTop_toBottomOf="@+id/buttonViewRequestedOrders"
         >
 
 
@@ -137,7 +153,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Don't have a store"
+        android:text="@string/don_t_have_a_store"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -150,7 +166,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        app:constraint_referenced_ids="buttonAddItems,viewPager2,storeName,storeDescription,cardViewStoreLogo,appBarLayout" />
+        app:constraint_referenced_ids="buttonAddItems,viewPager2,storeName,buttonViewRequestedOrders,storeDescription,cardViewStoreLogo,appBarLayout" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/subgroup"

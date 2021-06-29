@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.homemadeproductsapp.DB.Local.StoreSession
+import com.homemadeproductsapp.Home.HomeActivity
 import com.homemadeproductsapp.MyStore.MyStoreActivity
 import com.mindorks.notesapp.data.local.pref.PrefConstant
 
@@ -42,7 +43,7 @@ setupSharedPreference()
        val status= StoreSession.read(PrefConstant.LOGGED)
         if(auth.currentUser!=null){
             Toast.makeText(this@LoginActivity, "Successfully Logged In", Toast.LENGTH_LONG).show()
-            val intent= Intent(this@LoginActivity, MyStoreActivity::class.java)
+            val intent= Intent(this@LoginActivity, HomeActivity::class.java)
             startActivity(intent)
             finish()
 
@@ -68,7 +69,7 @@ setupSharedPreference()
                     if(task.isSuccessful) {
 saveSession()
                         Toast.makeText(this@LoginActivity, "Successfully Logged In", Toast.LENGTH_LONG).show()
-                        val intent= Intent(this@LoginActivity, MyStoreActivity::class.java)
+                        val intent= Intent(this@LoginActivity, HomeActivity::class.java)
                         startActivity(intent)
                         finish()
                     }else {

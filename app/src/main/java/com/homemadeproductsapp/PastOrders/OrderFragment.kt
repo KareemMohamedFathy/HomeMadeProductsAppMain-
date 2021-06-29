@@ -1,3 +1,4 @@
+
 package com.homemadeproductsapp.PastOrders
 
 import android.content.Context
@@ -87,13 +88,11 @@ private lateinit var view1:View
 
     private fun setupClickListeners() {
         backImageView.setOnClickListener{
-            requireActivity().getSupportFragmentManager().popBackStack();
             backToAllOrders.backToHome()
         }
     }
 
     private fun bindViews() {
-        Log.d("hayo1",dataCommunication.chosenOrder!!.cart.toString())
         total=dataCommunication.chosenOrder!!.cart.totalPrice
         textViewTotal=view1.findViewById(R.id.textViewTotalCost)
         backImageView=view1.findViewById(R.id.back)

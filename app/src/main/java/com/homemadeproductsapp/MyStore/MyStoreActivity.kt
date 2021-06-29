@@ -2,7 +2,6 @@ package com.homemadeproductsapp.MyStore
 
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -27,9 +26,12 @@ import com.homemadeproductsapp.AllStores.AllStoresActivity
 import com.homemadeproductsapp.DB.Category
 import com.homemadeproductsapp.DB.Feed
 import com.homemadeproductsapp.DB.Local.StoreSession
+import com.homemadeproductsapp.DB.Order
 import com.homemadeproductsapp.DB.Product
 import com.homemadeproductsapp.Details.DetailsFragment
 import com.homemadeproductsapp.Home.HomeActivity
+import com.homemadeproductsapp.MyStore.AcceptOrders.Listener.OrderAcceptClickListener
+import com.homemadeproductsapp.MyStore.AcceptOrders.RequestedOrdersFragment
 import com.homemadeproductsapp.MyStore.Adapter.MyStoreFragmentAdapter
 import com.homemadeproductsapp.MyStore.ItemsAndFeed.CreateItemActivity
 import com.homemadeproductsapp.MyStore.ItemsAndFeed.CreateNewsFeedActivity
@@ -44,39 +46,58 @@ import kotlinx.android.synthetic.main.activity_my_store.*
 import kotlinx.android.synthetic.main.item_adapter_layout.*
 
 
-class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunication,NewsFeedClickListener {
+class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunication,NewsFeedClickListener,OrderAcceptClickListener {
     companion object {
        private const val ADD_STORE_CODE = 100
     }
     private  var edit=false
-    val allCategories = arrayOf(arrayOf("Clothing", "shirt", "shorts", "dresses", "jackets", "shoes", "trousers", "socks"
-    ),
-            arrayOf("Food", "Bakery", "ReadyToCook", "FastFood", "pickles", "powders", "Diet Food", "Frozen Food", "cans,","other"),//food
-            arrayOf("Home crafts", "Home accessories", "Home Decor", "woodwork"
-                    ,"other" ),//home crafts
-            arrayOf(
-                    "Accessories",
-                    "Pet Accessories",
-                    "Hair Accessories",
-                    "BELTS",
-                    "SCARVES",
-                    "HEADBANDS",
-                    "bags",
-                    "hats",
-                    "phone cases"
-                    ,"other"),//accessories
-            arrayOf("Books",
-                    "book accessories",
-                    "literature",
-                    "childeren books",
-                    "magazines",
-                    "guides"
-                    ,"other"), //books
-            arrayOf("Toys", "Puzzles", "videogames", "dolls&&stuffed toys", "card games"
-                    ,"other"),//toys
-            arrayOf("Jewellery",
-                    "necklaces",
-                    "rings", "bracelets","other"))
+    val allCategories = arrayOf(
+        arrayOf(
+            "Clothing", "shirt", "shorts", "dresses", "jackets", "shoes", "trousers", "socks"
+        ),
+        arrayOf(
+            "Food",
+            "Bakery",
+            "ReadyToCook",
+            "FastFood",
+            "pickles",
+            "powders",
+            "Diet Food",
+            "Frozen Food",
+            "cans,",
+            "other"
+        ),//food
+        arrayOf(
+            "Home crafts", "Home accessories", "Home Decor", "woodwork", "other"
+        ),//home crafts
+        arrayOf(
+            "Accessories",
+            "Pet Accessories",
+            "Hair Accessories",
+            "BELTS",
+            "SCARVES",
+            "HEADBANDS",
+            "bags",
+            "hats",
+            "phone cases", "other"
+        ),//accessories
+        arrayOf(
+            "Books",
+            "book accessories",
+            "literature",
+            "childeren books",
+            "magazines",
+            "guides", "other"
+        ), //books
+        arrayOf(
+            "Toys", "Puzzles", "videogames", "dolls&&stuffed toys", "card games", "other"
+        ),//toys
+        arrayOf(
+            "Jewellery",
+            "necklaces",
+            "rings", "bracelets", "other"
+        )
+    )
     private  var listItems=ArrayList<Product>()
     private  var timeLinePhotos=ArrayList<Feed>()
 
@@ -100,6 +121,7 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunica
     private lateinit var buttonCreateStore: Button
     private lateinit var imageViewLogo: ImageView
     private lateinit var buttonAddItems:FloatingActionButton
+    private lateinit var buttonViewRequestedOrders:Button
 
 
 
@@ -179,8 +201,6 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunica
 
             val imagepath=it.child("store_logo").value.toString()
 
-            Log.d("hahaha", imagepath)
-            Log.d("hahaha1", imagePathExists)
 
 
             textViewstoreName.setText(name)
@@ -206,13 +226,18 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunica
     private fun handleTabs() {
         var first=true
         val   pageAdapter = MyStoreFragmentAdapter(this)
-        Log.d("idx",idx.toString())
 
-        pageAdapter.addTimeLineFragment(TimeLineFragment(), "Timeline", storeNameExists, imagePathExists, storeIdExists)
+
+        pageAdapter.addTimeLineFragment(
+            TimeLineFragment(),
+            "Timeline",
+            storeNameExists,
+            imagePathExists,
+            storeIdExists
+        )
 
 
         for(cat in allCategories[idx]){
-            Log.d("sdfs", cat)
 
             if(!first)
                 pageAdapter.addFragment(ItemsFragment(), cat, storeIdExists)
@@ -248,12 +273,10 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunica
     }
 
     private fun getCategoryCount():Int {
-        Log.d("suda", storeCategoryExists)
         var x=0
         for(cat in allCategories){
             if(cat[0]==storeCategoryExists){
                 idx=x
-                Log.d("suda", cat.toString())
                 return cat.size
             }
             x++
@@ -265,16 +288,30 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunica
     }
 
     private fun setupClickListeners() {
+        buttonViewRequestedOrders.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                val requestedOrdersFragment = RequestedOrdersFragment()
+                val bundle = Bundle()
+                bundle.putString("store_id", storeIdExists)
+                requestedOrdersFragment.arguments=bundle
+                requestedOrdersFragment.setStyle(
+                    DialogFragment.STYLE_NORMAL,
+                    R.style.DialogFragmentTheme
+                );
+                requestedOrdersFragment.show(supportFragmentManager, "Jean Boy2")
+            }
+
+        })
         buttonCreateStore.setOnClickListener(
-                object : View.OnClickListener {
-                    override fun onClick(v: View?) {
-                        startActivity(Intent(this@MyStoreActivity, CreateStoreActivity::class.java))
-                        insertCategories()
+            object : View.OnClickListener {
+                override fun onClick(v: View?) {
+                    startActivity(Intent(this@MyStoreActivity, CreateStoreActivity::class.java))
+                    finish()
+                    insertCategories()
 
 
-
-                    }
                 }
+            }
         )
       buttonAddItems.setOnClickListener(object : View.OnClickListener {
           override fun onClick(v: View?) {
@@ -341,7 +378,7 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunica
         textViewstoreName=findViewById(R.id.storeName)
         textViewstoreDescription=findViewById(R.id.storeDescription)
         imageViewLogo=findViewById(R.id.logoPic)
-
+        buttonViewRequestedOrders=findViewById(R.id.buttonViewRequestedOrders)
     }
 
     override fun onProductClick() {
@@ -349,15 +386,15 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunica
 
         intent.putExtra("store_id", storeIdExists)
 
-        Log.d("MyStoreAcs", storeIdExists)
        startActivity(intent)
+        finish()
     }
 
     override fun onFeedClick() {
         val intent:Intent=Intent(this@MyStoreActivity, CreateNewsFeedActivity::class.java)
         intent.putExtra("store_id", storeIdExists)
-
         startActivity(intent)
+        finish()
 
     }
     private fun openPicker(){
@@ -406,6 +443,7 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunica
         }
     }
 
+
     override lateinit var store_logo: String
     override lateinit var store_name: String
     override lateinit var feed: Feed
@@ -418,6 +456,10 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunica
         );
         detailsFragment.show(supportFragmentManager, "Jean 3")
 
+    }
+
+    override fun checkOrderDetails(order: Order) {
+        TODO("Not yet implemented")
     }
 }
 interface OnProductClickListener {

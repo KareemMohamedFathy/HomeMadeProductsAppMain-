@@ -22,6 +22,7 @@ class ItemsFragment : Fragment() {
 private lateinit var storeIdExists:String
 private  var listItems=ArrayList<Product>()
     var view1: View? = null
+    private lateinit var  recyclerViewNotes:RecyclerView
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -34,8 +35,9 @@ private  var listItems=ArrayList<Product>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args = arguments
+        recyclerViewNotes = view1!!.findViewById<RecyclerView>(R.id.recyclerViewItems)
 
-         storeIdExists= args!!.getString("store_id").toString()
+        storeIdExists= args!!.getString("store_id").toString()
         getDataFromDbForProducts()
 
 
@@ -102,12 +104,21 @@ private  var listItems=ArrayList<Product>()
             }
 
         }
-        val itemsAdapter = MyStoreItemsAdapter(filterList, requireActivity().applicationContext)
-        val recyclerViewNotes = view1!!.findViewById<RecyclerView>(R.id.recyclerViewItems)
-        val linearLayoutManager = GridLayoutManager(requireContext(),2)
+        val itemsAdapter = MyStoreItemsAdapter(filterList, requireContext())
+        val linearLayoutManager = GridLayoutManager(requireActivity().applicationContext,2)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
         recyclerViewNotes.layoutManager = linearLayoutManager
         recyclerViewNotes.adapter = itemsAdapter
+
+//        recyclerViewNotes.adapter!!.notifyDataSetChanged()
+
+
+    }
+    override fun onResume() {
+        super.onResume()
+      //  listItems.clear()
+       // getDataFromDbForProducts()
+        recyclerViewNotes.adapter?.notifyDataSetChanged()
 
     }
 

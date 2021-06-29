@@ -53,324 +53,171 @@
 
 
 
+
     <Button
-        android:id="@+id/buttonAccessories"
-        android:layout_width="190dp"
-        android:alpha="0"
-        android:layout_height="190dp"
-        app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        android:layout_margin="16dp"
-
-        />
-    <RelativeLayout
-
-        android:layout_width="190dp"
-        android:layout_height="190dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        android:layout_margin="16dp"
-
-        >
-        <ImageView
-            android:layout_width="190dp"
-            android:layout_height="190dp"
-            android:src="@drawable/ic_accessories"
-            android:layout_centerVertical="true"
-
-            />
-        <TextView
-        android:id="@+id/button_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-       android:layout_centerInParent="true"
+        android:gravity="start|center"
+
+      app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+        android:padding="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="#F5F5F5"
+        android:id="@+id/buttonAccessories"
+
         android:text="Accessories"
-            android:textAppearance="@android:style/TextAppearance.Material.Large"
-
+        android:textSize="32sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAllCaps="false"
         android:textColor="@android:color/black"
-        android:textStyle="bold"
+        android:drawableEnd="@drawable/ic_accessories"
         />
 
-
-    </RelativeLayout>
-
-
     <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|center"
+
+       app:layout_constraintTop_toBottomOf="@+id/buttonAccessories"
+        android:padding="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="#F5F5F5"
         android:id="@+id/buttonFood"
-        android:layout_width="190dp"
-        android:alpha="0"
-        android:layout_height="190dp"
-        app:layout_constraintStart_toEndOf="@id/buttonAccessories"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        android:layout_margin="16dp"
 
+        android:text="@string/food"
+        android:textSize="32sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:drawableEnd="@drawable/ic_food"
         />
-    <RelativeLayout
-
-        android:layout_width="190dp"
-        android:layout_height="190dp"
-        app:layout_constraintStart_toEndOf="@id/buttonAccessories"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        android:layout_margin="16dp"
-
-        >
-
-    <ImageView
-            android:layout_width="190dp"
-            android:layout_height="190dp"
-            android:src="@drawable/ic_food"
-            android:layout_centerVertical="true"
-
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Food"
-            android:textAppearance="@android:style/TextAppearance.Material.Large"
-
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            />
-
-
-    </RelativeLayout>
-
-
-
-
-
 
 
     <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|center"
+
+        app:layout_constraintTop_toBottomOf="@+id/buttonFood"
+        android:padding="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="#F5F5F5"
         android:id="@+id/buttonJewellery"
-        android:layout_width="190dp"
-        android:alpha="0"
-        android:layout_height="190dp"
-        app:layout_constraintStart_toEndOf="@id/buttonAccessories"
-        app:layout_constraintTop_toBottomOf="@id/buttonFood"
-        android:layout_margin="16dp"
 
+        android:text="Jewellery"
+        android:textSize="32sp
+"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:drawableEnd="@drawable/ic_diamond"
         />
-    <RelativeLayout
-
-        android:layout_width="190dp"
-        android:layout_height="190dp"
-        app:layout_constraintStart_toEndOf="@id/buttonAccessories"
-        app:layout_constraintTop_toBottomOf="@id/buttonFood"
-        android:layout_margin="16dp"
 
 
-
-        >
-        <ImageView
-            android:layout_width="190dp"
-            android:layout_height="190dp"
-            android:src="@drawable/ic_diamond"
-            android:layout_centerVertical="true"
-
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Jewellery"
-
-            android:textAppearance="@android:style/TextAppearance.Material.Large"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            />
-
-
-    </RelativeLayout>
 
 
     <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|center"
+
+        app:layout_constraintTop_toBottomOf="@+id/buttonJewellery"
+        android:padding="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="#F5F5F5"
         android:id="@+id/buttonToys"
-        android:layout_width="190dp"
-        android:alpha="0"
-        android:layout_height="190dp"
-       app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonFood"
-        android:layout_margin="16dp"
 
+        android:text="@string/toys"
+        android:textSize="32sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:drawableEnd="@drawable/ic_toys"
         />
-    <RelativeLayout
-
-        android:layout_width="190dp"
-        android:layout_height="190dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonFood"
-        android:layout_margin="16dp"
-
-        >
-        <ImageView
-            android:layout_width="190dp"
-            android:layout_height="190dp"
-            android:src="@drawable/ic_toys"
-            android:layout_centerVertical="true"
-
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Toys"
-            android:textAppearance="@android:style/TextAppearance.Material.Large"
-
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            />
-
-
-    </RelativeLayout>
-
-
-
-
-
-
-
 
 
 
     <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|center"
+
+        app:layout_constraintTop_toBottomOf="@+id/buttonToys"
+        android:padding="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="#F5F5F5"
         android:id="@+id/buttonBooks"
-        android:layout_width="190dp"
-        android:alpha="0"
-        android:layout_height="190dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonToys"
-        android:layout_margin="16dp"
 
+        android:text="@string/books"
+        android:textSize="32sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:drawableEnd="@drawable/ic_book"
         />
-    <RelativeLayout
-
-        android:layout_width="190dp"
-        android:layout_height="190dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonToys"
-
-        android:layout_margin="16dp"
-
-        >
-        <ImageView
-            android:layout_width="190dp"
-            android:layout_height="190dp"
-            android:src="@drawable/ic_book"
-            android:layout_centerVertical="true"
-
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Books"
-            android:textAppearance="@android:style/TextAppearance.Material.Large"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            />
-
-
-    </RelativeLayout>
-
-
-
-
-
-
-
-
-
-
 
 
 
     <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|center"
+
+        app:layout_constraintTop_toBottomOf="@+id/buttonBooks"
+        android:padding="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="#F5F5F5"
         android:id="@+id/buttonHomeCrafts"
-        android:layout_width="190dp"
-        android:alpha="0"
-        android:layout_height="190dp"
-       app:layout_constraintStart_toEndOf="@+id/buttonBooks"
-        app:layout_constraintTop_toBottomOf="@id/buttonToys"
-        android:layout_margin="16dp"
 
+        android:text="HomeCrafts"
+        android:textSize="32sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:drawableEnd="@drawable/ic_porcelain"
         />
-    <RelativeLayout
-
-
-        android:layout_width="190dp"
-        android:layout_height="190dp"
-        app:layout_constraintStart_toEndOf="@id/buttonBooks"
-        app:layout_constraintTop_toBottomOf="@id/buttonToys"
-        android:layout_margin="16dp"
-
-        >
-        <ImageView
-            android:layout_width="190dp"
-            android:layout_height="190dp"
-            android:src="@drawable/ic_porcelain"
-            android:layout_centerVertical="true"
-
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Home Crafts"
-            android:textAppearance="@android:style/TextAppearance.Material.Large"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            />
-
-
-    </RelativeLayout>
-
-
-
 
 
     <Button
-        android:id="@+id/buttonClothes"
-        android:layout_width="190dp"
-        android:alpha="0"
-        android:layout_height="190dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|center"
+
+        app:layout_constraintTop_toBottomOf="@+id/buttonHomeCrafts"
+        android:padding="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonBooks"
-        android:layout_margin="16dp"
+        android:backgroundTint="#F5F5F5"
+        android:id="@+id/buttonClothes"
 
-
+        android:text="@string/clothes"
+        android:textSize="32sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:drawableEnd="@drawable/ic_clothes"
         />
-    <RelativeLayout
 
-        android:layout_width="190dp"
-        android:layout_height="190dp"
-       app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonBooks"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"
-
-        >
-        <ImageView
-            android:layout_width="190dp"
-            android:layout_height="190dp"
-            android:src="@drawable/ic_clothes"
-            android:layout_centerVertical="true"
-
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Clothes"
-            android:textAppearance="@android:style/TextAppearance.Material.Large"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            />
-
-
-    </RelativeLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

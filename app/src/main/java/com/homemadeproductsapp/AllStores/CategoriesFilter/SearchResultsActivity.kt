@@ -63,7 +63,7 @@ class SearchResultsActivity : AppCompatActivity() {
     private fun getStoreWithSub() {
         firebaseDatabase= FirebaseDatabase.getInstance()
         dbReference=firebaseDatabase.reference
-        val query=dbReference.child("Product").orderByChild("subcategory").equalTo(subCategory).addValueEventListener(object:ValueEventListener{
+       dbReference.child("Product").orderByChild("subcategory").equalTo(subCategory).addValueEventListener(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
 
@@ -91,7 +91,6 @@ class SearchResultsActivity : AppCompatActivity() {
                 if (dataSnapshot.exists()) {
 
                     for (dsp in dataSnapshot.children) {
-                        val arr: ArrayList<Any?> =  arrayListOf(dsp.value)
 
                         val name = dsp.child("store_name").value.toString()
                         val storeid = dsp.child("store_id").value.toString()
