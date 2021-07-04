@@ -1,5 +1,6 @@
 package com.homemadeproductsapp.Search
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,15 +13,19 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.gson.Gson
 import com.homemadeproductsapp.AllStores.Adapters.StoreAdapter
 import com.homemadeproductsapp.AllStores.Listeners.OnProductClickListener
+import com.homemadeproductsapp.AllStores.OnStoreOpenActivity
+import com.homemadeproductsapp.AppConst
 import com.homemadeproductsapp.DB.Local.StoreSession
 import com.homemadeproductsapp.DB.Product
 import com.homemadeproductsapp.R
+import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AlltemsFragment : Fragment() {
+class AlltemsFragment : Fragment() ,Serializable {
     private lateinit var query:String
     private lateinit var view1:View
     private lateinit var recyclerViewItems:RecyclerView
@@ -109,7 +114,12 @@ class AlltemsFragment : Fragment() {
     private fun setupRecyclerView() {
         val OnProductClickListener=object : OnProductClickListener {
             override fun onProductClick(product: Product) {
-                Log.d("hayo","hayo")
+                val intent= Intent(requireActivity(),OnStoreOpenActivity::class.java)
+                intent.putExtra(AppConst.CALLFROMSEARCH,AppConst.CALLFROMSEARCH)
+                val connectionsJSONString = Gson().toJson(product)
+
+                intent.putExtra("Product",connectionsJSONString)
+                startActivity(intent)
 
                 /*       if(feed.caption!!.isNotEmpty()&&feed.addDate!!.isNotEmpty()&&feed.imagePathProduct!!.isNotEmpty()) {
                          val intent = Intent(activity,PhotoDetails::class.java)

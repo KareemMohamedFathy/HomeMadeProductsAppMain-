@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.fragment.app.DialogFragment
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.homemadeproductsapp.DB.Cart
@@ -86,16 +87,18 @@ class JustOpenFragment : DialogFragment() {
         setupClickListeners()
     }
 
+
     private fun setupClickListeners() {
         imageViewNext.setOnClickListener {
             if (position < product.uriPaths!!.size-1){
                 position++
-                imageViewImageSwitcher.setImageURI(product.uriPaths!!.get(position).toUri())
+                Glide.with(this).load(product.uriPaths!!.get(position).toUri()).skipMemoryCache(false).into(imageViewImageSwitcher.currentView as ImageView)
             }
             else{
                 position=0;
                 //no more images
-                imageViewImageSwitcher.setImageURI(product.uriPaths!!.get(position).toUri())
+
+                Glide.with(this).load(product.uriPaths!!.get(position).toUri()).skipMemoryCache(false).into(imageViewImageSwitcher.currentView as ImageView)
             }
         }
 
@@ -103,12 +106,12 @@ class JustOpenFragment : DialogFragment() {
         imageViewBack.setOnClickListener {
             if (position > 0){
                 position--
-                imageViewImageSwitcher.setImageURI(product.uriPaths!!.get(position).toUri())
+                Glide.with(this).load(product.uriPaths!!.get(position).toUri()).skipMemoryCache(false).into(imageViewImageSwitcher.currentView as ImageView)
 
             }
             else{
                 position=product.uriPaths !!.size-1
-                imageViewImageSwitcher.setImageURI(product.uriPaths!!.get(position).toUri())
+                Glide.with(this).load(product.uriPaths!!.get(position).toUri()).skipMemoryCache(false).into(imageViewImageSwitcher.currentView as ImageView)
 
             }
 
@@ -245,6 +248,8 @@ class JustOpenFragment : DialogFragment() {
 
                         }
                 )
+
+
             }
 
         })
@@ -261,7 +266,7 @@ class JustOpenFragment : DialogFragment() {
         copies= product.copies!!.toInt()
         price=product.price!!.toDouble()
         curprice=price
-        imageViewImageSwitcher.setImageURI(product.uriPaths!!.get(position).toUri())
+        Glide.with(this).load(product.uriPaths!!.get(0).toUri()).skipMemoryCache(false).into(imageViewImageSwitcher.currentView as ImageView)
 
     }
 

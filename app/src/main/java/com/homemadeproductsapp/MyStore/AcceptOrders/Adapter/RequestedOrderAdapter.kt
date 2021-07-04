@@ -51,7 +51,6 @@ private lateinit var  context:Context
       holder.spinnerOrderStatus.setSelection(pos)
         holder.itemView.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
-                Log.d("mikasa","mikasa")
                 orderAcceptClickListener.checkOrderDetails(listOrder[position])
             }
         })

@@ -42,4 +42,11 @@
         <item name="colorOnPrimary">@android:color/white</item>
     </style>
 
+
+    <style name="BrandedSwitch.control" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">#673AB7</item>
+        <item name="colorSwitchThumbNormal">#FFFFFF</item>
+    </style>
+
 </resources>

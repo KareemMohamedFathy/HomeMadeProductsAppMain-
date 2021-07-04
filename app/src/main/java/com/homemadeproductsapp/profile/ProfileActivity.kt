@@ -2,6 +2,7 @@ package com.homemadeproductsapp.profile
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -10,11 +11,18 @@ import android.util.Log
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
 import com.homemadeproductsapp.AllStores.AllStoresActivity
 import com.homemadeproductsapp.BuildConfig
-import com.homemadeproductsapp.DB.Local.StoreSession
+import com.homemadeproductsapp.DB.Store
+import com.homemadeproductsapp.DB.User
 import com.homemadeproductsapp.Home.HomeActivity
 import com.homemadeproductsapp.LoginActivity
 import com.homemadeproductsapp.MyStore.MyStoreActivity
@@ -28,7 +36,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ProfileActivity : AppCompatActivity(),multipleOptionsClick,OnOptionClickListener,onMoveClick,onMoveClick1 {
+class ProfileActivity : AppCompatActivity(),multipleOptionsClick,OnOptionClickListener,onMoveClick,onMoveClick1,datacommunication {
     private lateinit var viewPager: ViewPager2
     private var picturePath = ""
     private lateinit var imageLocation: File
@@ -148,34 +156,38 @@ class ProfileActivity : AppCompatActivity(),multipleOptionsClick,OnOptionClickLi
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 REQUEST_CODE_CAMERA -> {
-                    picturePath = imageLocation.path.toString()
-                    StoreSession.init(this)
-                    StoreSession.write(PrefConstant.USERPROFILEPHOTO,picturePath)
+//                    picturePath = imageLocation.path.toString()
 
+                    if(viewPager.currentItem==1) {
+                        user.personalPhotoPath=imageLocation.toUri().toString()
+                    }
+                    else if(viewPager.currentItem==2){
+                        store!!.store_logo=imageLocation.toUri().toString()
+
+                   }
                 }
                 REQUEST_CODE_GALLERY -> {
                     val selectedImage = data?.data
                     picturePath = selectedImage.toString()
-                    val contentResolver = applicationContext.contentResolver
-                    val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                    picturePath.toUri()?.let { contentResolver.takePersistableUriPermission(it, takeFlags) }
-
-                    Log.d("cur",viewPager.currentItem.toString())
+//                    uploadImageToFirebase(picturePath.toUri())
                     if(viewPager.currentItem==1) {
-                        StoreSession.init(this)
-                        StoreSession.write(PrefConstant.USERPROFILEPHOTO, picturePath)
+                        user.personalPhotoPath=picturePath
+
                     }
                     else if(viewPager.currentItem==2){
-                        StoreSession.init(this)
-                        StoreSession.write(PrefConstant.STORELOGO, picturePath)
+                        store!!.store_logo=picturePath
+
                     }
+
+
 
 
                 }
             }
         }
     }
+
+
     override fun onClickLogOut() {
         auth.signOut()
         val intent=Intent(this@ProfileActivity,LoginActivity::class.java)
@@ -186,4 +198,11 @@ class ProfileActivity : AppCompatActivity(),multipleOptionsClick,OnOptionClickLi
     override fun onBack() {
     viewPager.currentItem=0
     }
+
+    override  var  store: Store?=null
+    override lateinit var user: User
+}
+interface datacommunication{
+    var store:Store?
+    var user: User
 }

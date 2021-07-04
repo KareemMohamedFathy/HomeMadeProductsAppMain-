@@ -1,8 +1,15 @@
 package com.homemadeproductsapp.AllStores
 
+import android.app.SearchManager
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
+import android.view.Menu
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +18,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseError
 import com.google.firebase.database.*
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.SearchView
+import android.widget.TextView
+import androidx.appcompat.app.ActionBar
 import com.homemadeproductsapp.AllStores.Adapters.AllStoresAdapter
 import com.homemadeproductsapp.AllStores.CategoriesFilter.CategoryFiltersActivity
 import com.homemadeproductsapp.AllStores.Listeners.AllStoresClickListener
@@ -22,6 +33,7 @@ import com.homemadeproductsapp.MyStore.MyStoreActivity
 import com.homemadeproductsapp.PastOrders.OrdersActivity
 import com.homemadeproductsapp.profile.ProfileActivity
 import com.homemadeproductsapp.R
+import com.homemadeproductsapp.Search.SearchResultsActivity
 import com.mindorks.notesapp.data.local.pref.PrefConstant
 import java.io.Serializable
 
@@ -37,7 +49,7 @@ class AllStoresActivity : AppCompatActivity(),Serializable {
 
         setContentView(R.layout.activity_all_stores)
     handleBottomNavigationView()
-
+setupToolbarText()
         bindViews();
 handleClickListeners()
         getDataFromDb()
@@ -140,7 +152,7 @@ handleClickListeners()
 
     private fun bindViews() {
         recyclerViewStores=findViewById(R.id.recyclerViewStores)
-        imageViewFilter=findViewById(R.id.ImageViewFilter)
+      //  imageViewFilter=findViewById(R.id.ImageViewFilter)
 
     }
 
@@ -185,5 +197,56 @@ handleClickListeners()
 
         }
     }
+    private fun setupToolbarText() {
+        if (supportActionBar != null) {
+
+            getSupportActionBar()!!.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            getSupportActionBar()!!.setCustomView(R.layout.actionbarallstore);
+
+            val view = supportActionBar!!.customView
+            imageViewFilter=view.findViewById(R.id.ImageViewFilter)
+
+//            var textViewTitle: TextView =view.findViewById(R.id.action_bar_title)
+
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.options_menu, menu)
+//    #c2dde6
+        // Get the SearchView and set the searchable configuration
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        (menu.findItem(R.id.search).actionView as SearchView).apply {
+            onActionViewExpanded()
+            requestFocusFromTouch();
+
+            setQueryHint("Search for products or stores");
+            // Assumes current activity is the searchable activity
+            // val textView:TextView = this.findViewById(id) as TextView
+            val id: Int = getContext().getResources().getIdentifier("android:id/search_src_text", null, null)
+            val searchText:TextView = findViewById(id)
+            val id2 = getContext().getResources().getIdentifier("android:id/search_edit_frame", null, null)
+            val searchEditFrame: LinearLayout = findViewById(id2) as LinearLayout
+            val layoutParams: LinearLayout.LayoutParams = searchEditFrame.layoutParams as LinearLayout.LayoutParams
+            layoutParams.marginStart = -50
+
+
+            setSubmitButtonEnabled(true)
+            setIconified(false);
+            clearFocus()
+            setIconifiedByDefault(false);
+            // Do not iconify the widget; expand it by default
+            searchText.setTextColor(Color.WHITE)
+            searchText.setHintTextColor(Color.LTGRAY)
+            searchText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18F)
+
+            setSearchableInfo(searchManager.getSearchableInfo(ComponentName(getApplicationContext(), SearchResultsActivity::class.java)))
+        }
+        return true
+    }
+
+
+
 
 }

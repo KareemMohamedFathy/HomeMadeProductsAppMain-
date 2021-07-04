@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -17,11 +18,16 @@ import com.google.firebase.database.FirebaseDatabase
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.ActionBar
+import androidx.constraintlayout.widget.Group
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import com.bumptech.glide.Glide
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
 import com.homemadeproductsapp.BuildConfig
 import com.homemadeproductsapp.DB.Category
 import com.homemadeproductsapp.DB.Local.StoreSession
@@ -37,6 +43,9 @@ import java.util.*
 class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterView.OnItemSelectedListener {
     private lateinit var editTextName:EditText
     private lateinit var editTextDescription:EditText
+    private lateinit var group: Group
+    private lateinit var progressBar:ProgressBar
+    private lateinit var group2: Group
 
     private lateinit var buttonSubmit:Button
 
@@ -141,10 +150,44 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterV
             override fun onClick(v: View?) {
                 if (checkAndRequestPermissions()) {
                     openPicker()
+
                 }
             }
         })
     }
+
+    private fun uploadImageToFirebase(fileUri: Uri) {
+
+        if (fileUri != null) {
+
+            val fileName = UUID.randomUUID().toString() +".jpg"
+
+            val database = FirebaseDatabase.getInstance()
+            val refStorage = FirebaseStorage.getInstance().reference.child("images/$fileName")
+
+            refStorage.putFile(fileUri)
+                .addOnSuccessListener(
+                    OnSuccessListener<UploadTask.TaskSnapshot> { taskSnapshot ->
+                        taskSnapshot.storage.downloadUrl.addOnSuccessListener {
+                            val imageUrl = it
+                            picturePath=imageUrl.toString()
+                        Glide.with(this).load(imageUrl).skipMemoryCache(false).into(imageViewAdd)
+                            progressBar.visibility=Group.GONE
+                            group.visibility=Group.VISIBLE
+                            group2.visibility=Group.GONE
+
+
+                        }
+                    })
+
+
+                ?.addOnFailureListener(OnFailureListener { e ->
+                    print(e.message)
+                })
+        }
+    }
+
+
     private fun saveCategory(category: String) {
         StoreSession.write(PrefConstant.MAINCATEGORY, category)
     }
@@ -221,7 +264,11 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterV
         }
 
     private fun bindViews() {
-    editTextName=findViewById(R.id.editTextName)
+        group=findViewById(R.id.group1)
+        group2=findViewById(R.id.group2)
+        progressBar=findViewById(R.id.progressBar)
+
+        editTextName=findViewById(R.id.editTextName)
        editTextDescription=findViewById(R.id.editTextDescription)
 
         buttonSubmit=findViewById(R.id.submit_button)
@@ -258,17 +305,29 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterV
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 REQUEST_CODE_CAMERA -> {
+                    group2.visibility=Group.VISIBLE
+                    group.visibility=Group.INVISIBLE
+                    progressBar.visibility= Group.VISIBLE
+
                     picturePath = imageLocation.path.toString()
-                    Glide.with(this).load(imageLocation.absoluteFile).into(imageViewAdd)
+                    uploadImageToFirebase(imageLocation.toUri())
+
                 }
                 REQUEST_CODE_GALLERY -> {
                     val selectedImage = data?.data
                     picturePath = selectedImage.toString()
-                    val contentResolver = applicationContext.contentResolver
+                    group2.visibility=Group.VISIBLE
+                    group.visibility=Group.INVISIBLE
+                    progressBar.visibility= Group.VISIBLE
+                    uploadImageToFirebase(picturePath.toUri())
+
+                  /*  val contentResolver = applicationContext.contentResolver
                     val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                     picturePath.toUri()?.let { contentResolver.takePersistableUriPermission(it, takeFlags) }
                     Glide.with(this).load(picturePath.toUri()).into(imageViewAdd)
+                */
+
                 }
             }
         }

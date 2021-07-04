@@ -120,7 +120,7 @@ class TimeLineFragment : Fragment() {
         timeLinePhotos.reverse()
         recyclerViewNotes = view1!!.findViewById<RecyclerView>(R.id.recyclerViewTimeLine)
 
-        val newsFeedAdapter = MyStoreNewsFeedAdapter(timeLinePhotos, newsFeedClickListener)
+        val newsFeedAdapter = MyStoreNewsFeedAdapter(timeLinePhotos, newsFeedClickListener,dataCommunication.switchMode)
         val linearLayoutManager = GridLayoutManager(context,2)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
         recyclerViewNotes.layoutManager = linearLayoutManager

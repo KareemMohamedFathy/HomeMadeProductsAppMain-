@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:orientation="horizontal"
 
@@ -15,6 +16,10 @@
 
         android:id="@+id/action_bar_Image"
         android:text="My Store"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
         />
 
     <ImageView
@@ -24,7 +29,10 @@
         android:src="@drawable/ic_shopping_cart"
         android:alpha="1.0"
         android:id="@+id/action_bar_Image_Cart"
-        android:text="My Store"
+        android:text="@string/my_store"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
     <TextView
         android:id="@+id/itemNum"
@@ -35,7 +43,9 @@
         android:layout_marginEnd="5dp"
         android:layout_marginTop="4dp"
         android:alpha="0.75"
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:gravity="center"
         android:shadowColor="@android:color/white"
         android:shadowRadius="10.0"
@@ -51,14 +61,21 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center"
         android:id="@+id/action_bar_title"
-        android:text="My Store"
+        android:text="@string/my_store"
 
         android:layout_marginTop="8dp"
 
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:textColor="@android:color/white"
-        android:textSize="24sp" />
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/action_bar_Image"
+        app:layout_constraintEnd_toStartOf="@id/action_bar_Image_Cart"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="4dp"
+        app:layout_constrainedWidth="true"
+        />
 
 
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

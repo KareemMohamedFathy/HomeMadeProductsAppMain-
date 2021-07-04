@@ -14,9 +14,10 @@ class ProfileAdapter(fm: FragmentActivity) : FragmentStateAdapter(fm) {
 
     override fun createFragment(position: Int): Fragment {
     return when(position) {
-        0 -> ProfileFragment()
         1 -> UpdateProfileFragment()
-        else ->UpdateStoreFragment()
+        2 ->UpdateStoreFragment()
+        else -> ProfileFragment()
+
     }
     }
 

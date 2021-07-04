@@ -25,12 +25,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@android:color/black"
         >
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_red_dark"
             >
             <ImageView
                 android:layout_height="20dp"
@@ -49,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:textAppearance="@android:style/TextAppearance.Material.Large"
                 android:gravity="top|center"
-                android:text="Order"
+                android:text="@string/order_details"
                 android:textColor="@android:color/white"
                 android:layout_centerInParent="true"
                 />

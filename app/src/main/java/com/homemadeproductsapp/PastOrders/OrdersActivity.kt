@@ -2,7 +2,6 @@ package com.homemadeproductsapp.PastOrders
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -26,7 +25,7 @@ class OrdersActivity : AppCompatActivity(),OrderClickListener,dataCommunication,
 
     private fun bindViews() {
         viewPager2=findViewById(R.id.viewPager2)
-        val adapter=OrdersFragmentAdapter(this)
+        val adapter= OrdersFragmentAdapter(this)
         viewPager2.adapter=adapter
         viewPager2.setUserInputEnabled(false)
     }

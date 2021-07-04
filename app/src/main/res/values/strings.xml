@@ -53,6 +53,16 @@
     <string name="timeline">TimeLine</string>
     <string name="HomePageLabel">HomePage</string>
     <string name="search_for_products_or_stores">Search for products or stores</string>
+    <string name="please_wait_photos_are_loading">Please wait photos are loading</string>
+    <string name="my_store">My Store</string>
+    <string name="create_your_store_now">Create Your Store Now</string>
+    <string name="edit_store_mode">Edit Store Mode:</string>
+    <string name="off">OFF</string>
+    <string name="on">ON</string>
+    <string name="edit_item">Edit item</string>
+    <string name="stores">Stores</string>
+    <string name="order_details">Order Details</string>
+    <string name="all_orders">All Orders</string>
 
 
     <string-array name="Order_Status">
@@ -61,5 +71,15 @@
         <item>Rejected</item>
         <item>Delivered</item>
         <item>On Delivery</item>
+    </string-array>
+
+    <string-array name="All_Order_Status">
+        <item>All</item>
+        <item>Pending</item>
+        <item>Accepted</item>
+        <item>Rejected</item>
+        <item>Delivered</item>
+        <item>On Delivery</item>
+
     </string-array>
 </resources>

@@ -5,28 +5,33 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.OnBackPressedCallback
+import androidx.constraintlayout.widget.Group
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
 import com.homemadeproductsapp.BuildConfig
-import com.homemadeproductsapp.DB.Local.StoreSession
 import com.homemadeproductsapp.DB.User
 import com.homemadeproductsapp.FileSelectorFragment
 import com.homemadeproductsapp.MyStore.OnOptionClickListener
@@ -46,11 +51,13 @@ class UpdateProfileFragment : Fragment() {
     private lateinit var editTextPhoneNo: EditText
     private lateinit var imageViewPersonalPhoto: ImageView
     private lateinit var imageViewBack: ImageView
+    private lateinit var group:Group
 
     private lateinit var buttonUpdateInfo: Button
     private lateinit var view1: View
     private var picturePath = ""
     private lateinit var imageLocation: File
+    private lateinit var datacommunication: datacommunication
 
 
 
@@ -60,10 +67,12 @@ class UpdateProfileFragment : Fragment() {
         private const val REQUEST_CODE_GALLERY = 2
     }
     private lateinit var onMoveClick:onMoveClick
+    private lateinit var textViewHelper:TextView
 
     private lateinit var auth: FirebaseAuth
     private lateinit var dbReference: DatabaseReference
     private lateinit var firebaseDatabase: FirebaseDatabase
+    private lateinit var progressBar:ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,11 +85,12 @@ class UpdateProfileFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         onMoveClick=context as onMoveClick
+        datacommunication=context as datacommunication
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupSharedPreference()
+      //  setupSharedPreference()
         requireActivity()
                 .onBackPressedDispatcher
                 .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -105,8 +115,8 @@ class UpdateProfileFragment : Fragment() {
 
                     val name = editTextName.text.toString()
                     val phonoNo = editTextPhoneNo.text.toString()
-                    StoreSession.write(PrefConstant.USERNAME,name)
-                    StoreSession.write(PrefConstant.USERPHONONO,phonoNo)
+                    datacommunication.user.name=name
+                    datacommunication.user.mobileno=phonoNo
 
                     openPicker()
                }
@@ -119,10 +129,8 @@ class UpdateProfileFragment : Fragment() {
                 auth = FirebaseAuth.getInstance()
                 //val id = auth.currentUser!!.uid
                 val name = editTextName.text.toString()
-                //val email = StoreSession.readString(PrefConstant.USEREMAIL).toString()
                 val phonoNo = editTextPhoneNo.text.toString()
-               // val storeid = StoreSession.readString(PrefConstant.STOREID)
-               val path = StoreSession.readString(PrefConstant.USERPROFILEPHOTO)
+                val path=datacommunication.user.personalPhotoPath
 
                 if(name.length>30){
                     Toast.makeText(requireContext(),"Max number of character for store name is 30", Toast.LENGTH_SHORT).show()
@@ -160,6 +168,10 @@ class UpdateProfileFragment : Fragment() {
     private fun bindViews(view1: View) {
         editTextName = view1.findViewById(R.id.editTextName)
         editTextPhoneNo = view1.findViewById(R.id.editTextMobileNumber)
+        group=view1.findViewById(R.id.group1)
+        progressBar=view1.findViewById(R.id.progressBar)
+        textViewHelper=view1.findViewById(R.id.helperText1)
+
         imageViewPersonalPhoto = view1.findViewById(R.id.personalPic)
         buttonUpdateInfo = view1.findViewById(R.id.buttonUpdateProfile)
         imageViewBack=view1.findViewById(R.id.back)
@@ -167,24 +179,33 @@ class UpdateProfileFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        getUserData()
+
+            getUserData()
+
+
     }
 
     private fun getUserData() {
-        editTextName.setText(StoreSession.readString(PrefConstant.USERNAME))
-        editTextPhoneNo.setText(StoreSession.readString(PrefConstant.USERPHONONO))
-        var path = StoreSession.readString(PrefConstant.USERPROFILEPHOTO).toString()
+        editTextName.setText(datacommunication.user.name)
+        editTextPhoneNo.setText(datacommunication.user.mobileno)
+        val path = datacommunication.user.personalPhotoPath.toString()
 
         if (path.isNotEmpty()) {
-            Glide.with(requireContext()).load(path).into(imageViewPersonalPhoto)
+            if(!("firebasestorage" in path) ) {
+                progressBar.visibility=View.VISIBLE
+                group.visibility=View.GONE
+                textViewHelper.visibility=View.VISIBLE
+
+                uploadImageToFirebase(path.toUri())
+            }
+        else {
+                Glide.with(requireContext()).load(path).into(imageViewPersonalPhoto)
+            }
         }
 
 
     }
 
-    private fun setupSharedPreference() {
-        StoreSession.init(requireContext())
-    }
 
     private fun createImageFile(): File {
         // Create an image file name
@@ -239,6 +260,44 @@ class UpdateProfileFragment : Fragment() {
         val dialog = FileSelectorFragment.newInstance()
         dialog.show(requireActivity().supportFragmentManager, FileSelectorFragment.TAG)
     }
+
+    private fun uploadImageToFirebase(fileUri: Uri) {
+
+        if (fileUri != null) {
+
+            val fileName = UUID.randomUUID().toString() +".jpg"
+            Log.d("haha","hahahah")
+
+            val database = FirebaseDatabase.getInstance()
+            val refStorage = FirebaseStorage.getInstance().reference.child("images/$fileName")
+
+            refStorage.putFile(fileUri)
+                    .addOnSuccessListener(
+                            OnSuccessListener<UploadTask.TaskSnapshot> { taskSnapshot ->
+                                taskSnapshot.storage.downloadUrl.addOnSuccessListener {
+
+                                    val imageUrl = it
+                                    picturePath=imageUrl.toString()
+                                    Log.d("haha",imageUrl.toString())
+                                    Glide.with(this).load(imageUrl).skipMemoryCache(false).into(imageViewPersonalPhoto)
+                                    datacommunication.user.personalPhotoPath=picturePath
+
+
+                                    progressBar.visibility=View.GONE
+                                    group.visibility=View.VISIBLE
+                                    textViewHelper.visibility=View.GONE
+
+                                }
+                            })
+
+
+                    ?.addOnFailureListener(OnFailureListener { e ->
+                        print(e.message)
+                    })
+        }
+    }
+
+
 
 }
 interface onMoveClick {

@@ -84,32 +84,31 @@
             />
 
         <FrameLayout
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/imageViewProduct1"
+            app:layout_constraintBottom_toTopOf="@+id/textViewName"
 
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             >
 
             <ImageSwitcher
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 app:layout_constrainedHeight="true"
 
-                android:layout_height="200dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
+
+                android:layout_height="match_parent"
                 android:id="@+id/imageViewImageSwitcher"
                 android:background="@android:color/white"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
                 />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="25sp"
+                android:textSize="18sp"
                 android:id="@+id/textViewOutOfStock"
                 android:textStyle="bold"
                 android:visibility="gone"

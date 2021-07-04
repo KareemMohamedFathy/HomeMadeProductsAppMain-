@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -29,6 +28,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.homemadeproductsapp.BuildConfig
 import com.homemadeproductsapp.DB.Feed
 import com.homemadeproductsapp.DB.Product
@@ -36,13 +37,13 @@ import com.homemadeproductsapp.FileSelectorFragment
 import com.homemadeproductsapp.MyStore.MyStoreActivity
 import com.homemadeproductsapp.MyStore.OnOptionClickListener
 import com.homemadeproductsapp.R
-import kotlinx.android.synthetic.main.activity_create_item.*
 import java.io.File
 import java.io.IOException
+import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CreateNewsFeedActivity : AppCompatActivity(),OnOptionClickListener {
+class EditNewsFeedActivity : AppCompatActivity(), OnOptionClickListener {
 
     private lateinit var group: Group
     private lateinit var progressBar: ProgressBar
@@ -55,23 +56,21 @@ class CreateNewsFeedActivity : AppCompatActivity(),OnOptionClickListener {
     private var picturePath = ""
     private lateinit var dbReference: DatabaseReference
     private lateinit var firebaseDatabase: FirebaseDatabase
-    private lateinit var circularProgressDrawable:CircularProgressDrawable
+    private lateinit var circularProgressDrawable: CircularProgressDrawable
     private lateinit var imageLocation: File
     companion object {
         private const val MY_PERMISSION_CODE = 124
         private const val REQUEST_CODE_CAMERA = 1
         private const val REQUEST_CODE_GALLERY = 2
     }
-
-
+private lateinit var feed:Feed
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_news_feed)
+        setContentView(R.layout.activity_edit_news_feed)
         bindViews()
-
-         circularProgressDrawable = CircularProgressDrawable(this)
+        circularProgressDrawable = CircularProgressDrawable(this)
         circularProgressDrawable.strokeWidth = 10f
         circularProgressDrawable.centerRadius = 50f
         circularProgressDrawable.start()
@@ -83,42 +82,51 @@ class CreateNewsFeedActivity : AppCompatActivity(),OnOptionClickListener {
 
     override fun onBackPressed() {
         super.onBackPressed()
-            val intent: Intent = Intent(this@CreateNewsFeedActivity, MyStoreActivity::class.java)
-            startActivity(intent)
-            finish()
+        val intent: Intent = Intent(this@EditNewsFeedActivity, MyStoreActivity::class.java)
+        startActivity(intent)
+        finish()
 
     }
 
     private fun getIntentData() {
         val intent = intent
+        val type: Type = object : TypeToken<Feed?>() {}.type
+
+        val f = intent.getStringExtra("feed")
+        feed = Gson().fromJson<Feed>(f, type)
+
         if (intent.hasExtra("store_id")) {
             store_id= intent.getStringExtra("store_id").toString()
         }
+        textViewCaption.text=feed.caption
+        Glide.with(this).load(feed.imagePathProduct).into(imageViewAddNewsFeed)
+
+        picturePath=feed.imagePathProduct.toString()
     }
 
     private fun setupOnClickListeners() {
-        buttonSubmit.setOnClickListener(object :View.OnClickListener{
+        buttonSubmit.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
                 val caption=textViewCaption.text.toString()
                 firebaseDatabase= FirebaseDatabase.getInstance()
                 dbReference = firebaseDatabase.getReference("Feed")
-                val captionId = dbReference.push().key.toString()
+                val captionId = feed.id.toString()
                 val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
                 val currentDate = sdf.format(Date())
-                val timeline:Feed= Feed(caption,captionId,picturePath,store_id,currentDate.toString())
+                val timeline: Feed = Feed(caption,captionId,picturePath,store_id,currentDate.toString())
                 dbReference.child(captionId).setValue(timeline)
 
-                intent= Intent(this@CreateNewsFeedActivity,MyStoreActivity::class.java)
+                intent= Intent(this@EditNewsFeedActivity, MyStoreActivity::class.java)
                 startActivity(intent)
                 finish()
 
             }
 
         })
-        imageViewAddNewsFeed.setOnClickListener(object :View.OnClickListener{
+        imageViewAddNewsFeed.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
-           if(checkAndRequestPermissions())
-                openPicker()
+                if(checkAndRequestPermissions())
+                    openPicker()
             }
 
         })
@@ -130,11 +138,11 @@ class CreateNewsFeedActivity : AppCompatActivity(),OnOptionClickListener {
             getSupportActionBar()!!.setCustomView(R.layout.actionbar);
             val view = supportActionBar!!.customView
             var textViewTitle: TextView =view.findViewById(R.id.action_bar_title)
-            textViewTitle.setText("Add photo to your timeline")
+            textViewTitle.setText("Edit Post")
             var back: ImageView =view.findViewById(R.id.action_bar_Image)
             back.setOnClickListener(object : View.OnClickListener{
                 override fun onClick(v: View?) {
-                    val intent: Intent = Intent(this@CreateNewsFeedActivity, MyStoreActivity::class.java)
+                    val intent: Intent = Intent(this@EditNewsFeedActivity, MyStoreActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
@@ -176,7 +184,7 @@ class CreateNewsFeedActivity : AppCompatActivity(),OnOptionClickListener {
             }
 
             if (photoFile != null) {
-                val photoURI = FileProvider.getUriForFile(this@CreateNewsFeedActivity, BuildConfig.APPLICATION_ID + ".provider", photoFile)
+                val photoURI = FileProvider.getUriForFile(this@EditNewsFeedActivity, BuildConfig.APPLICATION_ID + ".provider", photoFile)
                 imageLocation = photoFile
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                 startActivityForResult(takePictureIntent, REQUEST_CODE_CAMERA)
@@ -213,7 +221,7 @@ class CreateNewsFeedActivity : AppCompatActivity(),OnOptionClickListener {
     }
 
     override fun onGalleryClick() {
-        val intent=Intent(Intent.ACTION_OPEN_DOCUMENT,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        val intent= Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, REQUEST_CODE_GALLERY)
 
     }
@@ -223,8 +231,8 @@ class CreateNewsFeedActivity : AppCompatActivity(),OnOptionClickListener {
             when (requestCode) {
                 REQUEST_CODE_CAMERA -> {
                     picturePath = imageLocation.path.toString()
-                    group2.visibility=Group.VISIBLE
-                    group.visibility=Group.INVISIBLE
+                    group2.visibility= Group.VISIBLE
+                    group.visibility= Group.INVISIBLE
                     progressBar.visibility= Group.VISIBLE
 
                     uploadImageToFirebase(imageLocation.toUri())
@@ -233,8 +241,8 @@ class CreateNewsFeedActivity : AppCompatActivity(),OnOptionClickListener {
                 REQUEST_CODE_GALLERY -> {
                     val selectedImage = data?.data
                     picturePath = selectedImage.toString()
-                    group2.visibility=Group.VISIBLE
-                    group.visibility=Group.INVISIBLE
+                    group2.visibility= Group.VISIBLE
+                    group.visibility= Group.INVISIBLE
                     progressBar.visibility= Group.VISIBLE
 
                     uploadImageToFirebase(selectedImage!!)
@@ -252,31 +260,30 @@ class CreateNewsFeedActivity : AppCompatActivity(),OnOptionClickListener {
             val refStorage = FirebaseStorage.getInstance().reference.child("images/$fileName")
 
             refStorage.putFile(fileUri)
-                    .addOnSuccessListener(
-                            OnSuccessListener<UploadTask.TaskSnapshot> { taskSnapshot ->
-                                taskSnapshot.storage.downloadUrl.addOnSuccessListener {
-                                    val imageUrl = it
-                                    picturePath=imageUrl.toString()
+                .addOnSuccessListener(
+                    OnSuccessListener<UploadTask.TaskSnapshot> { taskSnapshot ->
+                        taskSnapshot.storage.downloadUrl.addOnSuccessListener {
+                            val imageUrl = it
+                            picturePath=imageUrl.toString()
 
 
-                                    Glide.with(this).load(picturePath).skipMemoryCache(false) .placeholder(circularProgressDrawable)
-                                            .into(imageViewAddNewsFeed)
+                            Glide.with(this).load(picturePath).skipMemoryCache(false) .placeholder(circularProgressDrawable)
+                                .into(imageViewAddNewsFeed)
 
-                                    progressBar.visibility=Group.GONE
-                                    group.visibility=Group.VISIBLE
-                                    group2.visibility=Group.GONE
-
-
-                                }
-                            })
+                            progressBar.visibility= Group.GONE
+                            group.visibility= Group.VISIBLE
+                            group2.visibility= Group.GONE
 
 
-                    ?.addOnFailureListener(OnFailureListener { e ->
-                        print(e.message)
+                        }
                     })
+
+
+                ?.addOnFailureListener(OnFailureListener { e ->
+                    print(e.message)
+                })
         }
     }
-
 
 
 }

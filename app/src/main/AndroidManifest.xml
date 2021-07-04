@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.homemadeproductsapp">
-    <meta-data android:name="android.app.default_searchable" android:value=".SearchResultsActivity" />
+
+    <meta-data
+        android:name="android.app.default_searchable"
+        android:value=".SearchResultsActivity" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -17,33 +21,41 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Search.SearchResultsActivity"
-            android:launchMode="singleTop"
-
-            >
+        <activity android:name=".MyStore.ItemsAndFeed.EditNewsFeedActivity"></activity>
+        <activity android:name=".MyStore.ItemsAndFeed.EditProductActivity" />
+        <activity
+            android:name=".Search.SearchResultsActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"
-                />
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
+
+        <provider
+            android:name=".Search.MySuggestionProvider"
+            android:authorities="com.example.MySuggestionProvider" />
+
         <activity
             android:name=".AllStores.CategoriesFilter.SearchResultsActivity"
-            android:theme="@style/NoToolbar">
-
-        </activity>
+            android:theme="@style/NoToolbar" />
         <activity
             android:name=".AllStores.CategoriesFilter.CategoryFiltersActivity"
             android:theme="@style/NoToolbar" />
         <activity android:name=".AllStores.PhotoDetails" />
         <activity
             android:name=".AllStores.OnStoreOpenActivity"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask" />
         <activity
             android:name=".AllStores.AllStoresActivity"
-            android:launchMode="singleTask"
-            android:theme="@style/NoToolbar" />
+            android:launchMode="singleTask">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
         <activity
             android:name=".PastOrders.OrdersActivity"
             android:theme="@style/NoToolbar" />
@@ -52,11 +64,10 @@
             android:theme="@style/NoToolbar" />
         <activity
             android:name=".Home.HomeActivity"
-            android:launchMode="singleTop"
-            >
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"
-                />
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".MyStore.ItemsAndFeed.CreateNewsFeedActivity" />
         <activity android:name=".MyStore.ItemsAndFeed.CreateItemActivity" />

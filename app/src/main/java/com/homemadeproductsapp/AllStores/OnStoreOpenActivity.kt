@@ -16,6 +16,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.homemadeproductsapp.AllStores.Adapters.NotifyCart
 import com.homemadeproductsapp.AllStores.Adapters.OrderConfirmFragment
 import com.homemadeproductsapp.AllStores.Adapters.OrderDone
@@ -32,13 +34,14 @@ import com.homemadeproductsapp.Home.HomeActivity
 import com.homemadeproductsapp.R
 import com.mindorks.notesapp.data.local.pref.PrefConstant
 import kotlinx.android.synthetic.main.activity_on_store_open.*
+import java.lang.reflect.Type
 
 class OnStoreOpenActivity : AppCompatActivity(),DataCommunication,OnProductClickListener,BackToMe,NotifyCart,OrderDone,NewsFeedClickListener{
     private lateinit var viewPager: ViewPager2
     private lateinit var viewPager1: ViewPager2
     private lateinit var productId:String
     private lateinit var group: Group
-    private lateinit var whereYouWonnaGo:String
+    private  var whereYouWonnaGo=""
 
 
     private var fromOrder:Boolean=false
@@ -129,8 +132,17 @@ private lateinit var storeid:String
         getCartData()
 
 
+        checkCallSource()
 
 
+    }
+
+    private fun checkCallSource() {
+        if(intent.hasExtra(AppConst.CALLFROMSEARCH)){
+            val type: Type = object : TypeToken<Product?>() {}.type
+            product=Gson().fromJson<Product>(intent.getStringExtra("Product"), type)
+            orderFragment()
+        }
     }
 
     private fun setupClickListeners() {

@@ -14,6 +14,8 @@ import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.homemadeproductsapp.DB.Local.StoreSession
+import com.homemadeproductsapp.DB.Store
+import com.homemadeproductsapp.DB.User
 import com.homemadeproductsapp.R
 import com.mindorks.notesapp.data.local.pref.PrefConstant
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -30,6 +32,7 @@ class ProfileFragment : Fragment() {
     private lateinit var buttonUpdateStore:Button
     private lateinit var buttonLogOut:Button
     private lateinit var auth: FirebaseAuth
+    private lateinit var datacommunication: datacommunication
 
     private lateinit var dbReference: DatabaseReference
     private lateinit var firebaseDatabase: FirebaseDatabase
@@ -54,6 +57,7 @@ class ProfileFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         optionsClick=context as multipleOptionsClick
+        datacommunication=context as datacommunication
     }
 
 
@@ -91,11 +95,12 @@ class ProfileFragment : Fragment() {
             textViewEmail.text=email
             textViewPhoneNo.text=phoneNo
             storeidExists=it.child("store_id").value.toString()
+            datacommunication.user = User(auth.currentUser!!.uid,name,phoneNo,profileImagePath,email,storeidExists)
             if(!profileImagePath.isEmpty()){
-                Glide.with(this).load(profileImagePath).into(profileImageView)
+                Glide.with(requireContext()).load(profileImagePath).skipMemoryCache(false).into(profileImageView)
             }
             getStoreData()
-            setupSharedPreference()
+         //   setupSharedPreference()
             setUpCLickListeners()
 
         }
@@ -166,7 +171,7 @@ buttonUpdateStore.alpha=0.4f
                     storeLogoImagePath = dsp.child("store_logo").value.toString()
                     description = dsp.child("store_description").value.toString()
                     textViewCategory.text = dsp.child("mainCategoryName").value.toString()
-
+                    datacommunication.store = Store(storeidExists,storeName,storeLogoImagePath,description,category,auth.currentUser!!.uid)
                 }
             } else {
                 textViewStoreName.text = "N/A"
@@ -176,9 +181,8 @@ buttonUpdateStore.alpha=0.4f
                 buttonUpdateStore.isEnabled=false
 
             }
-            Log.d("kuso2", buttonUpdateStore.isEnabled.toString())
 
-            saveData()
+//            saveData()
         }
 
         override fun onCancelled(error: DatabaseError) {
@@ -188,22 +192,9 @@ buttonUpdateStore.alpha=0.4f
     })
     }
 
-    private fun saveData() {
-
-        StoreSession.write(PrefConstant.STORENAME,textViewStoreName.text.toString())
-        StoreSession.write(PrefConstant.STOREID,storeidExists)
-        StoreSession.write(PrefConstant.MAINCATEGORY,textViewStoreCategory.text.toString())
-        StoreSession.write(PrefConstant.USEREMAIL,email)
-        StoreSession.write(PrefConstant.USERNAME,name)
-        StoreSession.write(PrefConstant.USERPHONONO,phoneNo)
-        StoreSession.write(PrefConstant.STOREDESCRIPTION,description)
-     StoreSession.write(PrefConstant.STORELOGO,storeLogoImagePath)
-        Log.d("kuso1",buttonUpdateStore.isEnabled.toString())
-
-        setUpCLickListeners()
 
 
-    }
+
 
     private fun bindViews(view: View) {
         textViewCategory=view.findViewById(R.id.textViewStoreCategory)

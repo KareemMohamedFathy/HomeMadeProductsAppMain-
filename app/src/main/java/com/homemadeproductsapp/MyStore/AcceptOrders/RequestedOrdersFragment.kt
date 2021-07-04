@@ -3,11 +3,11 @@ package com.homemadeproductsapp.MyStore.AcceptOrders
 import android.content.Context
 import android.media.Image
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
+import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,12 +22,15 @@ import com.homemadeproductsapp.DB.Order
 import com.homemadeproductsapp.MyStore.AcceptOrders.Adapter.RequestedOrderAdapter
 import com.homemadeproductsapp.MyStore.AcceptOrders.Listener.OrderAcceptClickListener
 import com.homemadeproductsapp.R
-class RequestedOrdersFragment : DialogFragment() {
+class RequestedOrdersFragment : DialogFragment(), AdapterView.OnItemSelectedListener {
     private lateinit var recyclerViewOrdersStatus: RecyclerView
     private lateinit var view1:View
     private lateinit var store_id:String
+   private lateinit var spinnerOrderStatus: Spinner
+
     private lateinit var orderAcceptClickListener: OrderAcceptClickListener
     private lateinit var backButton: ImageView
+    private lateinit var filter:String
     private  var usersList:ArrayList<User> = ArrayList()
     private  var orderList:ArrayList<Order> = ArrayList()
     override fun onAttach(context: Context) {
@@ -145,7 +148,20 @@ class RequestedOrdersFragment : DialogFragment() {
             }
 
         }
-        val adapter=RequestedOrderAdapter(orderList,usersList,orderAcceptClickListener)
+        filter= spinnerOrderStatus.selectedItem.toString()
+        val filterArray:ArrayList<Order> =ArrayList()
+        if(filter!="All") {
+            for (cat in orderList) {
+                if (cat.order_status == filter) {
+                    filterArray.add(cat)
+                }
+            }
+        }
+        else{
+            filterArray.addAll(orderList)
+        }
+
+        val adapter=RequestedOrderAdapter(filterArray,usersList,orderAcceptClickListener)
         val linearLayoutManager=LinearLayoutManager(context)
         linearLayoutManager.orientation=LinearLayoutManager.VERTICAL
         recyclerViewOrdersStatus.layoutManager=linearLayoutManager
@@ -186,8 +202,28 @@ if(idx+1==size)
     private fun bindViews() {
         recyclerViewOrdersStatus=view1.findViewById(R.id.recyclerViewOrderStatus)
         backButton=view1.findViewById(R.id.back)
+        spinnerOrderStatus=view1.findViewById(R.id.spinnerOrderStatus)
+        spinnerOrderStatus.onItemSelectedListener = this
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.All_Order_Status,
+            R.layout.spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spinnerOrderStatus.adapter = adapter
+        }
     }
 
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+       setupRecyclerView()
+
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("Not yet implemented")
+    }
 
 
 }

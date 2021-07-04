@@ -8,6 +8,7 @@ object PrefConstant {
     const val STORENAME= "storename"
     const val STORELOGO= "storelogo"
     const val STOREDESCRIPTION= "storedescription"
+    const val DONOTSHOWMETHISAGAIN= "donotshowmethisagain"
 
     const val STOREID= "storeid"
     const val USERNAME= "username"

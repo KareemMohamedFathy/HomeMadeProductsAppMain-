@@ -1,5 +1,6 @@
 package com.homemadeproductsapp.PastOrders.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.homemadeproductsapp.DB.Cart
 import com.homemadeproductsapp.DB.Order
 import com.homemadeproductsapp.DB.Product
@@ -14,18 +16,20 @@ import com.homemadeproductsapp.R
 
 class OrderAdapter(private val cart:Cart, private val productId: ArrayList<Product>) : RecyclerView.Adapter<OrderAdapter.ViewHolder>(){
 
-
+private lateinit var context: Context
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+
+context=parent.context
         val view= LayoutInflater.from(parent.context).inflate(R.layout.order_details,parent,false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Glide.with(context).load(cart.itemsIdPicList[productId[position].id]!!.toUri()).into(holder.imageSwitcherProduct)
 
-        holder.imageSwitcherProduct.setImageURI(cart.itemsIdPicList[productId[position].id]!!.toUri())
-        holder.textViewName.text= productId[position].name
+       holder.textViewName.text= productId[position].name
         val amount:Int= cart.itemsIdAmountList[productId[position].id]!!
         val price:Double= cart.itemsIdPriceList[productId[position].id]!!
         holder.textViewDescription.text=productId[position].description

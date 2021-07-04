@@ -1,5 +1,7 @@
 package com.homemadeproductsapp.MyStore
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,15 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.gson.Gson
 import com.homemadeproductsapp.DB.Product
 import com.homemadeproductsapp.MyStore.Adapter.MyStoreItemsAdapter
+import com.homemadeproductsapp.MyStore.ItemsAndFeed.EditProductActivity
+import com.homemadeproductsapp.MyStore.Listeners.EditItemClickListener
 import com.homemadeproductsapp.R
+import com.mindorks.notesapp.data.local.pref.PrefConstant
 
 
 class ItemsFragment : Fragment() {
@@ -23,7 +28,14 @@ private lateinit var storeIdExists:String
 private  var listItems=ArrayList<Product>()
     var view1: View? = null
     private lateinit var  recyclerViewNotes:RecyclerView
+    private lateinit var dataCommunication: dataCommunication
+    private lateinit var editItemClickListener:EditItemClickListener
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        dataCommunication=context as dataCommunication
+        editItemClickListener=context as EditItemClickListener
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -104,7 +116,21 @@ private  var listItems=ArrayList<Product>()
             }
 
         }
-        val itemsAdapter = MyStoreItemsAdapter(filterList, requireContext())
+        val editItemClickListener:EditItemClickListener=object :EditItemClickListener{
+            override fun EditItem(product: Product) {
+                Log.d("hayo","hayo")
+                val connectionsJSONString = Gson().toJson(product)
+                val intent= Intent(requireActivity(),EditProductActivity::class.java)
+                intent.putExtra("product",connectionsJSONString)
+                intent.putExtra("store_id",storeIdExists)
+                intent.putExtra(PrefConstant.MAINCATEGORY,category)
+                startActivity(intent)
+                requireActivity().finish()
+
+            }
+        }
+
+        val itemsAdapter = MyStoreItemsAdapter(filterList,dataCommunication,editItemClickListener)
         val linearLayoutManager = GridLayoutManager(requireActivity().applicationContext,2)
         linearLayoutManager.orientation = RecyclerView.VERTICAL
         recyclerViewNotes.layoutManager = linearLayoutManager
@@ -119,6 +145,7 @@ private  var listItems=ArrayList<Product>()
       //  listItems.clear()
        // getDataFromDbForProducts()
         recyclerViewNotes.adapter?.notifyDataSetChanged()
+
 
     }
 

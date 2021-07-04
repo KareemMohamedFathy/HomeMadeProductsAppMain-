@@ -7,6 +7,33 @@
     tools:context=".profile.UpdateStoreFragment"
     style="@style/NoToolbar"
     >
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/helperText1"
+        android:layout_marginTop="16dp"
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/please_wait_photos_are_loading"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+
+        android:id="@+id/helperText1"
+        />
+
+
 
     <TextView
         android:layout_width="match_parent"
@@ -30,7 +57,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@android:color/black"
 
         >
     <RelativeLayout
@@ -64,7 +90,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="150dp"
         android:layout_height="150dp"
-        app:cardCornerRadius="150dp"
+        app:cardCornerRadius="80dp"
         app:cardBackgroundColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,18 +102,19 @@
         >
 
         <androidx.cardview.widget.CardView
-            android:layout_width="125dp"
-            android:layout_height="125dp"
-            app:cardCornerRadius="125dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            app:cardCornerRadius="80dp"
             android:layout_gravity="center">
 
             <ImageView
 
-                android:layout_width="125dp"
-                android:layout_height="125dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:id="@+id/storePic"
                 android:src="@drawable/ic_user"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
                 />
         </androidx.cardview.widget.CardView>
 
@@ -150,6 +177,14 @@
         app:layout_constraintStart_toStartOf="@+id/descriptionContainer"
         app:layout_constraintTop_toBottomOf="@id/descriptionContainer"
         />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+
+        app:constraint_referenced_ids="descriptionContainer,nameContainer,cardViewProfileLogo,helperText" />
 
 
 

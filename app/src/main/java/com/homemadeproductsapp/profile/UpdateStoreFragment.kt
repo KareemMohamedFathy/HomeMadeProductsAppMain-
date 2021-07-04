@@ -3,8 +3,11 @@ package com.homemadeproductsapp.profile
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,13 +15,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
+import androidx.constraintlayout.widget.Group
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.homemadeproductsapp.DB.Local.StoreSession
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
 import com.homemadeproductsapp.DB.Store
 import com.homemadeproductsapp.DB.User
 import com.homemadeproductsapp.FileSelectorFragment
@@ -54,12 +63,16 @@ class UpdateStoreFragment : Fragment() {
         private lateinit var dbReference: DatabaseReference
         private lateinit var firebaseDatabase: FirebaseDatabase
         private lateinit var  progressBar:ProgressBar
+        private lateinit var group: Group
+    private lateinit var textViewHelper:TextView
 
+    private lateinit var datacommunication: datacommunication
+        private lateinit var circularProgressDrawable:CircularProgressDrawable
     override fun onAttach(context: Context) {
         super.onAttach(context)
     onMoveClick=context as onMoveClick1
+        datacommunication=context as datacommunication
     }
-
 
         override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,21 +86,27 @@ class UpdateStoreFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     bindViews(view1)
-        getStoreData()
-        setupClickListeners()
-        requireActivity()
-                .onBackPressedDispatcher
-                .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-                    override fun handleOnBackPressed() {
-                        // Do custom work here
+        circularProgressDrawable = CircularProgressDrawable(requireContext())
+        circularProgressDrawable.strokeWidth = 10f
+        circularProgressDrawable.centerRadius = 50f
+        circularProgressDrawable.start()
+        if(datacommunication.store!=null) {
 
-                        onMoveClick.onBack()
+            getStoreData()
+            setupClickListeners()
+            requireActivity()
+                    .onBackPressedDispatcher
+                    .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                        override fun handleOnBackPressed() {
+                            // Do custom work here
 
+                            onMoveClick.onBack()
+
+                        }
                     }
-                }
-                )
+                    )
 
-
+        }
     }
     private fun setupClickListeners() {
         imageViewStorePhoto.setOnClickListener(object : View.OnClickListener {
@@ -96,8 +115,8 @@ class UpdateStoreFragment : Fragment() {
                     openPicker()
                     val name = editTextName.text.toString()
                     val description = editTextDescription.text.toString()
-                    StoreSession.write(PrefConstant.STORENAME,name)
-                    StoreSession.write(PrefConstant.STOREDESCRIPTION,description)
+                    datacommunication.store!!.store_name=name
+                    datacommunication.store!!.store_description=description
 
                 }
             }
@@ -110,10 +129,10 @@ class UpdateStoreFragment : Fragment() {
                 val id = auth.currentUser!!.uid
                 val name = editTextName.text.toString()
                 val description = editTextDescription.text.toString()
-                val category = StoreSession.readString(PrefConstant.MAINCATEGORY).toString()
+                val category = datacommunication.store!!.mainCategoryName
 
-                val storeid = StoreSession.readString(PrefConstant.STOREID)
-                val path = StoreSession.readString(PrefConstant.STORELOGO)
+                val storeid = datacommunication.store!!.store_id
+                val path = datacommunication.store!!.store_logo
                 if(name.length>30){
                     Toast.makeText(requireContext(),"Max number of character for store name is 30", Toast.LENGTH_SHORT).show()
                 }
@@ -142,24 +161,53 @@ class UpdateStoreFragment : Fragment() {
         imageViewStorePhoto = view1.findViewById(R.id.storePic)
         buttonUpdateInfo = view1.findViewById(R.id.buttonUpdateProfile)
         imageViewBack=view1.findViewById(R.id.back)
+        progressBar=view1.findViewById(R.id.progressBar)
+        textViewHelper=view1.findViewById(R.id.helperText1)
+        group=view1.findViewById(R.id.group1)
     }
+
+
+
+
 
     override fun onResume() {
         super.onResume()
+
         getStoreData()
     }
 
-    private fun getStoreData() {
-        editTextName.setText(StoreSession.readString(PrefConstant.STORENAME))
-        editTextDescription.setText(StoreSession.readString(PrefConstant.STOREDESCRIPTION))
-        var path = StoreSession.readString(PrefConstant.STORELOGO).toString()
 
-        if (path.isNotEmpty()) {
-            Glide.with(requireContext()).load(path).into(imageViewStorePhoto)
-        }
+    private fun getStoreData() {
+
+
+
+
+       editTextName.setText(datacommunication.store!!.store_name)
+        editTextDescription.setText(datacommunication.store!!.store_description)
+
+        val path= datacommunication.store!!.store_logo
+        Log.d("bagga",path.toString()+"kuso")
+
+            if (path.isNotEmpty()) {
+
+                if ("firebasestorage" !in path) {
+                    Log.d("kuso", "bagga")
+
+                    progressBar.visibility = View.VISIBLE
+                    group.visibility = View.GONE
+                    textViewHelper.visibility = View.VISIBLE
+
+
+                    uploadImageToFirebase(path.toUri())
+                } else {
+                    Glide.with(requireContext()).load(path).placeholder(circularProgressDrawable).into(imageViewStorePhoto)
+                }
+            }
+
 
 
     }
+
 
 
 
@@ -208,6 +256,40 @@ class UpdateStoreFragment : Fragment() {
         dialog.show(requireActivity().supportFragmentManager, FileSelectorFragment.TAG)
     }
 
+
+    private fun uploadImageToFirebase(fileUri: Uri) {
+
+        if (fileUri != null) {
+
+            val fileName = UUID.randomUUID().toString() +".jpg"
+
+            val database = FirebaseDatabase.getInstance()
+            val refStorage = FirebaseStorage.getInstance().reference.child("images/$fileName")
+
+            refStorage.putFile(fileUri)
+                    .addOnSuccessListener(
+                            OnSuccessListener<UploadTask.TaskSnapshot> { taskSnapshot ->
+                                taskSnapshot.storage.downloadUrl.addOnSuccessListener {
+
+                                    val imageUrl = it
+                                    picturePath=imageUrl.toString()
+                                    Log.d("haha",imageUrl.toString())
+                                    Glide.with(this).load(imageUrl).skipMemoryCache(false).placeholder(circularProgressDrawable).into(imageViewStorePhoto)
+                                    datacommunication.store!!.store_logo=picturePath
+
+                                    progressBar.visibility=View.GONE
+                                    group.visibility=View.VISIBLE
+                                    textViewHelper.visibility=View.GONE
+
+                                }
+                            })
+
+
+                    ?.addOnFailureListener(OnFailureListener { e ->
+                        print(e.message)
+                    })
+        }
+    }
 
 }
 interface onMoveClick1 {

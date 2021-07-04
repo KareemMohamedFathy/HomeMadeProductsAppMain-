@@ -17,6 +17,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchEditMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/edit_store_mode"
+        android:textSize="13sp"
+        android:checked="false"
+        android:textOff="@string/off"
+        android:textOn="@string/on"
+        android:theme="@style/BrandedSwitch.control"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonAddItems"
+        android:layout_marginTop="16dp"
+        />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/buttonAddItems"
         android:layout_width="wrap_content"
@@ -25,22 +41,21 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_add"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
+        app:layout_constraintEnd_toEndOf="parent"
         />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/storeDescription"
-        app:layout_constraintStart_toEndOf="@+id/cardViewStoreLogo"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewStoreLogo"
         android:id="@+id/buttonViewRequestedOrders"
         android:text="@string/view_requested_orders"
         android:textAllCaps="false"
-        android:layout_marginStart="24dp"
+        android:layout_margin="4dp"
         app:layout_constraintBottom_toTopOf="@+id/appBarLayout"
-
-
+        app:layout_constrainedHeight="true"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="13sp"
 
 
 
@@ -54,10 +69,9 @@
         android:id="@+id/storeName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="6dp"
         app:layout_constrainedHeight="true"
-        android:gravity="top"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constrainedWidth="true"
         android:textColor="@android:color/black"
@@ -75,42 +89,35 @@
         android:gravity="start"
         app:layout_constrainedWidth="true"
         android:textColor="@android:color/darker_gray"
+        android:layout_margin="4dp"
 
         app:layout_constraintStart_toEndOf="@id/cardViewStoreLogo"
         app:layout_constraintEnd_toStartOf="@id/buttonAddItems"
         app:layout_constraintTop_toBottomOf="@id/storeName"
-            android:textSize="14sp"
+            android:textSize="12sp"
         />
     <androidx.cardview.widget.CardView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        app:cardCornerRadius="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:cardCornerRadius="30dp"
         app:cardBackgroundColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
 
         android:id="@+id/cardViewStoreLogo"
-        android:layout_margin="8dp"
+        android:layout_margin="4dp"
 
 
         >
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            app:cardCornerRadius="75dp"
-            android:layout_gravity="center">
-
             <ImageView
 
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:id="@+id/logoPic"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
 
                 />
 
-        </androidx.cardview.widget.CardView>
 
     </androidx.cardview.widget.CardView>
 
@@ -121,7 +128,6 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintBottom_toTopOf="@+id/viewPager2"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonViewRequestedOrders"
         >
@@ -143,7 +149,7 @@
         android:id="@+id/buttonCreateStore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create Your Store Now"
+        android:text="@string/create_your_store_now"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewCreateStore" />

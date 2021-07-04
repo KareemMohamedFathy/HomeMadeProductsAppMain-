@@ -8,10 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.net.toUri
+import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.homemadeproductsapp.AllStores.Listeners.OnProductClickListener
 import com.homemadeproductsapp.DB.Product
 import com.homemadeproductsapp.R
+import com.homemadeproductsapp.SquareImageView
 import java.security.acl.Group
 
 class StoreAdapter(
@@ -37,64 +40,67 @@ class StoreAdapter(
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-       holder.imageViewImageSwitcher.removeAllViews()
-        holder.imageViewImageSwitcher.setFactory(ViewSwitcher.ViewFactory { // TODO Auto-generated method stub
+        if(holder.imageViewImageSwitcher.isEmpty()) {
+            holder.imageViewImageSwitcher.setFactory(ViewSwitcher.ViewFactory { // TODO Auto-generated method stub
 
-            val imageView = ImageView(context)
-            imageView.scaleType = ImageView.ScaleType.FIT_XY
+                val imageView = SquareImageView(context)
+                imageView.scaleType = ImageView.ScaleType.FIT_XY
 
-            val params: ViewGroup.LayoutParams = FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
-            )
+                val params: ViewGroup.LayoutParams = FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+                )
 
-            imageView.layoutParams = params
-            imageView
+                imageView.layoutParams = params
+                imageView
 
 
-        })
-
+            })
+        }
 
 
         holder.textViewDescription.setText(list[position].description)
         holder.textViewName.setText(list[position].name)
         holder.textViewPrice.setText("" + list[position].price + "EGP")
-        holder.imageViewImageSwitcher.setImageURI(list[position].uriPaths!!.get(arrayListpos[position]).toUri())
+
+
+        Glide.with(context).load(list[position].uriPaths!!.get(arrayListpos[position])).skipMemoryCache(false).into(holder.imageViewImageSwitcher.currentView as ImageView)
+
+
 
         holder.imageViewNext.setOnClickListener {
-
-            if ( arrayListpos[position] < list[position].uriPaths!!.size-1){
+            if (arrayListpos[position] < list[position].uriPaths!!.size - 1) {
                 arrayListpos[position]++
-                holder.imageViewImageSwitcher.setImageURI(
-                    list[position].uriPaths!!.get(arrayListpos[position]).toUri()
-                )
-            }
-            else{
-                arrayListpos[position]=0
-                holder.imageViewImageSwitcher.setImageURI(
-                    list[position].uriPaths!!.get(arrayListpos[position]).toUri()
-                )
+                list[position].uriPaths!!.get(arrayListpos[position]).toUri()
+                Glide.with(context).load(list[position].uriPaths!!.get(arrayListpos[position])).skipMemoryCache(false).into(holder.imageViewImageSwitcher.currentView as ImageView)
+
+            } else {
+                arrayListpos[position] = 0
+                Glide.with(context).load(list[position].uriPaths!!.get(arrayListpos[position])).skipMemoryCache(false).into(holder.imageViewImageSwitcher.currentView as ImageView)
+
+
 
             }
         }
 
         //switch to previous image clicking this button
         holder.imageViewBack.setOnClickListener {
-            if (arrayListpos[position] > 0){
+            if (arrayListpos[position] > 0) {
                 arrayListpos[position]--
-                holder.imageViewImageSwitcher.setImageURI(
-                    list[position].uriPaths!!.get(arrayListpos[position]).toUri()
-                )
-            }
-            else{
-                arrayListpos[position]=list[position].uriPaths!!.size-1
-                holder.imageViewImageSwitcher.setImageURI(
-                    list[position].uriPaths!!.get(arrayListpos[position]).toUri()
-                )
+                Glide.with(context).load(list[position].uriPaths!!.get(arrayListpos[position])).skipMemoryCache(false).into(holder.imageViewImageSwitcher.currentView as ImageView)
+
+            } else {
+                arrayListpos[position] = list[position].uriPaths!!.size - 1
+                Glide.with(context).load(list[position].uriPaths!!.get(arrayListpos[position])).skipMemoryCache(false).into(holder.imageViewImageSwitcher.currentView as ImageView)
+
 
             }
-
         }
-        holder.itemView.setOnClickListener {
+
+
+
+
+
+            holder.itemView.setOnClickListener {
             OnProductClickListener.onProductClick(list[position])
         }
         if(list[position].copies==0){

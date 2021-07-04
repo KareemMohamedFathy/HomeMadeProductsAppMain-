@@ -10,6 +10,7 @@ object AppConst {
     const val STORECATEGORY="storecategory"
     const val STOREMAINCATEGORY="storemaincategory"
     const val WHERETOGO="wheretogo"
+    const val CALLFROMSEARCH="callfromsearch"
 
     const val STOREDESCRIPTION="storedescription"
     const val SHIPPINGTIME="shippingtime"

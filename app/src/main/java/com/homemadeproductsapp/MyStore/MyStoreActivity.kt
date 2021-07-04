@@ -1,6 +1,7 @@
 package com.homemadeproductsapp.MyStore
 
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Group
@@ -17,10 +19,12 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.gson.Gson
 import com.homemadeproductsapp.*
 import com.homemadeproductsapp.AllStores.AllStoresActivity
 import com.homemadeproductsapp.DB.Category
@@ -33,9 +37,8 @@ import com.homemadeproductsapp.Home.HomeActivity
 import com.homemadeproductsapp.MyStore.AcceptOrders.Listener.OrderAcceptClickListener
 import com.homemadeproductsapp.MyStore.AcceptOrders.RequestedOrdersFragment
 import com.homemadeproductsapp.MyStore.Adapter.MyStoreFragmentAdapter
-import com.homemadeproductsapp.MyStore.ItemsAndFeed.CreateItemActivity
-import com.homemadeproductsapp.MyStore.ItemsAndFeed.CreateNewsFeedActivity
-import com.homemadeproductsapp.MyStore.ItemsAndFeed.TypeSelectorFragment
+import com.homemadeproductsapp.MyStore.ItemsAndFeed.*
+import com.homemadeproductsapp.MyStore.Listeners.EditItemClickListener
 import com.homemadeproductsapp.MyStore.Listeners.NewsFeedClickListener
 import com.homemadeproductsapp.PastOrders.OrdersActivity
 import com.homemadeproductsapp.R
@@ -46,7 +49,7 @@ import kotlinx.android.synthetic.main.activity_my_store.*
 import kotlinx.android.synthetic.main.item_adapter_layout.*
 
 
-class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunication,NewsFeedClickListener,OrderAcceptClickListener {
+class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunication,NewsFeedClickListener,OrderAcceptClickListener,EditItemClickListener {
     companion object {
        private const val ADD_STORE_CODE = 100
     }
@@ -122,6 +125,7 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunica
     private lateinit var imageViewLogo: ImageView
     private lateinit var buttonAddItems:FloatingActionButton
     private lateinit var buttonViewRequestedOrders:Button
+    private lateinit var switchEditMode:SwitchMaterial
 
 
 
@@ -288,6 +292,34 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunica
     }
 
     private fun setupClickListeners() {
+        switchEditMode.setOnClickListener(object :View.OnClickListener {
+            override fun onClick(v: View?) {
+                val read=StoreSession.read(PrefConstant.DONOTSHOWMETHISAGAIN)
+
+                if (switchEditMode.isChecked()) {
+                    switchMode = switchEditMode.getTextOn().toString();
+                    if(read==null||!read) {
+                        val builder = AlertDialog.Builder(this@MyStoreActivity)
+                        builder.setTitle("Editor Mode")
+                        builder.setMessage("You will now be able edit/delete your products you can edit product by clicking on it")
+                        builder.setPositiveButton("Ok") { dialog, which ->
+                        }
+                        builder.setNegativeButton("Don't show me this again") { dialog, which ->
+                            StoreSession.write(PrefConstant.DONOTSHOWMETHISAGAIN,true)
+                        }
+                        builder.show()
+                    }
+
+                }
+                else {
+                    switchMode = switchEditMode.getTextOff().toString();
+                }
+                    val previtem=viewPager.currentItem
+                handleTabs()
+                viewPager.currentItem=previtem
+        }
+        })
+
         buttonViewRequestedOrders.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val requestedOrdersFragment = RequestedOrdersFragment()
@@ -378,6 +410,7 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunica
         textViewstoreName=findViewById(R.id.storeName)
         textViewstoreDescription=findViewById(R.id.storeDescription)
         imageViewLogo=findViewById(R.id.logoPic)
+        switchEditMode=findViewById(R.id.switchEditMode)
         buttonViewRequestedOrders=findViewById(R.id.buttonViewRequestedOrders)
     }
 
@@ -447,19 +480,32 @@ class MyStoreActivity : AppCompatActivity(),OnProductClickListener,dataCommunica
     override lateinit var store_logo: String
     override lateinit var store_name: String
     override lateinit var feed: Feed
+    override  var switchMode: String="OFF"
     override fun onClick(feed: Feed) {
-        val detailsFragment = DetailsFragment()
+        if(switchMode=="OFF") {
+            val detailsFragment = DetailsFragment()
 
-        detailsFragment.setStyle(
-            DialogFragment.STYLE_NORMAL,
-            R.style.DialogFragmentTheme
-        );
-        detailsFragment.show(supportFragmentManager, "Jean 3")
-
+            detailsFragment.setStyle(
+                DialogFragment.STYLE_NORMAL,
+                R.style.DialogFragmentTheme
+            );
+            detailsFragment.show(supportFragmentManager, "Jean 3")
+        }
+        else{
+            val connectionsJSONString = Gson().toJson(feed)
+            val intent= Intent(this@MyStoreActivity, EditNewsFeedActivity::class.java)
+            intent.putExtra("feed",connectionsJSONString)
+            intent.putExtra("store_id",storeIdExists)
+            startActivity(intent)
+            finish()
+        }
     }
 
     override fun checkOrderDetails(order: Order) {
-        TODO("Not yet implemented")
+    }
+
+    override fun EditItem(product: Product) {
+
     }
 }
 interface OnProductClickListener {
@@ -470,5 +516,6 @@ interface dataCommunication{
     var store_logo:String
     var store_name:String
      var  feed:Feed
+     var switchMode:String
 }
 

@@ -7,6 +7,47 @@
     android:background="@android:color/white"
 
     tools:context=".MyStore.ItemsAndFeed.CreateItemActivity">
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       app:layout_constraintTop_toBottomOf="@+id/helperText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:constraint_referenced_ids="addProductTextView,imageViewAddItem,imageViewImageSwitcher,ImageViewBack,spinnerSubCategory,name_container,ImageViewNext,price_container,copies_container,description_container,submit_button" />
+
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="helperText"
+        android:visibility="gone"
+        />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/please_wait_photos_are_loading"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:id="@+id/helperText"
+        />
+
+
     <TextView
         android:id="@+id/addProductTextView"
         android:layout_width="wrap_content"
@@ -60,20 +101,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/imageViewImageSwitcher"
         app:layout_constraintTop_toBottomOf="@id/guideline3" />
+
+
     <ImageView
         android:id="@+id/ImageViewNext"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        app:layout_constrainedHeight="true"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_previous"
+        app:layout_constrainedHeight="true"
 
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toStartOf="@id/imageViewImageSwitcher"
-        app:layout_constraintTop_toBottomOf="@id/guideline3"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2" />
-
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline3" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_container"

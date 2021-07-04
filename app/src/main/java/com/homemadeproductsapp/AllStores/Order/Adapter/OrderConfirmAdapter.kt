@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.net.toUri
+import com.bumptech.glide.Glide
 import com.homemadeproductsapp.AllStores.Adapters.UpdateTotal
 import com.homemadeproductsapp.DB.Cart
 import com.homemadeproductsapp.DB.Product
@@ -31,16 +32,14 @@ private lateinit var context: Context
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.imageSwitcherProduct.setImageURI(cart.itemsIdPicList[productId[position].id]!!.toUri())
+        Glide.with(context).load(cart.itemsIdPicList[productId[position].id]!!.toUri()).into(holder.imageSwitcherProduct)
+
         holder.textViewName.text= productId[position].name
         holder.textViewDescription.text= productId[position].description
-        Log.d("kuso", cart.itemsIdAmountList[productId[position].id]!!.toString())
 
         var amount:Int= cart.itemsIdAmountList[productId[position].id]!!
         var price:Double= cart.itemsIdPriceList[productId[position].id]!!
         var copies:Int= productId[position].copies!!
-        Log.d("amount",amount.toString())
-        Log.d("amount", amount.toString())
 
         holder.imageViewAdd.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
