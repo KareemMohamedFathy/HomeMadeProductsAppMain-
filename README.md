@@ -5,5 +5,6 @@ The app will be highly visual to capture the essence of Instagram.
 The app have a enhanced searching system where user can search by store name or product name.Also, the user can filter stores by categories and subcategories.
 Each store consists of two parts part for posting timeline photos in a way similar to normal timeline like instagram or facebook timeline, the other part is for products that the stores sells.
 
+![all stores](https://user-images.githubusercontent.com/43281608/130789761-b5e7f85d-690c-4783-97ea-1069ec8fa721.png)
 
 
