@@ -19,6 +19,7 @@ data class Product(
         var imagePathProduct:String? = "",
         var store_id:String? = "",
         var subcategory: String?="",
+
         var uriPaths: java.util.ArrayList<String>? =ArrayList()
 
 

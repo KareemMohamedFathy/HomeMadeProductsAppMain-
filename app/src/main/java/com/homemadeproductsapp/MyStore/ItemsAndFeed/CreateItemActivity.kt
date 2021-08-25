@@ -231,11 +231,11 @@ class CreateItemActivity : AppCompatActivity(), OnOptionClickListener,AdapterVie
             else    if (TextUtils.isEmpty(name)||TextUtils.isEmpty(price)||TextUtils.isEmpty(description)) {
                 Toast.makeText(this@CreateItemActivity, "Plz fill all data", Toast.LENGTH_SHORT).show()
             }
-          else  if(name.length>30){
-                Toast.makeText(this@CreateItemActivity,"Max number of character for store name is 30",Toast.LENGTH_SHORT).show()
+          else  if(name.length>40){
+                Toast.makeText(this@CreateItemActivity,"Max number of character for product name is 40",Toast.LENGTH_SHORT).show()
             }
             else if(description.length>150){
-                Toast.makeText(this@CreateItemActivity,"Max number of character for store description is 150",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CreateItemActivity,"Max number of character for product description is 150",Toast.LENGTH_SHORT).show()
             }
 
 

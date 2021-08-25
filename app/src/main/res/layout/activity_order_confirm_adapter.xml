@@ -81,7 +81,7 @@
             android:gravity="end"
             android:id="@+id/textViewPrice"
             app:layout_constraintEnd_toStartOf="@id/imageViewAdd"
-            app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintTop_toBottomOf="@id/textViewDescription"
             android:layout_margin="4dp"
 
             />

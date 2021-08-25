@@ -1,10 +1,15 @@
 package com.homemadeproductsapp.Home
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.SearchManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+
 import android.graphics.Color
+import android.media.RingtoneManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -12,11 +17,15 @@ import android.view.Menu
 import android.widget.LinearLayout
 import android.widget.SearchView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.*
+import com.google.firebase.messaging.FirebaseMessaging
 import com.homemadeproductsapp.AllStores.AllStoresActivity
 import com.homemadeproductsapp.AllStores.OnStoreOpenActivity
 import com.homemadeproductsapp.AppConst
@@ -49,9 +58,9 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        supportActionBar!!.title ="HomePage"
+        supportActionBar!!.title = "HomePage"
 
-        recyclerViewHome=findViewById(R.id.recyclerViewHome)
+        recyclerViewHome = findViewById(R.id.recyclerViewHome)
 
         handleBottomNavigationView();
         getAllStores()
@@ -154,13 +163,19 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         storesList.clear()
+        val map:TreeMap<String,String> = TreeMap()
         for(cat in storeTimeLineMap){
+            map.put(cat.key, cat.value.addDate!!)
+        }
+
+        for(cat in map){
             storesList.add(cat.key)
         }
+        storesList.reverse()
+
         setupSharedPreference()
         val nameClickListener=object :NameClickListener{
             override fun NameClickListener(store: Store) {
-                Log.d("kuso", "kusooooo")
                 saveCategory(store.store_name, store.mainCategoryName.toString(), store.store_id, store.store_logo)
                 val intent=Intent(this@HomeActivity, OnStoreOpenActivity::class.java)
                 intent.putExtra(AppConst.STORENAME, store.store_name)
@@ -174,7 +189,6 @@ class HomeActivity : AppCompatActivity() {
             }
 
         }
-        storesList.reverse()
         val adapter=HomePageAdapter(storeTimeLineMap, storesList, storesListMap, nameClickListener)
         val linearLayoutManager=LinearLayoutManager(this)
         linearLayoutManager.orientation=LinearLayoutManager.VERTICAL

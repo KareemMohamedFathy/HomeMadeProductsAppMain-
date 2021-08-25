@@ -161,7 +161,7 @@ class RequestedOrdersFragment : DialogFragment(), AdapterView.OnItemSelectedList
             filterArray.addAll(orderList)
         }
 
-        val adapter=RequestedOrderAdapter(filterArray,usersList,orderAcceptClickListener)
+        val adapter=RequestedOrderAdapter(filterArray,usersList,orderAcceptClickListener,requireContext())
         val linearLayoutManager=LinearLayoutManager(context)
         linearLayoutManager.orientation=LinearLayoutManager.VERTICAL
         recyclerViewOrdersStatus.layoutManager=linearLayoutManager

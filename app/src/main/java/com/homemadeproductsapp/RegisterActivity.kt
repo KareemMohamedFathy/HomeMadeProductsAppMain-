@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.homemadeproductsapp.DB.Local.StoreSession
 
 import com.homemadeproductsapp.DB.User
+import com.homemadeproductsapp.Home.HomeActivity
 import com.homemadeproductsapp.MyStore.MyStoreActivity
 import com.mindorks.notesapp.data.local.pref.PrefConstant
 
@@ -79,7 +80,7 @@ class RegisterActivity : AppCompatActivity() {
                                 )
                                     .show()
                                 saveSession()
-                                val intent = Intent(this@RegisterActivity, MyStoreActivity::class.java)
+                                val intent = Intent(this@RegisterActivity, HomeActivity::class.java)
                                 handleData(name,email,mobileNo)
                                 startActivity(intent)
                                 finish()

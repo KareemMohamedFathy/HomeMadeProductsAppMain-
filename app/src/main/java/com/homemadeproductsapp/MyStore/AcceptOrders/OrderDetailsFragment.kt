@@ -69,6 +69,13 @@ private lateinit var view1:View
     }
 
 
+    private fun setupClickListeners() {
+        backImageView.setOnClickListener{
+            dismiss()
+        }
+    }
+
+
     override fun onResume() {
         progressBar.visibility=View.VISIBLE
 
@@ -81,18 +88,14 @@ private lateinit var view1:View
     }
 
 
-    private fun setupClickListeners() {
-        backImageView.setOnClickListener{
-       dismiss()
-        }
-    }
 
     private fun bindViews() {
 
         total=order!!.cart.totalPrice
         textViewTotal=view1.findViewById(R.id.textViewTotalCost)
-        backImageView=view1.findViewById(R.id.back)
         textViewTotal.text= total.toString()+" EGP "
+        backImageView=view1.findViewById(R.id.back)
+
 
 
         val productId:ArrayList<String> = ArrayList<String>()

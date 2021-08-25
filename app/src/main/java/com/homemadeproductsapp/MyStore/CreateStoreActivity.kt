@@ -58,7 +58,7 @@ class CreateStoreActivity : AppCompatActivity(), OnOptionClickListener, AdapterV
     private var picturePath = ""
     private lateinit var imageLocation: File
     private lateinit var category: String
-    val mainCategories= arrayOf("Clothing","Food","Accessories","Books","Toys","Jewellery")
+    val mainCategories= arrayOf("Clothing","Food","Accessories","Home crafts","Books","Toys","Jewellery")
 
 
 

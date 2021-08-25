@@ -111,7 +111,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="8dp"
-        android:text="create item"
+        android:text="@string/add_post_to_newsfeed"
         app:layout_constraintTop_toBottomOf="@id/caption_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

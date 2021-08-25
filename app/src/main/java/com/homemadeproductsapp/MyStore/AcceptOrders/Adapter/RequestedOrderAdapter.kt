@@ -1,13 +1,14 @@
 package com.homemadeproductsapp.MyStore.AcceptOrders.Adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Spinner
+import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.database.FirebaseDatabase
@@ -18,12 +19,13 @@ import com.homemadeproductsapp.R
 
 
 class RequestedOrderAdapter(
-    private val listOrder: List<Order>,
-    private val listUsers: List<User>,
-    private val orderAcceptClickListener: OrderAcceptClickListener
+    private val listOrder: ArrayList<Order>,
+    private val listUsers: ArrayList<User>,
+    private val orderAcceptClickListener: OrderAcceptClickListener, private val context1: Context
 ) : RecyclerView.Adapter<RequestedOrderAdapter.ViewHolder>() {
 
 private lateinit var  context:Context
+private lateinit var recycler: RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(
@@ -31,8 +33,13 @@ private lateinit var  context:Context
                 parent,
                 false
             )
-        context=parent.context
+        context=context1
         return RequestedOrderAdapter.ViewHolder(view)
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        recycler=recyclerView
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -45,11 +52,9 @@ private lateinit var  context:Context
         holder.textViewOrderDate.text=listOrder[position].date
         holder.textViewOrderPrice.text= listOrder[position].cart.totalPrice.toString()+" EGP "
         val status=listOrder[position].order_status
-        val list: kotlin.Array<out String> = context.resources.getStringArray(R.array.Order_Status);
-        val pos=list.indexOf(status)
+        holder.spinnerOrderStatus.text=status
 
-      holder.spinnerOrderStatus.setSelection(pos)
-        holder.itemView.setOnClickListener(object :View.OnClickListener{
+        holder.itemView.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 orderAcceptClickListener.checkOrderDetails(listOrder[position])
             }
@@ -58,11 +63,42 @@ private lateinit var  context:Context
 
 
 
+
         holder.buttonUpdateOrderStatus.setOnClickListener(object : View.OnClickListener {
+
             override fun onClick(v: View?) {
-                val text: String = holder.spinnerOrderStatus.getSelectedItem().toString()
-                listOrder[position].order_status=text
-                val dbref=FirebaseDatabase.getInstance().reference.child("Order").child(listOrder[position].order_id.toString()).setValue(listOrder[position])
+
+                val popup = PopupMenu(context1,v)
+                // Inflate the menu from xml
+                // Inflate the menu from xml
+
+                popup.getMenuInflater().inflate(R.menu.popup, popup.getMenu())
+
+                // Setup menu item selection
+                // Setup menu item selection
+                recycler.alpha=0.2F
+                popup.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
+                    override fun onMenuItemClick(item: MenuItem): Boolean {
+                        return when (item.getItemId()) {
+                        else-> {
+                            holder.spinnerOrderStatus.text = item.toString()
+                            listOrder[position].order_status=item.toString()
+                            val dbref= FirebaseDatabase.getInstance().reference.child("Order").child(listOrder[position].order_id.toString()).setValue(listOrder[position])
+
+
+                            recycler.alpha=1.0F
+
+                            false
+                        }
+
+
+                        }
+                    }
+                })
+                popup.setOnDismissListener{recycler.alpha=1.0F}
+                popup.show()
+
+
 
             }
 
@@ -73,6 +109,8 @@ private lateinit var  context:Context
 
 
     }
+
+
 
     override fun getItemCount(): Int {
     return listOrder.size
@@ -86,7 +124,7 @@ private lateinit var  context:Context
         var textViewOrderID:TextView=itemView.findViewById(R.id.textViewOrderID)
         var textViewOrderDate:TextView=itemView.findViewById(R.id.textViewOrderDate)
         var textViewOrderPrice:TextView=itemView.findViewById(R.id.textViewOrderPrice)
-        var spinnerOrderStatus:Spinner = itemView.findViewById(R.id.spinnerOrderStatus)
+        var spinnerOrderStatus:TextView = itemView.findViewById(R.id.spinnerOrderStatus)
         var buttonUpdateOrderStatus:TextView=itemView.findViewById(R.id.buttonUpdateOrderStatus)
 
     }

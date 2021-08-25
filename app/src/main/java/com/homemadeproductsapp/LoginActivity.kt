@@ -40,7 +40,6 @@ setupSharedPreference()
         StoreSession.init(this)
     }
     private fun checkisLogged() {
-       val status= StoreSession.read(PrefConstant.LOGGED)
         if(auth.currentUser!=null){
             Toast.makeText(this@LoginActivity, "Successfully Logged In", Toast.LENGTH_LONG).show()
             val intent= Intent(this@LoginActivity, HomeActivity::class.java)
@@ -48,9 +47,6 @@ setupSharedPreference()
             finish()
 
         }
-    }
-    private fun saveSession() {
-        StoreSession.write(PrefConstant.LOGGED, true)
     }
 
     private fun bindViews() {
@@ -67,8 +63,7 @@ setupSharedPreference()
                 val password=editTextPassword.text.toString()
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this@LoginActivity, OnCompleteListener { task ->
                     if(task.isSuccessful) {
-saveSession()
-                        Toast.makeText(this@LoginActivity, "Successfully Logged In", Toast.LENGTH_LONG).show()
+                       Toast.makeText(this@LoginActivity, "Successfully Logged In", Toast.LENGTH_LONG).show()
                         val intent= Intent(this@LoginActivity, HomeActivity::class.java)
                         startActivity(intent)
                         finish()

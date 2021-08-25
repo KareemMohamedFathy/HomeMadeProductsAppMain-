@@ -49,18 +49,18 @@ class OnStoreOpenActivity : AppCompatActivity(),DataCommunication,OnProductClick
 
     val allCategories = arrayOf(
         arrayOf(
-            "Clothing", "shirt", "shorts", "dresses", "jackets", "shoes", "trousers", "socks"
+            "Clothing", "shirt", "shorts", "dresses", "jackets", "shoes", "trousers", "socks","other"
         ),
         arrayOf(
             "Food",
             "Bakery",
             "ReadyToCook",
             "FastFood",
-            "pickles",
-            "powders",
+            "Pickles",
+            "Powders",
             "Diet Food",
             "Frozen Food",
-            "cans,",
+            "Cans,",
             "other"
         ),//food
         arrayOf(
@@ -70,28 +70,28 @@ class OnStoreOpenActivity : AppCompatActivity(),DataCommunication,OnProductClick
             "Accessories",
             "Pet Accessories",
             "Hair Accessories",
-            "BELTS",
-            "SCARVES",
-            "HEADBANDS",
-            "bags",
-            "hats",
-            "phone cases", "other"
+            "Belts",
+            "Scarves",
+            "Headbands",
+            "Bags",
+            "Hats",
+            "Phone cases", "other"
         ),//accessories
         arrayOf(
             "Books",
-            "book accessories",
-            "literature",
-            "childeren books",
-            "magazines",
-            "guides", "other"
+            "Book accessories",
+            "Literature",
+            "Childeren books",
+            "Magazines",
+            "Guides", "other"
         ), //books
         arrayOf(
-            "Toys", "Puzzles", "videogames", "dolls&&stuffed toys", "card games", "other"
+            "Toys", "Puzzles", "Videogames", "Dolls&&Stuffed toys", "Card Games", "other"
         ),//toys
         arrayOf(
             "Jewellery",
             "necklaces",
-            "rings", "bracelets", "other"
+            "Rings", "Bracelets", "other"
         )
     )
     private lateinit var auth: FirebaseAuth
